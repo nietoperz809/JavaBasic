@@ -1,0 +1,4 @@
+10 input a
+20 print 2*a
+30 input a$
+40 print a$;" ist doof"
