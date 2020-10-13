@@ -356,7 +356,6 @@ public class Program implements Runnable, Serializable
             if ((s.lineNo() >= start) && (s.lineNo() <= end))
             {
                 p.print(s.asString());
-                p.print("\r");
                 p.println(); // for Windows clients
             }
         }
