@@ -19,7 +19,7 @@ public enum KeyWords
     RETURN ("return", "return from subroutine"),
     PRINT ("print", "output text and variables"),
     IF ("if", "test condition and possibly do a branch"),
-    THEN ("then", "alternative path for if statement"),
+    THEN ("then", "goto x for if statement"),
     END ("end", "end program execution"),
     DATA ("data", "define list of values"),
     RESTORE ("restore", "reset internal data read pointer"),
