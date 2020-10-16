@@ -18,19 +18,14 @@ import java.io.PrintStream;
 public class StreamingTextArea extends JTextArea implements Runnable
 {
     private static final long serialVersionUID = 1L;
-    private final InStream in;
 
+    private final InStream in;
     private final OutStream out;
 
     private transient Thread thread;
-
     public char lastKey = 0xffff;
-
     private int linenum = 0;
 
-    /**
-     *
-     */
     public StreamingTextArea ()
     {
         super();
@@ -81,27 +76,37 @@ public class StreamingTextArea extends JTextArea implements Runnable
             {
                 char c = e.getKeyChar();
                 lastKey = c;
+
+                try
+                {
+                    in.buffer.put(c);
+                }
+                catch (InterruptedException interruptedException)
+                {
+                    interruptedException.printStackTrace();
+                }
+
                 if (c == '\n')
                 {
-                    try
-                    {
-                        StreamingTextArea editArea = (StreamingTextArea) e.getSource();
-                        String[] lines = editArea.getText().split("\\n");
-                        int idx = (linenum > 0) ? linenum - 1 : linenum;
-                        if (lines.length > idx)
-                        {
-                            String t = lines[idx];
-                            char[] cta = t.toCharArray();
-                            for (Character ct : cta)
-                            {
-                                in.buffer.put(ct);
-                            }
-                        }
-                        in.buffer.put('\n');
-                    }
-                    catch (InterruptedException ex)
-                    {
-                    }
+//                    try
+//                    {
+//                        StreamingTextArea editArea = (StreamingTextArea) e.getSource();
+//                        String[] lines = editArea.getText().split("\\n");
+//                        int idx = (linenum > 0) ? linenum - 1 : linenum;
+//                        if (lines.length > idx)
+//                        {
+//                            String t = lines[idx];
+//                            char[] cta = t.toCharArray();
+//                            for (Character ct : cta)
+//                            {
+//                                in.buffer.put(ct);
+//                            }
+//                        }
+//                        in.buffer.put('\n');
+//                    }
+//                    catch (InterruptedException ex)
+//                    {
+//                    }
                 }
             }
 
@@ -175,13 +180,22 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public synchronized void destroy ()
     {
         thread.interrupt();
+
+        try
+        {
+            out.buffer.put('*');
+        }
+        catch (InterruptedException e)
+        {
+            return;
+        }
     }
 
     @Override
     public void run ()
     {
         thread = Thread.currentThread();
-        while (!thread.isInterrupted())
+        while (true) //!thread.isInterrupted())
         {
             Character c;
             try
@@ -191,7 +205,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
             catch (InterruptedException ex)
             {
                 System.out.println("stream thread ended");
-                break;
+                return;
             }
             try
             {

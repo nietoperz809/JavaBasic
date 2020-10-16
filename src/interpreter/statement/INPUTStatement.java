@@ -109,8 +109,6 @@ public class INPUTStatement extends Statement
 
     private void getMoreData (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError
     {
-        String x;
-
         if (prompt != null)
         {
             out.print(prompt);
@@ -120,25 +118,28 @@ public class INPUTStatement extends Statement
             out.print("?");
         }
         out.print(" ");
-        out.flush();
+//        out.flush();
 
+        String sbuff;
         try
         {
-            x = in.readLine();
+            sbuff = in.readLine();
         }
         catch (IOException ioe)
         {
             throw new BASICRuntimeError(this, "I/O error on input.");
         }
-        if (x == null)
+        if (sbuff == null)
         {
             throw new BASICRuntimeError(this, "Out of data for INPUT.");
         }
         for (int i = 0; i < buffer.length; i++)
         {
-            buffer[i] = (x.length() > i) ? x.charAt(i) : 0;
+            if (i == sbuff.length())
+                break;
+            buffer[i] = sbuff.charAt(i);
         }
-        buffer[x.length()] = '\n';
+        buffer[sbuff.length()] = '\n';
         currentPos = 0;
     }
 
@@ -322,7 +323,7 @@ public class INPUTStatement extends Statement
             d = new DataInputStream(in);
         }
 
-        currentPos = 2; // skip "? "
+        currentPos = 0; // skip "? "
 
         for (int i = 0; i < v.size(); i++)
         {

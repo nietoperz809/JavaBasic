@@ -25,7 +25,9 @@ import misc.Transmitter;
 import javax.sound.midi.Instrument;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.FutureTask;
 
 import static interpreter.ParseStatement.statement;
@@ -58,9 +60,6 @@ public class CommandInterpreter implements Serializable
      */
     public CommandInterpreter (BasicGUI bg)
     {
-//        MyKevinVoiceDirectory mk = new MyKevinVoiceDirectory();
-//        voice = mk.getVoices()[0];
-//        voice.allocate();
         m_bg = bg;
     }
 
@@ -348,13 +347,15 @@ public class CommandInterpreter implements Serializable
 
     public void runCLI (StreamingTextArea area) throws Exception
     {
-        DataInputStream dis = inStream;
+        //Scanner sca = new Scanner (area.getInputStream());
+        //        DataInputStream dis = area.getDataInputStream();
 //        BufferedReader dis = new BufferedReader(new InputStreamReader(inStream,
-//                Charset.forName("ISO-8859-1")));
+//                StandardCharsets.ISO_8859_1));
         String lineData;
         while (true)
         {
-            lineData = dis.readLine();
+            // lineData = sca.nextLine();
+            lineData = inStream.readLine();
 
             // ignore blank lines.
             if (lineData.length () == 0)

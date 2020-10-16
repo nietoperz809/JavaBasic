@@ -16,7 +16,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 class InStream extends java.io.InputStream implements Serializable
 {
     public static final long serialVersionUID = 1L;
-    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128);
+    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128,true);
 
     /**
      *
