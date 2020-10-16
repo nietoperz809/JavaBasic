@@ -18,7 +18,6 @@ import java.io.PrintStream;
 public class StreamingTextArea extends JTextArea implements Runnable
 {
     private static final long serialVersionUID = 1L;
-    public final RingBuffer<Character> inBuffer;
     private final InStream in;
 
     private final RingBuffer<Character> outBuffer;
@@ -37,9 +36,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
     {
         super();
         setCaret(new BlockCaret());
-        inBuffer = new RingBuffer<>(128);
         outBuffer = new RingBuffer<>(128);
-        in = new InStream(inBuffer);
+        in = new InStream();
         out = new OutStream(outBuffer);
         listenCaret();
         startThread();
@@ -95,12 +93,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
                         if (lines.length > idx)
                         {
                             String t = lines[idx];
-                            for (Character ct : t.toCharArray())
+                            char[] cta = t.toCharArray();
+                            for (Character ct : cta)
                             {
-                                inBuffer.add(ct);
+                                in.buffer.put(ct);
                             }
                         }
-                        inBuffer.add('\n');
+                        in.buffer.put('\n');
                     }
                     catch (InterruptedException ex)
                     {
@@ -157,28 +156,17 @@ public class StreamingTextArea extends JTextArea implements Runnable
     {
         super.paste();
         String s = Misc.getClipBoardString();
-        for (int n = 0; n < s.length(); n++)
-        {
-            try
-            {
-                inBuffer.add(s.charAt(n));
-            }
-            catch (InterruptedException ex)
-            {
-            }
-        }
+        fakeIn(s);
     }
 
     public void fakeIn (String s)
     {
         for (int n = 0; n < s.length(); n++)
         {
-            try
-            {
-                inBuffer.add(s.charAt(n));
-            }
-            catch (InterruptedException ex)
-            {
+            try {
+                in.buffer.put(s.charAt(n));
+            } catch (InterruptedException e) {
+                return;
             }
         }
     }
@@ -197,11 +185,10 @@ public class StreamingTextArea extends JTextArea implements Runnable
         thread = Thread.currentThread();
         while (!thread.isInterrupted())
         {
-            String txt;
+            Character c;
             try
             {
-                txt = outBuffer.removeAsString();
-                //System.out.println ("get:" +txt);
+                c = outBuffer.remove();
             }
             catch (InterruptedException ex)
             {
@@ -212,13 +199,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
                 synchronized (this)
                 {
                     int cp = getCaretPosition();
-                    insert(txt, cp);
-                    setCaretPosition(cp + txt.length());
+                    insert(""+c, cp);
+                    setCaretPosition(cp+1);
                 }
             }
             catch (Exception ex)
             {
-                System.out.println(ex + " -- " + txt);
+                System.out.println(ex + " -- " + c);
             }
         }
         System.out.println("stream thread ended");

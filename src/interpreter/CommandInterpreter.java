@@ -354,7 +354,7 @@ public class CommandInterpreter implements Serializable
         String lineData;
         while (true)
         {
-            lineData = processBS (dis.readLine ());
+            lineData = dis.readLine();
 
             // ignore blank lines.
             if (lineData.length () == 0)
@@ -362,6 +362,7 @@ public class CommandInterpreter implements Serializable
                 System.out.println ("ignore blank line");
                 continue;
             }
+            lineData = processBS (lineData);
             m_bg.setLineInList (lineData);
 
             tokenizer.reset (lineData);

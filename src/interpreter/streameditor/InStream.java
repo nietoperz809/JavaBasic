@@ -7,6 +7,7 @@ package interpreter.streameditor;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  *
@@ -14,37 +15,33 @@ import java.io.Serializable;
  */
 class InStream extends java.io.InputStream implements Serializable
 {
-
-    /**
-     *
-     */
     public static final long serialVersionUID = 1L;
-    private final RingBuffer<Character> buffer;
+    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128);
 
     /**
      *
-     * @param b
+     * @param
      */
-    public InStream (RingBuffer b)
+    public InStream ()
     {
-        buffer = b;
     }
 
     @Override
     public int available()
     {
-        return buffer.size();
+        return buffer.remainingCapacity();
     }
     
     @Override
-    public int read() throws IOException
+    public int read()
     {
         try
         {
-            return buffer.remove();
+            return buffer.take();
         }
-        catch (InterruptedException ex)
+        catch (InterruptedException e)
         {
+            e.printStackTrace();
             return -1;
         }
     }

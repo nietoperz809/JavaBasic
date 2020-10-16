@@ -191,18 +191,18 @@ public class RingBuffer<T> implements Serializable
         return result;
     }
 
-    StringBuffer stringBuilder = new StringBuffer ();
-    public synchronized String removeAsString() throws InterruptedException
-    {
-        stringBuilder.setLength (0);
-        while (true)
-        {
-            stringBuilder.append(remove());
-            Thread.yield ();
-            if (unconsumedElements == 0)
-                return stringBuilder.toString();
-        }
-    }
+//    StringBuffer stringBuilder = new StringBuffer ();
+//    public synchronized String removeAsString() throws InterruptedException
+//    {
+//        stringBuilder.setLength (0);
+//        while (true)
+//        {
+//            stringBuilder.append(remove());
+//            Thread.yield ();
+//            if (unconsumedElements == 0)
+//                return stringBuilder.toString();
+//        }
+//    }
     
     /**
      * Returns the number of elements that are currently being stored in the
