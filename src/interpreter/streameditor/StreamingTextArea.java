@@ -20,7 +20,6 @@ public class StreamingTextArea extends JTextArea implements Runnable
     private static final long serialVersionUID = 1L;
     private final InStream in;
 
-    private final RingBuffer<Character> outBuffer;
     private final OutStream out;
 
     private transient Thread thread;
@@ -36,9 +35,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
     {
         super();
         setCaret(new BlockCaret());
-        outBuffer = new RingBuffer<>(128);
         in = new InStream();
-        out = new OutStream(outBuffer);
+        out = new OutStream();
         listenCaret();
         startThread();
     }
@@ -188,10 +186,11 @@ public class StreamingTextArea extends JTextArea implements Runnable
             Character c;
             try
             {
-                c = outBuffer.remove();
+                c = out.buffer.take();
             }
             catch (InterruptedException ex)
             {
+                System.out.println("stream thread ended");
                 break;
             }
             try
@@ -208,6 +207,5 @@ public class StreamingTextArea extends JTextArea implements Runnable
                 System.out.println(ex + " -- " + c);
             }
         }
-        System.out.println("stream thread ended");
     }
 }

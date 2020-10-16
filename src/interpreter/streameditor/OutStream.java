@@ -8,6 +8,7 @@ package interpreter.streameditor;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  *
@@ -15,31 +16,27 @@ import java.io.Serializable;
  */
 class OutStream extends OutputStream implements Serializable
 {
-
-    /**
-     *
-     */
     public static final long serialVersionUID = 1L;
-    private final RingBuffer<Character> buffer;
+    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128);
 
     /**
      *
      * @param b
      */
-    public OutStream (RingBuffer b)
+    public OutStream ()
     {
-        buffer = b;
-    }    
+    }
     
     @Override
-    public void write(int b) throws IOException
+    public void write(int b)
     {
         try
         {
-            buffer.add((char)b);
+            buffer.put((char)b);
         }
-        catch (InterruptedException ex)
+        catch (InterruptedException e)
         {
+            return;
         }
     }
 }
