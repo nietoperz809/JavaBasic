@@ -73,7 +73,8 @@ public class CommandInterpreter implements Serializable
                 try
                 {
                     pgm.resume (inStream, outStream);
-                } catch (BASICRuntimeError e)
+                }
+                catch (BASICRuntimeError e)
                 {
                     outStream.println (e.getMsg ());
                 }
@@ -83,7 +84,8 @@ public class CommandInterpreter implements Serializable
                 try
                 {
                     pgm.cont (inStream, outStream);
-                } catch (BASICRuntimeError e)
+                }
+                catch (BASICRuntimeError e)
                 {
                     outStream.println (e.getMsg ());
                 }
@@ -96,13 +98,18 @@ public class CommandInterpreter implements Serializable
                 {
                     startline = (int) t.numValue ();
                 }
+                //System.out.println("before run"); // +++++++++++++++++++++++++
+                streamingTextArea.startRunMode();
                 try
                 {
                     pgm.run (inStream, outStream, startline);
-                } catch (BASICRuntimeError e2)
+                }
+                catch (BASICRuntimeError e2)
                 {
                     outStream.println (e2.getMsg ());
                 }
+                //System.out.println("after run");  // +++++++++++++++++++++++++
+                streamingTextArea.stopRunMode();
                 return pgm;
 
             case CMD_CMDS:
@@ -345,21 +352,9 @@ public class CommandInterpreter implements Serializable
 
     public void runCLI () throws Exception
     {
-        String lineData;
-        String cursorLine;
         while (true)
         {
-            lineData = processBS(inStream.readLine());
-            cursorLine = streamingTextArea.getPreviousLine();
-            if (!cursorLine.isEmpty())
-                lineData = cursorLine;
-
-            // ignore blank lines.
-            if (lineData.length () == 0)
-            {
-                //System.out.println ("ignore blank line");
-                continue;
-            }
+            String lineData = streamingTextArea.getBufferedLine();
             m_bg.setLineInList (lineData);
 
             tokenizer.reset (lineData);
@@ -448,7 +443,8 @@ public class CommandInterpreter implements Serializable
                     {
                         outStream.println ("Syntax Error : " + e.getMsg ());
                         outStream.println (tokenizer.showError ());
-                    } catch (BASICRuntimeError er)
+                    }
+                    catch (BASICRuntimeError er)
                     {
                         outStream.println ("RUNTIME ERROR.");
                         outStream.println (er.getMsg ());

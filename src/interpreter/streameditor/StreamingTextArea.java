@@ -12,13 +12,14 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Administrator
  */
 public class StreamingTextArea extends JTextArea implements Runnable
 {
-    private static final long serialVersionUID = 1L;
+    public ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128,true);
 
     private final InStream in;
     private final OutStream out;
@@ -26,6 +27,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
     private transient Thread thread;
     public char lastKey = 0xffff;
     private int previousLinenum = 0;
+    private boolean basicIsRunning = false;
 
     public StreamingTextArea ()
     {
@@ -86,7 +88,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
                 try
                 {
                     //if (c == '\n' || !Character.isISOControl(c))
-                    in.buffer.put(c);
+                    if (basicIsRunning)
+                        in.buffer.put(c);
                 }
                 catch (InterruptedException interruptedException)
                 {
@@ -103,8 +106,33 @@ public class StreamingTextArea extends JTextArea implements Runnable
             @Override
             public void keyReleased (KeyEvent e)
             {
+                if (e.getKeyChar() == '\n'&& !basicIsRunning)
+                {
+                    String s = getPreviousLine();
+                    try
+                    {
+                        lineBuffer.put(s);
+                    }
+                    catch (InterruptedException interruptedException)
+                    {
+                        interruptedException.printStackTrace();
+                    }
+                }
             }
         });
+    }
+
+    public String getBufferedLine()
+    {
+        try
+        {
+            return lineBuffer.take();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public final void startThread ()
@@ -151,9 +179,12 @@ public class StreamingTextArea extends JTextArea implements Runnable
     {
         for (int n = 0; n < s.length(); n++)
         {
-            try {
+            try
+            {
                 in.buffer.put(s.charAt(n));
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 return;
             }
         }
@@ -180,6 +211,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public void run ()
     {
         thread = Thread.currentThread();
+        System.out.println("stream thread start");
         while (true) //!thread.isInterrupted())
         {
             Character c;
@@ -206,5 +238,17 @@ public class StreamingTextArea extends JTextArea implements Runnable
                 System.out.println(ex + " -- " + c);
             }
         }
+    }
+
+    public void startRunMode()
+    {
+        basicIsRunning = true;
+        lineBuffer.clear();
+    }
+
+    public void stopRunMode()
+    {
+        basicIsRunning = false;
+        in.buffer.clear();
     }
 }

@@ -46,9 +46,8 @@ import static interpreter.ParseStatement.statement;
  * @see CommandInterpreter
  *
  */
-public class Program implements Runnable, Serializable
+public class Program //implements Runnable, Serializable
 {
-    public static final long serialVersionUID = 1L;
 
     private AudioPlayer audioPlayer;
 
@@ -405,7 +404,7 @@ public class Program implements Runnable, Serializable
      * @param firstline
      * @throws BASICRuntimeError if an error occurs while basic_prg_running.
      */
-    public void run(InputStream in, OutputStream out, int firstline) throws Exception
+    public void run (InputStream in, OutputStream out, int firstline) throws Exception
     {
         PrintStream pout;
         Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements();
@@ -538,22 +537,22 @@ public class Program implements Runnable, Serializable
      * BASICRuntimeError. Instead it catches it and prints an error message to
      * standard out.
      */
-    @Override
-    public void run()
-    {
-        try
-        {
-            run(System.in, System.out, 0);
-        }
-        catch (BASICRuntimeError e)
-        {
-            System.out.println("Error Running program: " + e.getMsg());
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
-        }
-    }
+//    @Override
+//    public void run()
+//    {
+//        try
+//        {
+//            run(System.in, System.out, 0);
+//        }
+//        catch (BASICRuntimeError e)
+//        {
+//            System.out.println("Error Running program: " + e.getMsg());
+//        }
+//        catch (Exception ex)
+//        {
+//            System.out.println(ex);
+//        }
+//    }
 
     /**
      * This method resumes a program that has been stopped. If the program
