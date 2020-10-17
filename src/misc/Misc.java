@@ -26,8 +26,8 @@ import static java.awt.datatransfer.DataFlavor.stringFlavor;
  */
 public class Misc
 {
-    private static final String BUILD_NUMBER = "38";
-    private static final String BUILD_DATE = "10/17/2020 08:05:08 PM";
+    private static final String BUILD_NUMBER = "39";
+    private static final String BUILD_DATE = "10/17/2020 08:13:17 PM";
 
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");

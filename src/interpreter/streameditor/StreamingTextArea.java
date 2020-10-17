@@ -171,8 +171,19 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public void paste ()
     {
         super.paste();
-        String s = Misc.getClipBoardString();
-        fakeIn(s);
+        String clip = Misc.getClipBoardString();
+        String[] split = clip.split("\\n");
+        for (String s : split)
+        {
+            try
+            {
+                lineBuffer.put(s);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void fakeIn (String s)
@@ -196,14 +207,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public synchronized void destroy ()
     {
         thread.interrupt();
-
+        basicIsRunning = true;
         try
         {
             out.buffer.put('*');
         }
         catch (InterruptedException e)
         {
-            return;
         }
     }
 
