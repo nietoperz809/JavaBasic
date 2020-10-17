@@ -19,7 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class StreamingTextArea extends JTextArea implements Runnable
 {
-    public ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128,true);
+    public final ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128,true);
 
     private final InStream in;
     private final OutStream out;
@@ -141,9 +141,6 @@ public class StreamingTextArea extends JTextArea implements Runnable
         Misc.execute(this);
     }
 
-    /**
-     * @return
-     */
     public InputStream getInputStream ()
     {
         return in;
@@ -159,9 +156,6 @@ public class StreamingTextArea extends JTextArea implements Runnable
         return new DataInputStream(in);
     }
 
-    /**
-     * @return
-     */
     public OutputStream getOutputStream ()
     {
         return out;
@@ -173,6 +167,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
         super.paste();
         String clip = Misc.getClipBoardString();
         String[] split = clip.split("\\n");
+        if (split == null)
+            return;
         for (String s : split)
         {
             try
@@ -188,16 +184,20 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
     public void fakeIn (String s)
     {
-        for (int n = 0; n < s.length(); n++)
-        {
-            try
+        try {
+            if (basicIsRunning)
             {
-                in.buffer.put(s.charAt(n));
+                for (int n = 0; n < s.length(); n++)
+                {
+                    in.buffer.put(s.charAt(n));
+                }
             }
-            catch (InterruptedException e)
+            else
             {
-                return;
+                lineBuffer.put(s);
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -207,14 +207,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public synchronized void destroy ()
     {
         thread.interrupt();
-        basicIsRunning = true;
-        try
-        {
-            out.buffer.put('*');
-        }
-        catch (InterruptedException e)
-        {
-        }
+        fakeIn ("bye\n");
     }
 
     @Override

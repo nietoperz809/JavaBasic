@@ -16,28 +16,23 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 class OutStream extends OutputStream implements Serializable
 {
-    public static final long serialVersionUID = 1L;
     public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128, true);
 
-    /**
-     *
-     * @param b
-     */
+
     public OutStream ()
     {
     }
 
 
     @Override
-    public void write(int b)
+    public void write (int bt)
     {
         try
         {
-            buffer.put((char)b);
+            buffer.put((char)bt);
         }
         catch (InterruptedException e)
         {
-            return;
         }
     }
 }
