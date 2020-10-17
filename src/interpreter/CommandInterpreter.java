@@ -301,7 +301,8 @@ public class CommandInterpreter implements Serializable
             }
             else
             {
-                buff.append (c);
+                if (!Character.isISOControl(c))
+                    buff.append (c);
             }
         }
         return buff.toString ();
@@ -344,16 +345,10 @@ public class CommandInterpreter implements Serializable
 
     public void runCLI () throws Exception
     {
-        //BufferedReader in2 = new BufferedReader(new InputStreamReader(streamingTextArea.getInputStream()));
-        //Scanner sca = new Scanner (new BufferedReader(new InputStreamReader(streamingTextArea.getInputStream())));
-        //        DataInputStream dis = area.getDataInputStream();
-//        BufferedReader dis = new BufferedReader(new InputStreamReader(inStream,
-//                StandardCharsets.ISO_8859_1));
         String lineData;
         String cursorLine;
         while (true)
         {
-            //lineData = in2.readLine();  //sca.nextLine();
             lineData = processBS(inStream.readLine());
             cursorLine = streamingTextArea.getPreviousLine();
             if (!cursorLine.isEmpty())
