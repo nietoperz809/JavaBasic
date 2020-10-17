@@ -13,10 +13,9 @@ import java.util.concurrent.ArrayBlockingQueue;
  *
  * @author Administrator
  */
-class InStream extends java.io.InputStream implements Serializable
+class InStream extends java.io.InputStream
 {
-    public static final long serialVersionUID = 1L;
-    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128,true);
+    private ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128,true);
 
     /**
      *
@@ -31,7 +30,14 @@ class InStream extends java.io.InputStream implements Serializable
     {
         return buffer.remainingCapacity();
     }
-    
+
+    @Override
+    public synchronized void reset() throws IOException
+    {
+        super.reset();
+        buffer.clear();
+    }
+
     @Override
     public int read()
     {
@@ -43,6 +49,15 @@ class InStream extends java.io.InputStream implements Serializable
         {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    public void write (char c)
+    {
+        try {
+            buffer.put(c);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -46,13 +46,6 @@ public class CommandInterpreter
 
     final transient private BasicGUI m_bg;
 
-// --Commented out by Inspection START (10/17/2020 8:51 PM):
-//    public Program getProg ()
-//    {
-//        return basicProgram;
-//    }
-// --Commented out by Inspection STOP (10/17/2020 8:51 PM)
-
     /**
      * Create a new command interpreter attached to the passed in streams.
      */
@@ -287,36 +280,6 @@ public class CommandInterpreter
     }
 
     private final char[] data = new char[256];
-
-// --Commented out by Inspection START (10/17/2020 8:53 PM):
-//    /**
-//     * Processes backspace
-//     *
-//     * @param in
-//     * @return String with BS processed
-//     */
-//    private String processBS (String in)
-//    {
-//        StringBuilder buff = new StringBuilder ();
-//        for (int n = 0; n < in.length (); n++)
-//        {
-//            char c = in.charAt (n);
-//            if (c == '\b')
-//            {
-//                if (buff.length () > 0)
-//                {
-//                    buff.deleteCharAt (buff.length () - 1);
-//                }
-//            }
-//            else
-//            {
-//                if (!Character.isISOControl(c))
-//                    buff.append (c);
-//            }
-//        }
-//        return buff.toString ();
-//    }
-// --Commented out by Inspection STOP (10/17/2020 8:53 PM)
 
     public void dispose ()
     {

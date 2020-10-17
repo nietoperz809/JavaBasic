@@ -8,10 +8,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.text.BadLocationException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -84,18 +81,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
             {
                 char c = e.getKeyChar();
                 lastKey = c;
-
-                try
-                {
-                    //if (c == '\n' || !Character.isISOControl(c))
-                    if (basicIsRunning)
-                        in.buffer.put(c);
-                }
-                catch (InterruptedException interruptedException)
-                {
-                    interruptedException.printStackTrace();
-                }
-
+                if (basicIsRunning)
+                    in.write(c);
             }
 
             @Override
@@ -189,7 +176,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
             {
                 for (int n = 0; n < s.length(); n++)
                 {
-                    in.buffer.put(s.charAt(n));
+                    in.write(s.charAt(n));
                 }
             }
             else
@@ -252,6 +239,10 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public void stopRunMode()
     {
         basicIsRunning = false;
-        in.buffer.clear();
+        try {
+            in.reset();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
