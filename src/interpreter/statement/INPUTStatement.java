@@ -106,6 +106,7 @@ public class INPUTStatement extends Statement
      */
     private int currentPos = 500;
     private final char[] buffer = new char[256];
+    String sbuff = "";
 
     private void getMoreData (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError
     {
@@ -118,9 +119,7 @@ public class INPUTStatement extends Statement
             out.print("?");
         }
         out.print(" ");
-//        out.flush();
 
-        String sbuff;
         try
         {
             sbuff = in.readLine();
@@ -148,100 +147,8 @@ public class INPUTStatement extends Statement
      */
     private double getNumber (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError
     {
-        double m = 0;   // Mantissa
-        double f = 0;   // Fractional component
-        int oldPos = currentPos; // save our place.
-        boolean wasNeg = false;
-
-        if (currentPos >= buffer.length)
-        {
-            getMoreData(in, out, prompt);
-        }
-
-        while (Character.isSpace(buffer[currentPos]))
-        {
-            if (buffer[currentPos] == '\n')
-            {
-                getMoreData(in, out, prompt);
-            }
-            currentPos++;
-            if (currentPos >= buffer.length)
-            {
-                getMoreData(in, out, prompt);
-            }
-        }
-
-        if (buffer[currentPos] == '-')
-        {
-            wasNeg = true;
-            currentPos++;
-        }
-
-        // Look for the integral part.
-        while (Character.isDigit(buffer[currentPos]))
-        {
-            m = (m * 10.0) + (buffer[currentPos++] - '0');
-        }
-
-        // Now look for the fractional part.
-        if (buffer[currentPos] == '.')
-        {
-            currentPos++;
-            double t = .1;
-            while (Character.isDigit(buffer[currentPos]))
-            {
-                f = f + (t * (buffer[currentPos++] - '0'));
-                t = t / 10.0;
-            }
-        }
-        else if (currentPos == oldPos) // no number found
-        {
-            throw new BASICRuntimeError(this, "Number expected.");
-        }
-
-        m = (m + f) * ((wasNeg) ? -1 : 1);
-        // so it was a number, perhaps we are done with it.
-        if ((buffer[currentPos] != 'E') && (buffer[currentPos] != 'e'))
-        {
-            return m;
-        }
-
-        currentPos++; // skip over the 'e'
-
-        int p = 0;
-        double e;
-        wasNeg = false;
-
-        // check for negative exponent.
-        if (buffer[currentPos] == '-')
-        {
-            wasNeg = true;
-            currentPos++;
-        }
-        else if (buffer[currentPos] == '+')
-        {
-            currentPos++;
-        }
-
-        while (Character.isDigit(buffer[currentPos]))
-        {
-            p = (p * 10) + (buffer[currentPos++] - '0');
-        }
-
-        try
-        {
-            e = Math.pow(10, (double) p);
-        }
-        catch (ArithmeticException zzz)
-        {
-            throw new BASICRuntimeError(this, "Illegal numeric constant.");
-        }
-
-        if (wasNeg)
-        {
-            e = 1 / e;
-        }
-        return m * e;
+        currentPos = sbuff.length();
+        return Double.parseDouble(sbuff);
     }
 
     private String getString (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError

@@ -227,17 +227,17 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
             }
             System.err.println("before ST creation");
 
-            StreamingTextArea st = area;
-            streamMap.put (threadID, st);
+            //StreamingTextArea st = area;
+            streamMap.put (threadID, area);
 
             System.err.println("before interpreter start");
 
-            commandInterpreter.prestart(st);
+            commandInterpreter.prestart(area);
 
             if (_fut != null)
                 _fut.complete(threadID);
 
-            commandInterpreter.runCLI(st);
+            commandInterpreter.runCLI();
         }
         catch (Exception e)
         {

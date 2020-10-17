@@ -345,22 +345,23 @@ public class CommandInterpreter implements Serializable
         outStream.println ("*JavaBasic*\nType CMDS or CMDS n to see commands (beginning with n)\n");
     }
 
-    public void runCLI (StreamingTextArea area) throws Exception
+    public void runCLI () throws Exception
     {
-        //Scanner sca = new Scanner (area.getInputStream());
+        //BufferedReader in2 = new BufferedReader(new InputStreamReader(streamingTextArea.getInputStream()));
+        //Scanner sca = new Scanner (new BufferedReader(new InputStreamReader(streamingTextArea.getInputStream())));
         //        DataInputStream dis = area.getDataInputStream();
 //        BufferedReader dis = new BufferedReader(new InputStreamReader(inStream,
 //                StandardCharsets.ISO_8859_1));
         String lineData;
         while (true)
         {
-            // lineData = sca.nextLine();
+            //lineData = in2.readLine();  //sca.nextLine();
             lineData = inStream.readLine();
 
             // ignore blank lines.
             if (lineData.length () == 0)
             {
-                System.out.println ("ignore blank line");
+                //System.out.println ("ignore blank line");
                 continue;
             }
             lineData = processBS (lineData);
@@ -393,7 +394,7 @@ public class CommandInterpreter implements Serializable
                     }
                     else if (t.kwValue == KeyWords.CMD_NEW)
                     {
-                        basicProgram = new Program (area);
+                        basicProgram = new Program (streamingTextArea);
                         System.gc ();
                     }
                     else

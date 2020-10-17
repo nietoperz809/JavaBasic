@@ -69,6 +69,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
             }
             // Once we know the position of the line and the column, pass it to a helper function for updating the status bar.
         });
+
         this.addKeyListener(new KeyListener()
         {
             @Override
@@ -79,35 +80,14 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
                 try
                 {
-                    in.buffer.put(c);
+                    if (c == '\n' || !Character.isISOControl(c))
+                        in.buffer.put(c);
                 }
                 catch (InterruptedException interruptedException)
                 {
                     interruptedException.printStackTrace();
                 }
 
-                if (c == '\n')
-                {
-//                    try
-//                    {
-//                        StreamingTextArea editArea = (StreamingTextArea) e.getSource();
-//                        String[] lines = editArea.getText().split("\\n");
-//                        int idx = (linenum > 0) ? linenum - 1 : linenum;
-//                        if (lines.length > idx)
-//                        {
-//                            String t = lines[idx];
-//                            char[] cta = t.toCharArray();
-//                            for (Character ct : cta)
-//                            {
-//                                in.buffer.put(ct);
-//                            }
-//                        }
-//                        in.buffer.put('\n');
-//                    }
-//                    catch (InterruptedException ex)
-//                    {
-//                    }
-                }
             }
 
             @Override
