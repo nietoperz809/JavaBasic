@@ -5,6 +5,7 @@ import misc.Misc;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
+import javax.swing.text.BadLocationException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.DataInputStream;
@@ -24,7 +25,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
     private transient Thread thread;
     public char lastKey = 0xffff;
-    private int linenum = 0;
+    private int previousLinenum = 0;
 
     public StreamingTextArea ()
     {
@@ -42,6 +43,20 @@ public class StreamingTextArea extends JTextArea implements Runnable
         setForeground(new java.awt.Color(fore));
     }
 
+    public String getPreviousLine()
+    {
+        try
+        {
+            int start = getLineStartOffset (previousLinenum);
+            int end = getLineEndOffset (previousLinenum);
+            return getText (start,end-start).trim();
+        }
+        catch (BadLocationException e)
+        {
+            return "";
+        }
+    }
+
     private void listenCaret ()
     {
         // Add a caretListener to the editor. This is an anonymous class because it is inline and has no specific name.
@@ -49,25 +64,15 @@ public class StreamingTextArea extends JTextArea implements Runnable
         {
             JTextArea editArea = (JTextArea) e.getSource();
 
-            // Lets start with some default values for the line and column.
-            // We create a try catch to catch any exceptions. We will simply ignore such an error for our demonstration.
             try
             {
-                // First we find the position of the caret. This is the number of where the caret is in relation to the start of the JTextArea
-                // in the upper left corner. We use this position to find offset values (eg what line we are on for the given position as well as
-                // what position that line starts on.
                 int caretpos = editArea.getCaretPosition();
-                linenum = editArea.getLineOfOffset(caretpos);
-
-                // We subtract the offset of where our line starts from the overall caret position.
-                // So lets say that we are on line 5 and that line starts at caret position 100, if our caret position is currently 106
-                // we know that we must be on column 6 of line 5.
+                previousLinenum = editArea.getLineOfOffset(caretpos)-1;
                 //columnnum = caretpos - editArea.getLineStartOffset(linenum);
             }
             catch (Exception ex)
             {
             }
-            // Once we know the position of the line and the column, pass it to a helper function for updating the status bar.
         });
 
         this.addKeyListener(new KeyListener()
@@ -80,8 +85,8 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
                 try
                 {
-                    if (c == '\n' || !Character.isISOControl(c))
-                        in.buffer.put(c);
+                    //if (c == '\n' || !Character.isISOControl(c))
+                    in.buffer.put(c);
                 }
                 catch (InterruptedException interruptedException)
                 {

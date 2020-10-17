@@ -24,10 +24,7 @@ import misc.Transmitter;
 
 import javax.sound.midi.Instrument;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.FutureTask;
 
 import static interpreter.ParseStatement.statement;
@@ -353,10 +350,14 @@ public class CommandInterpreter implements Serializable
 //        BufferedReader dis = new BufferedReader(new InputStreamReader(inStream,
 //                StandardCharsets.ISO_8859_1));
         String lineData;
+        String cursorLine;
         while (true)
         {
             //lineData = in2.readLine();  //sca.nextLine();
-            lineData = inStream.readLine();
+            lineData = processBS(inStream.readLine());
+            cursorLine = streamingTextArea.getPreviousLine();
+            if (!cursorLine.isEmpty())
+                lineData = cursorLine;
 
             // ignore blank lines.
             if (lineData.length () == 0)
@@ -364,7 +365,6 @@ public class CommandInterpreter implements Serializable
                 //System.out.println ("ignore blank line");
                 continue;
             }
-            lineData = processBS (lineData);
             m_bg.setLineInList (lineData);
 
             tokenizer.reset (lineData);
