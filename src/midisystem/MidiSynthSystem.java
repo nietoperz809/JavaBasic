@@ -28,6 +28,7 @@ public class MidiSynthSystem
             try
             {
                 this_mss = new MidiSynthSystem();
+                this_mss.deleteAllTracks();
             }
             catch (Exception ex)
             {

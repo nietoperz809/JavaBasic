@@ -421,7 +421,7 @@ public class Program //implements Runnable, Serializable
             return;
         }
         
-        MidiSynthSystem.get().deleteAllTracks(); // Run MidiSynthSystem
+        //MidiSynthSystem.get().deleteAllTracks(); // Run MidiSynthSystem
         
         if (out instanceof PrintStream)
         {
