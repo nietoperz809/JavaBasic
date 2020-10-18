@@ -31,7 +31,6 @@ import com.sun.speech.freetts.relp.Sample;
 import com.sun.speech.freetts.relp.SampleInfo;
 import com.sun.speech.freetts.relp.SampleSet;
 
-import de.dfki.lt.freetts.ClusterUnitNamer;
 
 /** Generates the Unit Relation of an Utterance from the Segment Relation. */
 public class ClusterUnitSelector implements UtteranceProcessor {
@@ -40,7 +39,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
 	private final static PathExtractor DNAME = new PathExtractorImpl("R:SylStructure.parent.parent.name", true);
 	private ClusterUnitDatabase clunitDB;
-	private ClusterUnitNamer unitNamer;
+	//private ClusterUnitNamer unitNamer;
 
 	/** Constructs a ClusterUnitSelector.
 	 * @param url the URL for the unit database. If the URL path ends with a '.bin' it is assumed that the DB is a binary
@@ -57,13 +56,14 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 	 * referenced by url. If this is null, an ldom unit naming scheme will be used (e.g., 'ae_afternoon' for the phoneme
 	 * 'ae' in the word 'afternoon'.
 	 * @throws IOException if an error occurs while loading the database */
-	public ClusterUnitSelector(URL url, ClusterUnitNamer unitNamer) throws IOException {
-		if (url == null) {
-			throw new IOException("Can't load cluster unit database");
-		}
-		boolean binary = url.getPath().endsWith(".bin");
-		clunitDB = new ClusterUnitDatabase(url, binary);
-		this.unitNamer = unitNamer;
+	public ClusterUnitSelector(URL url, Object unitNamer) throws IOException
+	{
+//		if (url == null) {
+//			throw new IOException("Can't load cluster unit database");
+//		}
+//		boolean binary = url.getPath().endsWith(".bin");
+//		clunitDB = new ClusterUnitDatabase(url, binary);
+//		this.unitNamer = unitNamer;
 
 	}
 
@@ -171,8 +171,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 	/** Sets the cluster unit name given the segment.
 	 * @param seg the segment item that gets the name */
 	protected void setUnitName(Item seg) {
-		if (unitNamer != null) {
-			unitNamer.setUnitName(seg);
+		if (true) {
+			//unitNamer.setUnitName(seg);
 			return;
 		}
 		// default to LDOM naming scheme 'ae_afternoon':

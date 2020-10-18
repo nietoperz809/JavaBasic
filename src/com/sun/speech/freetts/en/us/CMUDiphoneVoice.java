@@ -23,7 +23,6 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.Gender;
 import com.sun.speech.freetts.Age;
 
-import de.dfki.lt.freetts.ConcatenativeVoice;
 
 import java.util.Locale;
 
@@ -32,7 +31,8 @@ import java.io.IOException;
 import java.net.URL;
 
 /** Defines an unlimited-domain diphone synthesis based voice */
-public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
+public class CMUDiphoneVoice extends CMUVoice //implements ConcatenativeVoice
+{
 
 	protected URL database;
 

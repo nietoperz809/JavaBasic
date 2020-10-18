@@ -21,10 +21,10 @@ import com.sun.speech.freetts.clunits.ClusterUnitPitchmarkGenerator;
 import com.sun.speech.freetts.clunits.ClusterUnitSelector;
 import com.sun.speech.freetts.relp.UnitConcatenator;
 
-import de.dfki.lt.freetts.ConcatenativeVoice;
 
 /** Defines voice that does cluster unit selection. */
-public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice {
+public class CMUClusterUnitVoice extends CMUVoice //implements ConcatenativeVoice
+{
 
 	protected URL database;
 

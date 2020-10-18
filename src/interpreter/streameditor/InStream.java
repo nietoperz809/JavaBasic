@@ -34,7 +34,6 @@ class InStream extends java.io.InputStream
     @Override
     public synchronized void reset() throws IOException
     {
-        super.reset();
         buffer.clear();
     }
 

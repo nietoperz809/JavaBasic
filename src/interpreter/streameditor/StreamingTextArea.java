@@ -183,8 +183,10 @@ public class StreamingTextArea extends JTextArea implements Runnable
             {
                 lineBuffer.put(s);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        }
+        catch (InterruptedException e)
+        {
+            System.out.println ("fakeIn interrupted");
         }
     }
 
