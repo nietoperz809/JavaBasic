@@ -12,11 +12,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.datatransfer.DataFlavor.stringFlavor;
@@ -32,24 +28,24 @@ public class Misc
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");
 
-    private static final ExecutorService globalExecutor = Executors.newFixedThreadPool(20);
+    private static final ExecutorService globalExecutor = Executors.newCachedThreadPool(); //Executors.newFixedThreadPool(20);
 
     public static DecimalFormat df = new DecimalFormat("#.########");
 
-    public static void execute (Runnable r)
+    public static FutureTask<?> execute (Runnable r)
     {
         if (getExecutorFreeSlots() <= 0)
         {
             System.out.println("Thread pool exhausted");
         }
-        globalExecutor.execute(r);
+        return (FutureTask<?>) globalExecutor.submit(r);
     }
 
     private static int getExecutorFreeSlots ()
     {
         int tc = ((ThreadPoolExecutor) globalExecutor).getActiveCount();
         int tm = ((ThreadPoolExecutor) globalExecutor).getCorePoolSize();
-        System.out.println(tc + "/" + tm);
+        //System.out.println(tc + "/" + tm);
         return tm - tc;
     }
 
@@ -94,27 +90,29 @@ public class Misc
     }
 
 
-    /**
-     * Centers Component
-     *
-     * @param a Component to center
-     * @param b Parent component
-     */
-    public static void centerComponent (Component a, Component b)
-    {
-        Dimension db = b.getSize();
-        Dimension da = a.getSize();
-        Point pt = new Point((db.width - da.width) / 2, (db.height - da.height) / 2);
-        if (pt.x < 0)
-        {
-            pt.x = 0;
-        }
-        if (pt.y < 0)
-        {
-            pt.y = 0;
-        }
-        a.setLocation(pt);
-    }
+// --Commented out by Inspection START (10/19/2020 2:23 AM):
+//    /**
+//     * Centers Component
+//     *
+//     * @param a Component to center
+//     * @param b Parent component
+//     */
+//    public static void centerComponent (Component a, Component b)
+//    {
+//        Dimension db = b.getSize();
+//        Dimension da = a.getSize();
+//        Point pt = new Point((db.width - da.width) / 2, (db.height - da.height) / 2);
+//        if (pt.x < 0)
+//        {
+//            pt.x = 0;
+//        }
+//        if (pt.y < 0)
+//        {
+//            pt.y = 0;
+//        }
+//        a.setLocation(pt);
+//    }
+// --Commented out by Inspection STOP (10/19/2020 2:23 AM)
 
 
     /**

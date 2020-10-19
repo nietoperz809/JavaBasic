@@ -8,6 +8,7 @@ package applications;
 import interpreter.CommandInterpreter;
 import interpreter.streameditor.StreamingTextArea;
 import misc.MDIChild;
+import misc.Misc;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameListener;
@@ -31,7 +32,6 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
     transient public static final
         ConcurrentHashMap<Long, StreamingTextArea> streamMap = new ConcurrentHashMap<>();
 
-    private static final ExecutorService executor = Executors.newCachedThreadPool(); //.newFixedThreadPool(10);
     private boolean cbDirectInsertFlag;
 
     {
@@ -47,7 +47,7 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
     {
         super();
         _fut = fut;
-        basicTask = (FutureTask<?>) executor.submit(this);
+        basicTask = Misc.execute(this); //FutureTask<?>) executor.submit(this);
     }
 
     /**

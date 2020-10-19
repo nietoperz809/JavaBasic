@@ -48,7 +48,6 @@ import static interpreter.ParseStatement.statement;
  */
 public class Program //implements Runnable, Serializable
 {
-
     private AudioPlayer audioPlayer;
 
     public final StreamingTextArea area;
