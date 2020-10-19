@@ -97,15 +97,17 @@ public class MidiSynthSystem
         return sm_sequencer;
     }
 
-    /**
-     * Get Synthesizer
-     *
-     * @return
-     */
-    public Synthesizer getSynthesizer()
-    {
-        return sm_synthesizer;
-    }
+// --Commented out by Inspection START (10/19/2020 1:56 AM):
+//    /**
+//     * Get Synthesizer
+//     *
+//     * @return
+//     */
+//    public Synthesizer getSynthesizer()
+//    {
+//        return sm_synthesizer;
+//    }
+// --Commented out by Inspection STOP (10/19/2020 1:56 AM)
 
     /**
      * Get Sequence
@@ -166,7 +168,7 @@ public class MidiSynthSystem
         {
             if (event.getType() == 47)
             {
-                if (doWait == false)
+                if (!doWait)
                 {
                     System.out.println("spurious");
                     return;

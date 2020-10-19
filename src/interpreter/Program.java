@@ -123,7 +123,7 @@ public class Program //implements Runnable, Serializable
         BufferedReader dis
                 = new BufferedReader(new InputStreamReader(source));
 
-        char data[] = new char[256];
+        char[] data = new char[256];
         LexicalTokenizer lt = new LexicalTokenizer(data);
         String lineData;
         Statement s;
@@ -203,11 +203,9 @@ public class Program //implements Runnable, Serializable
      * Add a statement to the current program. Statements are indexed by line
      * number. If the add fails for some reason this method returns false.
      */
-    boolean add(int line, Statement s)
+    void add (int line, Statement s)
     {
-        Integer ln = line;
-        stmts.put(ln, s);
-        return true;
+        stmts.put (line, s);
     }
 
     /**
@@ -225,7 +223,7 @@ public class Program //implements Runnable, Serializable
      */
     private int[] getIndices(Variable v) throws BASICRuntimeError
     {
-        int result[] = new int[v.numExpn()];
+        int[] result = new int[v.numExpn()];
 
         for (int i = 0; i < result.length; i++)
         {
@@ -251,7 +249,7 @@ public class Program //implements Runnable, Serializable
         {
             return vi.numValue();
         }
-        int ii[] = getIndices(v);
+        int[] ii = getIndices(v);
         return vi.numValue(ii);
     }
 
@@ -271,7 +269,7 @@ public class Program //implements Runnable, Serializable
         {
             return vi.stringValue();
         }
-        int ii[] = getIndices(v);
+        int[] ii = getIndices(v);
         return vi.stringValue(ii);
     }
 
@@ -297,7 +295,7 @@ public class Program //implements Runnable, Serializable
             vi.setValue (value);
             return;
         }
-        int ii[] = getIndices(v);
+        int[] ii = getIndices(v);
         vi.setValue (value, ii);
     }
 
@@ -309,7 +307,7 @@ public class Program //implements Runnable, Serializable
     public void declareArray (Variable v) throws BASICRuntimeError
     {
         Variable vi;
-        int ii[] = getIndices(v);
+        int[] ii = getIndices(v);
         vi = new Variable(v.name, ii);
         vars.put(v.name, vi);
     }
@@ -650,7 +648,7 @@ public class Program //implements Runnable, Serializable
         {
             return null;
         }
-        return (Token) dataStore.elementAt(dataPtr++);
+        return dataStore.elementAt(dataPtr++);
     }
 
     /**

@@ -1,4 +1,4 @@
-package misc;
+package interpreter.streameditor;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

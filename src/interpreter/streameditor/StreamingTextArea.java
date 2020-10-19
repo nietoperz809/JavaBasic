@@ -1,6 +1,5 @@
 package interpreter.streameditor;
 
-import misc.BlockCaret;
 import misc.Misc;
 
 import javax.swing.*;
