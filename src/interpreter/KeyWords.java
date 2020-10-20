@@ -60,6 +60,7 @@ public enum KeyWords
     PCLS ("pcls", "clear plotter window"),
     PCOLOR ("pcolor", "set plot color"),
     PCIRCLE ("pcircle", "draw circle"),
+    PDISC ("pdisc", "draw filled circle"),
     PSQUARE ("psquare", "draw square"),
     PBOX ("pbox", "draw box"),
     SEND ("send", "send msg to another thread"),

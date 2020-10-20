@@ -13,7 +13,7 @@ public class PBOXStatement extends Statement
     Expression _width;
     Expression _height;
 
-    void init (KeyWords key, LexicalTokenizer lt) throws BASICSyntaxError
+    protected void init (KeyWords key, LexicalTokenizer lt) throws BASICSyntaxError
     {
         keyword = key;
         if (lt.getBuffer() != null)
@@ -57,7 +57,7 @@ public class PBOXStatement extends Statement
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {
         int rad1 = (int) _width.value(pgm);
-        int rad2 = (int) _width.value(pgm);
+        int rad2 = (int) _height.value(pgm);
         int x = (int)_x.value(pgm) - rad1/2;
         int y = (int) _y.value(pgm) - rad2/2;
 

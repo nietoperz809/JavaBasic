@@ -274,6 +274,11 @@ public class ParseStatement extends Statement
                     t = lt.nextToken();
                     return nextStep (lt, t,s);
 
+                case PDISC:
+                    s = new PDISCStatement(lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
+
                 case PSQUARE:
                     s = new PSQUAREStatement(lt);
                     t = lt.nextToken();

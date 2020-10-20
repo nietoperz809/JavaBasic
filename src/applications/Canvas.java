@@ -36,9 +36,15 @@ public class Canvas extends JPanel
         repaint();
     }
 
-    public void circle(int x, int y, int radius)
+    public void circle(int x, int y, int rad1, int rad2)
     {
-        g_off.drawOval(x, y, radius, radius);
+        g_off.drawOval(x, y, rad1, rad2);
+        repaint();
+    }
+
+    public void disc(int x, int y, int rad1, int rad2)
+    {
+        g_off.fillOval (x, y, rad1, rad2);
         repaint();
     }
 
