@@ -1,0 +1,1 @@
+10 for s=0 to 1020 print s30 let a = spawn40 kill a50 next
