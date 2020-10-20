@@ -307,7 +307,7 @@ public class MemoryMonitor extends JPanel
 
         public void start()
         {
-            running = Misc.submit(this);
+            running = Misc.execute(this);
         }
 
         public synchronized void stop()

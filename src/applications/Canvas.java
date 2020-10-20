@@ -16,9 +16,6 @@ public class Canvas extends JPanel
     public Canvas()
     {
         clear();
-//        g_off.setColor(Color.RED);
-//        g_off.drawRect(10,10,20,20);
-//        print (20,20, "Hallo");
     }
 
     public void setColor (int r, int g, int b)
@@ -45,9 +42,15 @@ public class Canvas extends JPanel
         repaint();
     }
 
-    public void square(int x, int y, int width)
+    public void square(int x, int y, int width, int height)
     {
-        g_off.drawRect(x, y, width, width);
+        g_off.drawRect(x, y, width, height);
+        repaint();
+    }
+
+    public void box(int x, int y, int width, int height)
+    {
+        g_off.fillRect(x, y, width, height);
         repaint();
     }
 

@@ -38,7 +38,7 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
         initComponents();
     }
 
-    CompletableFuture<Long> _fut;
+    public CompletableFuture<Long> _fut;
 
     /**
      * Creates new form NewJInternalFrame

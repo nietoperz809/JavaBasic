@@ -49,14 +49,14 @@ public class Misc
         return tm - tc;
     }
 
-    public static Future submit (Runnable r)
-    {
-        if (getExecutorFreeSlots() <= 0)
-        {
-            System.out.println("Thread pool exhausted");
-        }
-        return globalExecutor.submit(r);
-    }
+//    public static Future submit (Runnable r)
+//    {
+//        if (getExecutorFreeSlots() <= 0)
+//        {
+//            System.out.println("Thread pool exhausted");
+//        }
+//        return globalExecutor.submit(r);
+//    }
 
 
     public static String humanReadableByteCount (long bytes)

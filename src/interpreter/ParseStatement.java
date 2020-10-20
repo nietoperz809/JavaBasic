@@ -279,6 +279,11 @@ public class ParseStatement extends Statement
                     t = lt.nextToken();
                     return nextStep (lt, t,s);
 
+                case PBOX:
+                    s = new PBOXStatement(lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
+
                 case PLINE:
                     s = new PLINEStatement(lt);
                     t = lt.nextToken();

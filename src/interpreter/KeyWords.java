@@ -61,6 +61,7 @@ public enum KeyWords
     PCOLOR ("pcolor", "set plot color"),
     PCIRCLE ("pcircle", "draw circle"),
     PSQUARE ("psquare", "draw square"),
+    PBOX ("pbox", "draw box"),
     SEND ("send", "send msg to another thread"),
     PLINE ("pline", "draw line"),
     PPRINT ("pprint", "print into plot window"),
@@ -143,7 +144,8 @@ public enum KeyWords
     OPERATOR ("boolean operator"),
     VARIABLE ("operator"),
 
-    ENDLIST ("");
+    ENDLIST ("NO KEYWORD");
+
 
     //private static List<KeyWords> _list;
 

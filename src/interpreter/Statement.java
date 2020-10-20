@@ -35,6 +35,10 @@ public abstract class Statement
         keyword = key;
     }
 
+    protected Statement()
+    {
+    }
+
     public KeyWords getKeyWord()
     {
         return keyword;
@@ -204,7 +208,7 @@ public abstract class Statement
      * @return expression
      * @throws BASICSyntaxError
      */
-    protected Expression getNumericArg (LexicalTokenizer lt) throws BASICSyntaxError
+    public Expression getNumericArg(LexicalTokenizer lt) throws BASICSyntaxError
     {
         Token t = lt.nextToken();
         switch (t.typeNum())
@@ -230,7 +234,7 @@ public abstract class Statement
         throw new BASICSyntaxError("param must be constant or variable");
     }
 
-    protected void checkComma (LexicalTokenizer lt) throws BASICSyntaxError
+    public void checkComma(LexicalTokenizer lt) throws BASICSyntaxError
     {
         Token t = lt.nextToken();
         if (!t.isSymbol(','))
