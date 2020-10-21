@@ -16,6 +16,11 @@ public class MidiSynthSystem
 {
     private static MidiSynthSystem this_mss;
 
+    public static boolean wasUsed()
+    {
+        return this_mss != null;
+    }
+
     /**
      * Get the singleton instance
      *

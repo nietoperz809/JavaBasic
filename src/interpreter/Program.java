@@ -482,7 +482,8 @@ public class Program //implements Runnable, Serializable
             }
         }
         while (s != null);
-        MidiSynthSystem.get().shutdown();
+        if (MidiSynthSystem.wasUsed())
+            MidiSynthSystem.get().shutdown();
     }
 
 // --Commented out by Inspection START (4/23/2016 9:39 AM):

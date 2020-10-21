@@ -49,16 +49,6 @@ public class Misc
         return tm - tc;
     }
 
-//    public static Future submit (Runnable r)
-//    {
-//        if (getExecutorFreeSlots() <= 0)
-//        {
-//            System.out.println("Thread pool exhausted");
-//        }
-//        return globalExecutor.submit(r);
-//    }
-
-
     public static String humanReadableByteCount (long bytes)
     {
         DecimalFormat myFormatter = new DecimalFormat("000,000,000");
@@ -88,7 +78,6 @@ public class Misc
         }
         return null;
     }
-
 
 // --Commented out by Inspection START (10/19/2020 2:23 AM):
 //    /**
