@@ -398,14 +398,15 @@ public class CommandInterpreter
                     tokenizer.unGetToken ();
                     try
                     {
+                        Program prg = new Program(streamingTextArea); // empty prog
                         Statement s = statement (tokenizer);
                         do
                         {
-                            s = s.execute (basicProgram, inStream, outStream);
+                            s = s.execute (prg, inStream, outStream);
                         }
                         while (s != null);
-
-                    } catch (BASICSyntaxError e)
+                    }
+                    catch (BASICSyntaxError e)
                     {
                         outStream.println ("Syntax Error : " + e.getMsg ());
                         outStream.println (tokenizer.showError ());
