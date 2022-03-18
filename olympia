@@ -1,8 +1,0 @@
-5 pcolor 255,255,255
-10 pcircle 300, 300, 200
-20 pcolor 0,255,0
-30 pcircle 400,400,200
-40 pcolor 255,0,0
-50 pcircle 300,400,200
-60 pcolor 0,0,255
-70 pcircle 200,400,200

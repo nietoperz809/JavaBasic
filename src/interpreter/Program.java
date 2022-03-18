@@ -37,14 +37,13 @@ import static interpreter.ParseStatement.statement;
  * standard input and output of the basic_prg_running basic program can either
  * be passed into the <b>run</b> method, or they can be presumed to be the in
  * and out streams referenced by the <b>System</b> class.
- *
+ * <p>
  * This class uses Red-Black trees to hold the parsed statements and the symbol
  * table.
  *
  * @author Chuck McManis
  * @version 1.1
  * @see CommandInterpreter
- *
  */
 public class Program //implements Runnable, Serializable
 {
@@ -69,26 +68,19 @@ public class Program //implements Runnable, Serializable
     private boolean traceState = false;
     private PrintStream traceFile = null;
 
-    public Program (StreamingTextArea ta)
-    {
+    public Program(StreamingTextArea ta) {
         area = ta;
     }
 
-    public void trace (boolean a)
-    {
+    public void trace(boolean a) {
         traceState = a;
     }
 
-    public void trace (boolean a, String f)
-    {
-        if (traceFile == null)
-        {
-            try
-            {
+    public void trace(boolean a, String f) {
+        if (traceFile == null) {
+            try {
                 traceFile = new PrintStream(new FileOutputStream(f));
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.out.println("Couldn't open trace file.");
                 traceFile = null;
             }
@@ -96,13 +88,11 @@ public class Program //implements Runnable, Serializable
         trace(a);
     }
 
-    public Random getRandom ()
-    {
+    public Random getRandom() {
         return r;
     }
 
-    public void randomize (double seed)
-    {
+    public void randomize(double seed) {
         r = new Random((long) seed);
     }
 
@@ -111,14 +101,8 @@ public class Program //implements Runnable, Serializable
      * an already open stream or you can pass in a file name and load one from
      * the file system.
      *
-     * @param source
-     * @param out
-     * @return
-     * @throws java.io.IOException
-     * @throws BASICSyntaxError
      */
-    private static Program load (InputStream source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError
-    {
+    private static Program load(InputStream source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError {
         BufferedReader dis
                 = new BufferedReader(new InputStreamReader(source));
 
@@ -129,36 +113,29 @@ public class Program //implements Runnable, Serializable
         Token t;
         Program result = new Program(ar);
 
-        while (true)
-        {
+        while (true) {
             // read a line of our BASIC program.
             lineData = dis.readLine();
 
             // if EOF simply return.
-            if (lineData == null)
-            {
+            if (lineData == null) {
                 return result;
             }
 
             // if the line was blank, ignore it.
-            if (lineData.length() == 0)
-            {
+            if (lineData.length() == 0) {
                 continue;
             }
 
             lt.reset(lineData);
             t = lt.nextToken();
-            if (t.typeNum() != KeyWords.CONSTANT)
-            {
+            if (t.typeNum() != KeyWords.CONSTANT) {
                 throw new BASICSyntaxError("Line failed to start with a line number.");
             }
 
-            try
-            {
+            try {
                 s = statement(lt);
-            }
-            catch (BASICSyntaxError bse)
-            {
+            } catch (BASICSyntaxError bse) {
                 out.println("Syntax error: " + bse.getMsg());
                 out.println(lt.showError());
                 throw bse;
@@ -172,25 +149,17 @@ public class Program //implements Runnable, Serializable
     /**
      * Load the specified file and parse the basic statements it contains.
      *
-     * @param source
-     * @param out
-     * @param ar
-     * @return 
-     * @throws IOException when the filename cannot be located or opened.
+     * @throws IOException      when the filename cannot be located or opened.
      * @throws BASICSyntaxError when the file does not contain a properly formed
-     * BASIC program.
+     *                          BASIC program.
      */
-    public static Program load(String source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError
-    {
+    public static Program load(String source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError {
         // XXX this needs to use the SourceManager class //
         FileInputStream fis = new FileInputStream(source);
         Program r;
-        try
-        {
+        try {
             r = load(fis, out, ar);
-        }
-        catch (BASICSyntaxError e)
-        {
+        } catch (BASICSyntaxError e) {
             fis.close();
             throw e;
         }
@@ -202,9 +171,8 @@ public class Program //implements Runnable, Serializable
      * Add a statement to the current program. Statements are indexed by line
      * number. If the add fails for some reason this method returns false.
      */
-    void add (int line, Statement s)
-    {
-        stmts.put (line, s);
+    void add(int line, Statement s) {
+        stmts.put(line, s);
     }
 
     /**
@@ -212,20 +180,17 @@ public class Program //implements Runnable, Serializable
      * line numbers. If the statement specified didn't exist, then this method
      * returns false.
      */
-    boolean del(int line)
-    {
+    boolean del(int line) {
         return stmts.remove(line) != null;
     }
 
     /**
      * Compute the indices based on the expressions in the variable object.
      */
-    private int[] getIndices(Variable v) throws BASICRuntimeError
-    {
+    private int[] getIndices(Variable v) throws BASICRuntimeError {
         int[] result = new int[v.numExpn()];
 
-        for (int i = 0; i < result.length; i++)
-        {
+        for (int i = 0; i < result.length; i++) {
             result[i] = (int) v.expn(i).value(this);
         }
         return result;
@@ -235,17 +200,13 @@ public class Program //implements Runnable, Serializable
      * Return the numeric value of a variable in the symbol table.
      *
      * @throws BASICRuntimeError if the variable isn't defined.
-     *
      */
-    public double getVariable (Variable v) throws BASICRuntimeError
-    {
+    public double getVariable(Variable v) throws BASICRuntimeError {
         Variable vi = vars.get(v.name);
-        if (vi == null)
-        {
+        if (vi == null) {
             throw new BASICRuntimeError("Undefined variable '" + v.name + "'");
         }
-        if (!vi.isArray())
-        {
+        if (!vi.isArray()) {
             return vi.numValue();
         }
         int[] ii = getIndices(v);
@@ -257,15 +218,12 @@ public class Program //implements Runnable, Serializable
      * variable has not yet been declared (ie used) this method throws a
      * BASICRuntime error.
      */
-    String getString(Variable v) throws BASICRuntimeError
-    {
+    String getString(Variable v) throws BASICRuntimeError {
         Variable vi = vars.get(v.name);
-        if (vi == null)
-        {
+        if (vi == null) {
             throw new BASICRuntimeError("Variable " + v.name + " has not been initialized.");
         }
-        if (!v.isArray())
-        {
+        if (!v.isArray()) {
             return vi.stringValue();
         }
         int[] ii = getIndices(v);
@@ -277,25 +235,21 @@ public class Program //implements Runnable, Serializable
      * is the first time we have seen the variable, create a place for it in the
      * symbol table.
      */
-    public <T> void setVariable (Variable v, T value) throws BASICRuntimeError
-    {
+    public <T> void setVariable(Variable v, T value) throws BASICRuntimeError {
         Variable vi = vars.get(v.name);
-        if (vi == null)
-        {
-            if (v.isArray())
-            {
+        if (vi == null) {
+            if (v.isArray()) {
                 throw new BASICRuntimeError("Array must be declared in a DIM statement");
             }
             vi = new Variable(v.name);
             vars.put(v.name, vi);
         }
-        if (!vi.isArray())
-        {
-            vi.setValue (value);
+        if (!vi.isArray()) {
+            vi.setValue(value);
             return;
         }
         int[] ii = getIndices(v);
-        vi.setValue (value, ii);
+        vi.setValue(value, ii);
     }
 
     /**
@@ -303,8 +257,7 @@ public class Program //implements Runnable, Serializable
      * nature of arrays we force them to be declared before they can be used.
      * This is common to most BASIC implementations.
      */
-    public void declareArray (Variable v) throws BASICRuntimeError
-    {
+    public void declareArray(Variable v) throws BASICRuntimeError {
         Variable vi;
         int[] ii = getIndices(v);
         vi = new Variable(v.name, ii);
@@ -317,14 +270,10 @@ public class Program //implements Runnable, Serializable
      * <i>nxt</i> pointer use that one, otherwise use the next one in the
      * program numerically.
      */
-    public Statement nextStatement (Statement s)
-    {
-        if (s == null)
-        {
+    public Statement nextStatement(Statement s) {
+        if (s == null) {
             return null;
-        }
-        else if (s.nxt != null)
-        {
+        } else if (s.nxt != null) {
             return s.nxt;
         }
         return stmts.next(s.line);
@@ -333,8 +282,7 @@ public class Program //implements Runnable, Serializable
     /**
      * Return the statment whose line number is <i>line</i>
      */
-    public Statement getStatement (int line)
-    {
+    public Statement getStatement(int line) {
         return stmts.get(line);
     }
 
@@ -343,14 +291,11 @@ public class Program //implements Runnable, Serializable
      * <i>p</i>. Note that due to a bug in the Windows implementation of
      * PrintStream this method is forced to append a <CR> to the file.
      */
-    void list (int start, int end, PrintStream p)
-    {
-        for (Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements(); e.hasMoreElements();)
-        {
+    void list(int start, int end, PrintStream p) {
+        for (Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements(); e.hasMoreElements(); ) {
             Map.Entry<Integer, Statement> entry = e.nextElement();
             Statement s = entry.getValue();
-            if ((s.lineNo() >= start) && (s.lineNo() <= end))
-            {
+            if ((s.lineNo() >= start) && (s.lineNo() <= end)) {
                 p.print(s.asString());
                 p.println(); // for Windows clients
             }
@@ -360,10 +305,8 @@ public class Program //implements Runnable, Serializable
     /**
      * Dump the symbol table
      */
-    void dump(PrintStream p)
-    {
-        for (Enumeration e = vars.elements(); e.hasMoreElements();)
-        {
+    void dump(PrintStream p) {
+        for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
             Map.Entry<String, Variable> entry = (Map.Entry<String, Variable>) e.nextElement();
             Variable v = entry.getValue();
             p.println(v.unparse() + " = " + (v.isString() ? "\"" + v.stringValue() + "\"" : "" + v.numValue()));
@@ -374,8 +317,7 @@ public class Program //implements Runnable, Serializable
      * This is the first variation on list, it simply list from the starting
      * line to the the end of the program.
      */
-    void list(int start, PrintStream p)
-    {
+    void list(int start, PrintStream p) {
         list(start, Integer.MAX_VALUE, p);
     }
 
@@ -383,26 +325,21 @@ public class Program //implements Runnable, Serializable
      * This second variation on list will list the entire program to the passed
      * PrintStream object.
      */
-    void list(PrintStream p)
-    {
+    void list(PrintStream p) {
         list(0, p);
     }
 
     /**
      * Run the program and use the passed in streams as its input and output
      * streams.
-     *
+     * <p>
      * Prior to basic_prg_running the program the statement stack is cleared,
      * and the data fifo is also cleared. Thus re-basic_prg_running a stopped
      * program will always work correctly.
      *
-     * @param in
-     * @param out
-     * @param firstline
      * @throws BASICRuntimeError if an error occurs while basic_prg_running.
      */
-    public void run (InputStream in, OutputStream out, int firstline) throws Exception
-    {
+    public void run (InputStream in, OutputStream out, int firstline) throws Exception {
         PrintStream pout;
         Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements();
         stmtStack = new Stack();    // assume no stacked statements ...
@@ -413,28 +350,22 @@ public class Program //implements Runnable, Serializable
         vars = new RedBlackTree<>();
 
         // if the program isn't yet valid.
-        if (!e.hasMoreElements())
-        {
+        if (!e.hasMoreElements()) {
             return;
         }
-        
+
         //MidiSynthSystem.get().deleteAllTracks(); // Run MidiSynthSystem
-        
-        if (out instanceof PrintStream)
-        {
+
+        if (out instanceof PrintStream) {
             pout = (PrintStream) out;
-        }
-        else
-        {
+        } else {
             pout = new PrintStream(out);
         }
 
         /* First we load all of the data statements */
-        while (e.hasMoreElements())
-        {
+        while (e.hasMoreElements()) {
             s = (e.nextElement()).getValue();
-            if (s.keyword == KeyWords.DATA)
-            {
+            if (s.keyword == KeyWords.DATA) {
                 s.execute(this, in, pout);
             }
         }
@@ -443,41 +374,32 @@ public class Program //implements Runnable, Serializable
         s = e.nextElement().getValue();
         if (firstline != 0)  // Skip lines if desired
         {
-            do 
-            {
-                if (s.line >= firstline)
-                {
+            do {
+                if (s.line >= firstline) {
                     break;
                 }
                 s = e.nextElement().getValue();
             } while (e.hasMoreElements());
         }
-        do
-        {
+        do {
             //Thread.yield();   // Let others run
-            if (!basic_prg_running)
-            {
+            if (!basic_prg_running) {
                 basic_prg_running = true;
                 pout.println("Stopped at :" + s);
                 push(s);
                 break;
             }
-            if (!thread_running)
-            {
+            if (!thread_running) {
                 thread_running = true;
                 throw new Exception("Basic Thread forced to stop");
             }
-            if (s.keyword != KeyWords.DATA)
-            {
-                if (traceState)
-                {
+            if (s.keyword != KeyWords.DATA) {
+                if (traceState) {
                     s.trace(this, (traceFile != null) ? traceFile : pout);
                 }
 
                 s = s.execute(this, in, pout);
-            }
-            else
-            {
+            } else {
                 s = nextStatement(s);
             }
         }
@@ -492,48 +414,38 @@ public class Program //implements Runnable, Serializable
      *
      * @throws BASICRuntimeError - Program wasn't in a stopped state.
      */
-    void resume(InputStream in, PrintStream pout) throws BASICRuntimeError
-    {
+    void resume(InputStream in, PrintStream pout) throws BASICRuntimeError {
         Statement s;
 
         s = pop();
-        if ((s == null) || (s.keyword != KeyWords.STOP))
-        {
+        if ((s == null) || (s.keyword != KeyWords.STOP)) {
             throw new BASICRuntimeError("This program was not previously stopped.");
         }
         s = nextStatement(s);
-        do
-        {
+        do {
             s = s.execute(this, in, pout);
         }
         while (s != null);
     }
 
-    void cont(InputStream in, PrintStream pout) throws BASICRuntimeError
-    {
+    void cont(InputStream in, PrintStream pout) throws BASICRuntimeError {
         Statement s;
 
         s = pop();
-        do
-        {
-            if (!basic_prg_running)
-            {
+        do {
+            if (!basic_prg_running) {
                 basic_prg_running = true;
                 pout.println("Stopped at :" + s);
                 push(s);
                 break;
             }
-            if (s.keyword != KeyWords.DATA)
-            {
-                if (traceState)
-                {
+            if (s.keyword != KeyWords.DATA) {
+                if (traceState) {
                     s.trace(this, (traceFile != null) ? traceFile : pout);
                 }
 
                 s = s.execute(this, in, pout);
-            }
-            else
-            {
+            } else {
                 s = nextStatement(s);
             }
         }
@@ -545,21 +457,19 @@ public class Program //implements Runnable, Serializable
      * These methods deal with pushing and popping statements from the statement
      * stack, and data items from the data stack.
      */
+
     /**
      * Push this statement on the stack (one of FOR, GOSUB, or STOP)
      */
-    public void push (Statement s)
-    {
+    public void push(Statement s) {
         stmtStack.push(s);
     }
 
     /**
      * Pop the next statement off the stack, return NULL if the stack is empty.
      */
-    public Statement pop ()
-    {
-        if (stmtStack.isEmpty())
-        {
+    public Statement pop() {
+        if (stmtStack.isEmpty()) {
             return null;
         }
         return stmtStack.pop();
@@ -568,18 +478,15 @@ public class Program //implements Runnable, Serializable
     /**
      * Add a token to the data FIFO.
      */
-    public void pushData (Token t)
-    {
+    public void pushData(Token t) {
         dataStore.addElement(t);
     }
 
     /**
      * Get the next token in the FIFO, return null if the FIFO is empty.
      */
-    public Token popData ()
-    {
-        if (dataPtr > (dataStore.size() - 1))
-        {
+    public Token popData() {
+        if (dataPtr > (dataStore.size() - 1)) {
             return null;
         }
         return dataStore.elementAt(dataPtr++);
@@ -588,17 +495,15 @@ public class Program //implements Runnable, Serializable
     /**
      * Reset the data FIFO back to the beginning.
      */
-    public void resetData ()
-    {
+    public void resetData() {
         dataPtr = 0;
     }
 
     /**
      * opem voice file
-     * @param sss
+     *
      */
-    public void setVoiceFilename (String sss)
-    {
+    public void setVoiceFilename(String sss) {
         audioPlayer = new SingleFileAudioPlayer(sss, AudioFileFormat.Type.WAVE);
         MainWindow.voice.setAudioPlayer(audioPlayer);
     }
@@ -606,14 +511,10 @@ public class Program //implements Runnable, Serializable
     /**
      * close voice file
      */
-    public void unsetVoiceFilename ()
-    {
-        try
-        {
+    public void unsetVoiceFilename() {
+        try {
             audioPlayer.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         VoiceManager voiceManager = VoiceManager.getInstance();

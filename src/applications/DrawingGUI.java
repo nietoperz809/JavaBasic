@@ -1,5 +1,6 @@
 package applications;
 
+import misc.Canvas;
 import misc.ClipboardImage;
 import misc.MDIChild;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DrawingGUI extends MDIChild //JFrame
 {
-    public Canvas canvas;
+    public misc.Canvas canvas;
     private JPanel mainPanel;
     private JButton clipButton;
     private JButton wipeButton;
@@ -23,7 +24,7 @@ public class DrawingGUI extends MDIChild //JFrame
     {
         super();
 
-        clipButton.addActionListener(e -> new ClipboardImage(canvas.off_Image));
+        clipButton.addActionListener(e -> new ClipboardImage(canvas.getImage()));
         wipeButton.addActionListener(e -> canvas.clear());
 
         setContentPane (mainPanel);

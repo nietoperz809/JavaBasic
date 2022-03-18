@@ -96,6 +96,12 @@ public class LETStatement extends Statement
         t = lt.nextToken();
         if (!t.isOp(KeyWords.OP_EQ))
         {
+            String ss = lt.getFirstTokenInBuffer();
+            if (ss.endsWith("eady."))
+            {
+                lt.unGetToken();
+                return;
+            }
             throw new BASICSyntaxError("missing = in assignment statement.");
         }
         s.nExp = ParseExpression.expression(lt);

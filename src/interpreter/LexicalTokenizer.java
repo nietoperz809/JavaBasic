@@ -51,6 +51,16 @@ public class LexicalTokenizer implements Serializable
         currentPos = 0;
     }
 
+    public String getFirstTokenInBuffer() {
+        StringBuilder sb = new StringBuilder();
+        for (char b : buffer) {
+            if (b == 0 || b == '\n')
+                break;
+            sb.append(b);
+        }
+        return sb.toString();
+    }
+
     /**
      * Returns true if there are more tokens to be returned.
      */

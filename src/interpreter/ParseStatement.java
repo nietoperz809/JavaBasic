@@ -56,8 +56,10 @@ public class ParseStatement extends Statement
      */
     public static Statement statement (LexicalTokenizer lt) throws BASICSyntaxError
     {
-        // DebugOut.get().out.println("UNPARSE = '"+s.unparse()+"'");
-        return doParse(lt);
+        Statement st = doParse (lt);
+        if (st == null)
+            st = new NullStatement(lt);
+        return st;
     }
 
     private static Statement nextStep (LexicalTokenizer lt, Token t, Statement s) throws BASICSyntaxError
@@ -389,7 +391,8 @@ public class ParseStatement extends Statement
                 s.nxt = statement(lt);
                 return s;
             }
-            throw new BASICSyntaxError(extraError);
+            return null;
+            //throw new BASICSyntaxError(extraError);
 
         }
         throw new BASICSyntaxError("Unrecognized statement");

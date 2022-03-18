@@ -21,6 +21,7 @@ public enum KeyWords
     IF ("if", "test condition and possibly do a branch"),
     THEN ("then", "goto x for if statement"),
     END ("end", "end program execution"),
+    NULL ("null", "do not use"),
     DATA ("data", "define list of values"),
     RESTORE ("restore", "reset internal data read pointer"),
     READ ("read", "read one value from data section and increments read pointer"),

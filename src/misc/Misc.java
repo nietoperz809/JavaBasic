@@ -28,9 +28,9 @@ public class Misc
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");
 
-    private static final ExecutorService globalExecutor = Executors.newCachedThreadPool(); //Executors.newFixedThreadPool(20);
-
     public static DecimalFormat df = new DecimalFormat("#.########");
+
+    private static final ExecutorService globalExecutor = Executors.newCachedThreadPool(); //Executors.newFixedThreadPool(20);
 
     public static FutureTask<?> execute (Runnable r)
     {

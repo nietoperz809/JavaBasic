@@ -17,13 +17,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
 {
     public final ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128,true);
 
-    private final InStream in;
-    private final OutStream out;
+    private volatile InStream in;
+    private volatile OutStream out;
 
     private transient Thread thread;
     public char lastKey = 0xffff;
     private int previousLinenum = 0;
-    private boolean basicIsRunning = false;
+    volatile private boolean basicIsRunning = false;
 
     public StreamingTextArea ()
     {
@@ -170,6 +170,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
     public void fakeIn (String s)
     {
+        System.out.println("fake "+s);
         try {
             if (basicIsRunning)
             {
@@ -197,6 +198,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
         thread.interrupt();
         fakeIn ("bye\n");
     }
+
 
     @Override
     public void run ()
@@ -231,13 +233,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
         }
     }
 
-    public void startRunMode()
+    public synchronized void startRunMode()
     {
         basicIsRunning = true;
         lineBuffer.clear();
     }
 
-    public void stopRunMode()
+    public synchronized void stopRunMode()
     {
         basicIsRunning = false;
         try {

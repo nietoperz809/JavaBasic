@@ -35,8 +35,7 @@ import static interpreter.ParseStatement.statement;
  * hosts an interactive session allowing the user to enter BASIC programs, run
  * them, save them, and load them.
  */
-public class CommandInterpreter
-{
+public class CommandInterpreter {
     public LexicalTokenizer tokenizer;
     public Program basicProgram;
 
@@ -49,241 +48,198 @@ public class CommandInterpreter
     /**
      * Create a new command interpreter attached to the passed in streams.
      */
-    public CommandInterpreter (BasicGUI bg)
-    {
+    public CommandInterpreter(BasicGUI bg) {
         m_bg = bg;
     }
 
     /**
      * This method basically dispatches the commands of the command interpreter.
      */
-    private Program processCommand (Program pgm, LexicalTokenizer lt, Token x) throws Exception
-    {
+    private Program processCommand(Program pgm, LexicalTokenizer lt, Token x) throws Exception {
         Token t;
 
-        switch (x.kwValue)
-        {
+        switch (x.kwValue) {
             case CMD_RESUME:
-                try
-                {
-                    pgm.resume (inStream, outStream);
-                }
-                catch (BASICRuntimeError e)
-                {
-                    outStream.println (e.getMsg ());
+                try {
+                    pgm.resume(inStream, outStream);
+                } catch (BASICRuntimeError e) {
+                    outStream.println(e.getMsg());
                 }
                 return pgm;
 
             case CMD_CONT:
-                try
-                {
-                    pgm.cont (inStream, outStream);
-                }
-                catch (BASICRuntimeError e)
-                {
-                    outStream.println (e.getMsg ());
+                try {
+                    pgm.cont(inStream, outStream);
+                } catch (BASICRuntimeError e) {
+                    outStream.println(e.getMsg());
                 }
                 return pgm;
 
             case CMD_RUN:
-                t = lt.nextToken ();
+                t = lt.nextToken();
                 int startline = 0;
-                if (t.typeNum () == KeyWords.CONSTANT)
-                {
-                    startline = (int) t.numValue ();
+                if (t.typeNum() == KeyWords.CONSTANT) {
+                    startline = (int) t.numValue();
                 }
                 //System.out.println("before run"); // +++++++++++++++++++++++++
                 streamingTextArea.startRunMode();
-                try
-                {
-                    pgm.run (inStream, outStream, startline);
-                }
-                catch (BASICRuntimeError e2)
-                {
-                    outStream.println (e2.getMsg ());
+                try {
+                    pgm.run(inStream, outStream, startline);
+                } catch (BASICRuntimeError e2) {
+                    outStream.println(e2.getMsg());
                 }
                 //System.out.println("after run");  // +++++++++++++++++++++++++
                 streamingTextArea.stopRunMode();
                 return pgm;
 
             case CMD_CMDS:
-                t = lt.nextToken ();
+                t = lt.nextToken();
                 String search = "";
-                if (t.type == KeyWords.KEYWORD)
-                {
+                if (t.type == KeyWords.KEYWORD) {
                     search = t.sValue;
-                }
-                else if (t instanceof Variable)
-                {
+                } else if (t instanceof Variable) {
                     Variable v1 = (Variable) t;
                     search = v1.name;
                 }
-                List<KeyWords> list = KeyWords.getFiltered (search);
-                for (KeyWords k : list)
-                {
-                    String description = k.getDesc ();
-                    String cmd = k.toString ().toUpperCase ();
-                    outStream.print (cmd);
-                    outStream.println (" - " + description);
+                List<KeyWords> list = KeyWords.getFiltered(search);
+                for (KeyWords k : list) {
+                    String description = k.getDesc();
+                    String cmd = k.toString().toUpperCase();
+                    outStream.print(cmd);
+                    outStream.println(" - " + description);
                 }
                 return pgm;
 
             case CMD_INSTRLIST:
-                Instrument[] instr = MidiSynthSystem.get ().getInstruments ();
-                StringBuilder sb = new StringBuilder ();
-                for (int n = 0; n < instr.length; n++)
-                {
-                    sb.append (n);
-                    sb.append (" -- ");
-                    sb.append (instr[n].toString ());
-                    sb.append ('\n');
+                Instrument[] instr = MidiSynthSystem.get().getInstruments();
+                StringBuilder sb = new StringBuilder();
+                for (int n = 0; n < instr.length; n++) {
+                    sb.append(n);
+                    sb.append(" -- ");
+                    sb.append(instr[n].toString());
+                    sb.append('\n');
                 }
-                outStream.println (sb.toString ());
+                outStream.println(sb.toString());
                 return pgm;
 
             case CMD_CAT:
-                t = lt.nextToken ();
-                if (t.typeNum () != KeyWords.STRING)
-                {
-                    outStream.println ("File name expected for CAT Command.");
+                t = lt.nextToken();
+                if (t.typeNum() != KeyWords.STRING) {
+                    outStream.println("File name expected for CAT Command.");
                     return pgm;
                 }
-                File f = new File (t.stringValue ());
-                InputStream in = new FileInputStream (f);
-                Transmitter tr = new Transmitter (in, outStream);
-                tr.doTransmission (null);
+                File f = new File(t.stringValue());
+                InputStream in = new FileInputStream(f);
+                Transmitter tr = new Transmitter(in, outStream);
+                tr.doTransmission(null);
                 return pgm;
 
             case CMD_DEL:
-                t = lt.nextToken ();
-                if (t.typeNum () != KeyWords.STRING)
-                {
-                    outStream.println ("File name expected for DEL Command.");
+                t = lt.nextToken();
+                if (t.typeNum() != KeyWords.STRING) {
+                    outStream.println("File name expected for DEL Command.");
                     return pgm;
                 }
-                new File (t.stringValue ()).delete ();
+                new File(t.stringValue()).delete();
                 return pgm;
 
             case CMD_SAVE:
-                t = lt.nextToken ();
-                if (t.typeNum () != KeyWords.STRING)
-                {
-                    outStream.println ("File name expected for SAVE Command.");
+                t = lt.nextToken();
+                if (t.typeNum() != KeyWords.STRING) {
+                    outStream.println("File name expected for SAVE Command.");
                     return pgm;
                 }
                 String fname = t.stringValue();
                 if (!fname.endsWith(".bas"))
-                    fname = fname+".bas";
-                outStream.println ("Saving file...");
+                    fname = fname + ".bas";
+                outStream.println("Saving file...");
                 FileOutputStream fos;
-                fos = new FileOutputStream (fname);
-                PrintStream pp = new PrintStream (fos);
-                pgm.list (pp);
-                pp.flush ();
-                fos.close ();
+                fos = new FileOutputStream(fname);
+                PrintStream pp = new PrintStream(fos);
+                pgm.list(pp);
+                pp.flush();
+                fos.close();
                 return pgm;
 
             case CMD_LOAD:
-                t = lt.nextToken ();
-                if (t.typeNum () != KeyWords.STRING)
-                {
-                    outStream.println ("File name expected for LOAD command.");
+                t = lt.nextToken();
+                if (t.typeNum() != KeyWords.STRING) {
+                    outStream.println("File name expected for LOAD command.");
                     return pgm;
                 }
-                try
-                {
-                    pgm = Program.load (t.stringValue (), outStream, pgm.area);
-                    outStream.println ("File loaded.");
-                } catch (IOException e)
-                {
-                    outStream.println ("File " + t.stringValue () + " not found.");
+                try {
+                    pgm = Program.load(t.stringValue(), outStream, pgm.area);
+                    outStream.println("File loaded.");
+                } catch (IOException e) {
+                    outStream.println("File " + t.stringValue() + " not found.");
                     return pgm;
-                } catch (BASICSyntaxError bse)
-                {
-                    outStream.println ("Syntax error reading file.");
-                    outStream.println (bse.getMsg ());
+                } catch (BASICSyntaxError bse) {
+                    outStream.println("Syntax error reading file.");
+                    outStream.println(bse.getMsg());
                     return pgm;
                 }
                 return pgm;
 
             case CMD_DIR:
-                File[] filesInFolder = new File (".").listFiles ();
-                for (final File fileEntry : filesInFolder)
-                {
-                    if (fileEntry.isFile ())
-                    {
-                        outStream.println (fileEntry.getName () + " -- " + fileEntry.length ());
+                File[] filesInFolder = new File(".").listFiles();
+                for (final File fileEntry : filesInFolder) {
+                    if (fileEntry.isFile()) {
+                        outStream.println(fileEntry.getName() + " -- " + fileEntry.length());
                     }
                 }
                 return pgm;
 
             case CMD_DUMP:
                 PrintStream zzz = outStream;
-                t = lt.nextToken ();
-                if (t.typeNum () == KeyWords.STRING)
-                {
-                    try
-                    {
-                        zzz = new PrintStream (new FileOutputStream (t.stringValue ()));
-                    } catch (IOException ii)
-                    {
+                t = lt.nextToken();
+                if (t.typeNum() == KeyWords.STRING) {
+                    try {
+                        zzz = new PrintStream(new FileOutputStream(t.stringValue()));
+                    } catch (IOException ii) {
                     }
                 }
-                pgm.dump (zzz);
-                if (zzz != outStream)
-                {
-                    zzz.close ();
+                pgm.dump(zzz);
+                if (zzz != outStream) {
+                    zzz.close();
                 }
                 return pgm;
 
             case CMD_LIST:
-                t = lt.nextToken ();
-                if (t.typeNum () == KeyWords.EOL)
-                {
-                    pgm.list (outStream);
-                }
-                else if (t.typeNum () == KeyWords.CONSTANT)
-                {
-                    int strt = (int) t.numValue ();
-                    t = lt.nextToken ();
-                    if (t.typeNum () == KeyWords.EOL)
-                    {
-                        pgm.list (strt, outStream);
-                    }
-                    else if (t.isSymbol (','))
-                    {
-                        t = lt.nextToken ();
-                        if (t.typeNum () != KeyWords.CONSTANT)
-                        {
-                            outStream.println ("Illegal parameter to LIST command.");
-                            outStream.println (lt.showError ());
+                t = lt.nextToken();
+                if (t.typeNum() == KeyWords.EOL) {
+                    pgm.list(outStream);
+                } else if (t.typeNum() == KeyWords.CONSTANT) {
+                    int strt = (int) t.numValue();
+                    t = lt.nextToken();
+                    if (t.typeNum() == KeyWords.EOL) {
+                        pgm.list(strt, outStream);
+                    } else if (t.isSymbol(',')) {
+                        t = lt.nextToken();
+                        if (t.typeNum() != KeyWords.CONSTANT) {
+                            outStream.println("Illegal parameter to LIST command.");
+                            outStream.println(lt.showError());
                             return pgm;
                         }
-                        int e = (int) t.numValue ();
-                        pgm.list (strt, e, outStream);
+                        int e = (int) t.numValue();
+                        pgm.list(strt, e, outStream);
+                    } else {
+                        outStream.println("Syntax error in LIST command.");
+                        outStream.println(lt.showError());
                     }
-                    else
-                    {
-                        outStream.println ("Syntax error in LIST command.");
-                        outStream.println (lt.showError ());
-                    }
-                }
-                else
-                {
-                    outStream.println ("Syntax error in LIST command.");
-                    outStream.println (lt.showError ());
+                } else {
+                    outStream.println("Syntax error in LIST command.");
+                    outStream.println(lt.showError());
                 }
                 return pgm;
         }
-        outStream.println ("Command not implemented.");
+        outStream.println("Command not implemented.");
         return pgm;
     }
 
     private final char[] data = new char[256];
 
-    public void dispose ()
-    {
-        streamingTextArea.destroy ();
+    public void dispose() {
+        streamingTextArea.destroy();
     }
 
     /**
@@ -295,67 +251,55 @@ public class CommandInterpreter
      * @throws java.lang.Exception
      */
 
-    public void prestart (StreamingTextArea area)
-    {
-        System.err.println ("start BASIC system");
+    public void prestart(StreamingTextArea area) {
+        System.err.println("start BASIC system");
         streamingTextArea = area;
-        inStream = new DataInputStream (area.getInputStream ());
-        outStream = new PrintStream (area.getOutputStream ());
+        inStream = new DataInputStream(area.getInputStream());
+        outStream = new PrintStream(area.getOutputStream());
 
-        if (tokenizer == null)
-        {
-            System.out.println ("create Tokenizer");
-            tokenizer = new LexicalTokenizer (data);
+        if (tokenizer == null) {
+            System.out.println("create Tokenizer");
+            tokenizer = new LexicalTokenizer(data);
         }
-        if (basicProgram == null)
-        {
-            System.out.println ("create BASIC prog");
-            basicProgram = new Program (area);
+        if (basicProgram == null) {
+            System.out.println("create BASIC prog");
+            basicProgram = new Program(area);
         }
 
-        outStream.println ("*JavaBasic*\nType CMDS or CMDS n to see commands (beginning with n)\n");
+        outStream.println("*JavaBasic*\nType CMDS or CMDS n to see commands (beginning with n)\n");
     }
 
-    public void runCLI () throws Exception
-    {
-        while (true)
-        {
+    public void runCLI() throws Exception {
+        while (true) {
             String lineData = streamingTextArea.getBufferedLine();
-            m_bg.setLineInList (lineData);
+            m_bg.setLineInList(lineData);
 
-            tokenizer.reset (lineData);
+            tokenizer.reset(lineData);
 
-            if (!tokenizer.hasMoreTokens ())
-            {
-                System.out.println ("no more tokens");
+            if (!tokenizer.hasMoreTokens()) {
+                System.out.println("no more tokens");
                 continue;
             }
 
-            Token t = tokenizer.nextToken ();
-            switch (t.typeNum ())
-            {
+            Token t = tokenizer.nextToken();
+            boolean red = true;
+            switch (t.typeNum()) {
                 /*
                  * Process one of the command interpreter's commands.
                  */
                 case COMMAND:
-                    if (t.kwValue == KeyWords.CMD_BYE)
-                    {
+                    if (t.kwValue == KeyWords.CMD_BYE) {
                         FutureTask<?> ft = m_bg.basicTask;
-                        if (ft != null)
-                        {
-                            ft.cancel (true);
-                            m_bg.dispose ();
+                        if (ft != null) {
+                            ft.cancel(true);
+                            m_bg.dispose();
                         }
                         return;
-                    }
-                    else if (t.kwValue == KeyWords.CMD_NEW)
-                    {
-                        basicProgram = new Program (streamingTextArea);
-                        System.gc ();
-                    }
-                    else
-                    {
-                        basicProgram = processCommand (basicProgram, tokenizer, t);
+                    } else if (t.kwValue == KeyWords.CMD_NEW) {
+                        basicProgram = new Program(streamingTextArea);
+                        System.gc();
+                    } else {
+                        basicProgram = processCommand(basicProgram, tokenizer, t);
                     }
                     break;
 
@@ -364,26 +308,21 @@ public class CommandInterpreter
                  * or it may be an implicit delete command.
                  */
                 case CONSTANT:
-                    Token peek = tokenizer.nextToken ();
-                    if (peek.typeNum () == KeyWords.EOL)
-                    {
-                        basicProgram.del ((int) t.numValue ());
+                    Token peek = tokenizer.nextToken();
+                    if (peek.typeNum() == KeyWords.EOL) {
+                        basicProgram.del((int) t.numValue());
                         break;
+                    } else {
+                        tokenizer.unGetToken();
                     }
-                    else
-                    {
-                        tokenizer.unGetToken ();
-                    }
-                    try
-                    {
-                        Statement s = statement (tokenizer);
-                        s.addText (lineData);
-                        s.addLine ((int) t.numValue ());
-                        basicProgram.add ((int) t.numValue (), s);
-                    } catch (BASICSyntaxError e)
-                    {
-                        outStream.println ("Syntax Error : " + e.getMsg ());
-                        outStream.println (tokenizer.showError ());
+                    try {
+                        Statement s = statement(tokenizer);
+                        s.addText(lineData);
+                        s.addLine((int) t.numValue());
+                        basicProgram.add((int) t.numValue(), s);
+                    } catch (BASICSyntaxError e) {
+                        outStream.println("Syntax Error : " + e.getMsg());
+                        outStream.println(tokenizer.showError());
                         continue;
                     }
                     break;
@@ -395,26 +334,22 @@ public class CommandInterpreter
                 case VARIABLE:
                 case KEYWORD: // immediate mode
                 case SYMBOL:
-                    tokenizer.unGetToken ();
-                    try
-                    {
+                    tokenizer.unGetToken();
+                    try {
                         Program prg = new Program(streamingTextArea); // empty prog
-                        Statement s = statement (tokenizer);
-                        do
-                        {
-                            s = s.execute (prg, inStream, outStream);
+                        Statement s = statement(tokenizer);
+                        if (s.keyword == KeyWords.NULL)
+                            red = false;
+                        do {
+                            s = s.execute(prg, inStream, outStream);
                         }
                         while (s != null);
-                    }
-                    catch (BASICSyntaxError e)
-                    {
-                        outStream.println ("Syntax Error : " + e.getMsg ());
-                        outStream.println (tokenizer.showError ());
-                    }
-                    catch (BASICRuntimeError er)
-                    {
-                        outStream.println ("RUNTIME ERROR.");
-                        outStream.println (er.getMsg ());
+                    } catch (BASICSyntaxError e) {
+                        outStream.println("Syntax Error : " + e.getMsg());
+                        outStream.println(tokenizer.showError());
+                    } catch (BASICRuntimeError er) {
+                        outStream.println("RUNTIME ERROR.");
+                        outStream.println(er.getMsg());
                     }
                     break;
 
@@ -428,10 +363,11 @@ public class CommandInterpreter
                  * Anything else is an error.
                  */
                 default:
-                    outStream.println ("Error, Token not recognized.");
+                    outStream.println("Error, Token not recognized.");
                     break;
             }
-            outStream.println ("Ready.");
+            if (red)
+                outStream.println("Ready.");
         }
     }
 }
