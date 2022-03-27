@@ -9,15 +9,12 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
 /**
- *
  * @author Administrator
  */
-public class MidiSynthSystem
-{
+public class MidiSynthSystem {
     private static MidiSynthSystem this_mss;
 
-    public static boolean wasUsed()
-    {
+    public static boolean wasUsed() {
         return this_mss != null;
     }
 
@@ -26,17 +23,12 @@ public class MidiSynthSystem
      *
      * @return
      */
-    public static MidiSynthSystem get()
-    {
-        if (this_mss == null)
-        {
-            try
-            {
+    public static MidiSynthSystem get() {
+        if (this_mss == null) {
+            try {
                 this_mss = new MidiSynthSystem();
                 this_mss.deleteAllTracks();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return null;
             }
         }
@@ -51,19 +43,17 @@ public class MidiSynthSystem
     private final Object waitObject;
     private boolean doWait = false;
 
-    public void setSpeed (int s) throws InvalidMidiDataException
-    {
+    public void setSpeed(int s) throws InvalidMidiDataException {
         mult = s;
         sm_sequence = new Sequence(Sequence.SMPTE_30, mult);
     }
-    
+
     /**
      * Private Constructor
      *
      * @throws Exception If smth goes wrong
      */
-    private MidiSynthSystem() throws Exception
-    {
+    private MidiSynthSystem() throws Exception {
         sm_sequencer = MidiSystem.getSequencer();
         sm_sequencer.close();
         sm_synthesizer = MidiSystem.getSynthesizer();
@@ -80,10 +70,8 @@ public class MidiSynthSystem
     /**
      * Shuts down the sound system
      */
-    public void shutdown()
-    {
-        if (this_mss == null)
-        {
+    public void shutdown() {
+        if (this_mss == null) {
             return;
         }
         sm_sequencer.stop();
@@ -97,8 +85,7 @@ public class MidiSynthSystem
      *
      * @return
      */
-    public Sequencer getSequencer()
-    {
+    public Sequencer getSequencer() {
         return sm_sequencer;
     }
 
@@ -119,8 +106,7 @@ public class MidiSynthSystem
      *
      * @return
      */
-    public Sequence getSequence()
-    {
+    public Sequence getSequence() {
         return sm_sequence;
     }
 
@@ -130,17 +116,14 @@ public class MidiSynthSystem
      * @param idx Instr index
      * @return
      */
-    public Instrument getInstrument(int idx)
-    {
-        if (idx < 0 || idx >= orchestra.length)
-        {
+    public Instrument getInstrument(int idx) {
+        if (idx < 0 || idx >= orchestra.length) {
             return null;
         }
         return orchestra[idx];
     }
 
-    public Instrument[] getInstruments()
-    {
+    public Instrument[] getInstruments() {
         return orchestra;
     }
 
@@ -149,8 +132,7 @@ public class MidiSynthSystem
      *
      * @param i
      */
-    public void setLoops(int i)
-    {
+    public void setLoops(int i) {
         sm_sequencer.setLoopCount(i);
     }
 
@@ -159,38 +141,28 @@ public class MidiSynthSystem
      *
      * @return
      */
-    public boolean start()
-    {
-        try
-        {
+    public boolean start() {
+        try {
             sm_sequencer.setSequence(sm_sequence);
-        }
-        catch (InvalidMidiDataException ex)
-        {
+        } catch (InvalidMidiDataException ex) {
             return false;
         }
         sm_sequencer.addMetaEventListener((MetaMessage event) ->
         {
-            if (event.getType() == 47)
-            {
-                if (!doWait)
-                {
+            if (event.getType() == 47) {
+                if (!doWait) {
                     System.out.println("spurious");
                     return;
                 }
                 System.out.println("end of midi " + System.currentTimeMillis());
-                try
-                {
+                try {
                     //Thread.sleep(200);
                     deleteAllTracks();
-                    synchronized (waitObject)
-                    {
+                    synchronized (waitObject) {
                         doWait = false;
                         waitObject.notify();
                     }
-                }
-                catch (Exception ignored)
-                {
+                } catch (Exception ignored) {
                 }
             }
         });
@@ -203,11 +175,9 @@ public class MidiSynthSystem
      *
      * @throws InterruptedException
      */
-    public void waitUntilEnd() throws InterruptedException
-    {
+    public void waitUntilEnd() throws InterruptedException {
         System.out.println("wait for endmidi " + System.currentTimeMillis());
-        synchronized (waitObject)
-        {
+        synchronized (waitObject) {
             doWait = true;
             waitObject.wait();
         }
@@ -216,8 +186,7 @@ public class MidiSynthSystem
     /**
      * Deletes all tracks
      */
-    public void deleteAllTracks() throws Exception
-    {
+    public void deleteAllTracks() throws Exception {
         sm_sequence = new Sequence(Sequence.SMPTE_30, mult);
     }
 }

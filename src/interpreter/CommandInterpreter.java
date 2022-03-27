@@ -277,7 +277,7 @@ public class CommandInterpreter {
             tokenizer.reset(lineData);
 
             if (!tokenizer.hasMoreTokens()) {
-                System.out.println("no more tokens");
+                //System.out.println("no more tokens");
                 continue;
             }
 
