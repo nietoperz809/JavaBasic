@@ -102,7 +102,7 @@ public class Program //implements Runnable, Serializable
      * the file system.
      *
      */
-    private static Program load(InputStream source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError {
+    public static Program load(InputStream source, StreamingTextArea ar) throws IOException, BASICSyntaxError {
         BufferedReader dis
                 = new BufferedReader(new InputStreamReader(source));
 
@@ -136,8 +136,8 @@ public class Program //implements Runnable, Serializable
             try {
                 s = statement(lt);
             } catch (BASICSyntaxError bse) {
-                out.println("Syntax error: " + bse.getMsg());
-                out.println(lt.showError());
+                ar.getPrintStream().println("Syntax error: " + bse.getMsg());
+                ar.getPrintStream().println(lt.showError());
                 throw bse;
             }
             s.addText(lineData);
@@ -153,12 +153,12 @@ public class Program //implements Runnable, Serializable
      * @throws BASICSyntaxError when the file does not contain a properly formed
      *                          BASIC program.
      */
-    public static Program load(String source, PrintStream out, StreamingTextArea ar) throws IOException, BASICSyntaxError {
+    public static Program load(String source, StreamingTextArea ar) throws IOException, BASICSyntaxError {
         // XXX this needs to use the SourceManager class //
         FileInputStream fis = new FileInputStream(source);
         Program r;
         try {
-            r = load(fis, out, ar);
+            r = load(fis, ar);
         } catch (BASICSyntaxError e) {
             fis.close();
             throw e;
@@ -301,6 +301,19 @@ public class Program //implements Runnable, Serializable
             }
         }
     }
+
+    Program renumber() {
+        Renumberer ren = new Renumberer(this);
+        Set<Integer> set = stmts.keySet();
+        for (Integer i : set) {
+            Statement stat = stmts.get(i);
+            ren.add(stat.asString());
+        }
+        ren.doIt();
+        return ren.finish();
+    }
+
+
 
     /**
      * Dump the symbol table

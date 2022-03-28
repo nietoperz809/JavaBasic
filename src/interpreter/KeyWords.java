@@ -71,6 +71,7 @@ public enum KeyWords
 
     CMD_NEW ("new", "erase program in memory"),
     CMD_RUN ("run", "run program"),
+    CMD_RENUMBER("renumber", "make new line numbers"),
     CMD_LIST ("list", "list program"),
     CMD_CAT ("cat", "show file content in BASIC window"),
     CMD_DEL ("del", "delete a file"),

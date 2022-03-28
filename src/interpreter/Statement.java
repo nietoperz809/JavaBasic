@@ -10,12 +10,11 @@ import java.util.Enumeration;
  * This class defines BASIC statements. As with expressions, there is a subclass
  * of Statement that does parsing called ParseStatement. This separation allows
  * the statement object to be half as large as it might otherwise be.
- *
+ * <p>
  * The <i>execute</i> interface defines what the BASIC statements *do*. These
  * are all called by the containing <b>Program</b>.
  */
-public abstract class Statement
-{
+public abstract class Statement {
     public KeyWords keyword; // type of statement
     // type of statement
     public int line;
@@ -28,19 +27,17 @@ public abstract class Statement
 
     /**
      * Construct a new statement object with a valid key.
+     *
      * @param key
      */
-    protected Statement(KeyWords key)
-    {
+    protected Statement(KeyWords key) {
         keyword = key;
     }
 
-    protected Statement()
-    {
+    protected Statement() {
     }
 
-    public KeyWords getKeyWord()
-    {
+    public KeyWords getKeyWord() {
         return keyword;
     }
 
@@ -50,20 +47,14 @@ public abstract class Statement
      * runtime error (if any) is caught so that the line number and statement
      * can be attached to the result and then it is re-thrown.
      */
-    public Statement execute (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
-    {
+    public Statement execute(Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError {
         Statement nxt;
-        try
-        {
+        try {
             nxt = doit(pgm, in, out);
-        }
-        catch (BASICRuntimeError e)
-        {
+        } catch (BASICRuntimeError e) {
             throw new BASICRuntimeError(this, e.getMsg());
-        }
-        catch (Exception ex)
-        {
-            throw new BASICRuntimeError(this, "Java Error: "+ex.toString());
+        } catch (Exception ex) {
+            throw new BASICRuntimeError(this, "Java Error: " + ex.toString());
         }
         return nxt;
     }
@@ -74,16 +65,12 @@ public abstract class Statement
      * tree.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("BASIC Statement :");
-        if (orig != null)
-        {
+        if (orig != null) {
             sb.append(orig);
-        }
-        else
-        {
+        } else {
             sb.append(unparse());
         }
         return sb.toString();
@@ -94,16 +81,14 @@ public abstract class Statement
      * parsed. this can be used for listing out the program in the native case
      * style of the user.
      */
-    public void addText (String t)
-    {
+    public void addText(String t) {
         orig = t;
     }
 
     /**
      * Return the statement as a string.
      */
-    public String asString ()
-    {
+    public String asString() {
         return orig;
     }
 
@@ -111,11 +96,9 @@ public abstract class Statement
      * Update line number information in this statement. Used to determine the
      * next line to execute.
      */
-    public void addLine (int l)
-    {
+    public void addLine(int l) {
         line = l;
-        if (nxt != null)
-        {
+        if (nxt != null) {
             nxt.addLine(l);
         }
     }
@@ -123,8 +106,7 @@ public abstract class Statement
     /**
      * Return this statements line number.
      */
-    public int lineNo ()
-    {
+    public int lineNo() {
         return line;
     }
 
@@ -132,10 +114,11 @@ public abstract class Statement
      * reconstruct the statement from the parse tree, this is most useful for
      * diagnosing parsing problems.
      */
-    public  String unparse ()
-    {
+    public String unparse() {
         return keyword.name();
-    };
+    }
+
+    ;
 
 
     /**
@@ -143,23 +126,21 @@ public abstract class Statement
      * statement to run or null if there is no next statement.
      *
      * @throws BASICRuntimeError if there is a problem during statement
-     * execution such as divide by zero etc.
+     *                           execution such as divide by zero etc.
      */
-    protected abstract Statement doit (Program pgm, InputStream in, PrintStream out)
+    protected abstract Statement doit(Program pgm, InputStream in, PrintStream out)
             throws BASICRuntimeError;
 
     /**
      * The trace method can be used during execution to print out what the
      * program is doing.
      */
-    public void trace (Program pgm, PrintStream ps)
-    {
+    public void trace(Program pgm, PrintStream ps) {
         StringBuilder sb = new StringBuilder();
         String n;
         sb.append("**:");
 
-        if (vars == null)
-        {
+        if (vars == null) {
             vars = getVars();
         }
 
@@ -167,26 +148,20 @@ public abstract class Statement
          * Print the line we're executing on the output stream.
          */
         n = line + "";
-        for (int zz = 0; zz < 5 - n.length(); zz++)
-        {
+        for (int zz = 0; zz < 5 - n.length(); zz++) {
             sb.append(' ');
         }
         sb.append(n);
         sb.append(':');
         sb.append(unparse());
         ps.println(sb.toString());
-        if (vars != null)
-        {
-            for (Enumeration e = vars.elements(); e.hasMoreElements();)
-            {
+        if (vars != null) {
+            for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
                 VariableExpression vi = (VariableExpression) e.nextElement();
                 String t;
-                try
-                {
+                try {
                     t = vi.stringValue(pgm);
-                }
-                catch (BASICRuntimeError bse)
-                {
+                } catch (BASICRuntimeError bse) {
                     t = "Not yet defined.";
                 }
                 ps.println("        :" + vi.unparse() + " = " + (vi.isString() ? "\"" + t + "\"" : t));
@@ -197,48 +172,44 @@ public abstract class Statement
     /**
      * Can be overridden by statements that use variables in their execution.
      */
-    protected RedBlackTree getVars ()
-    {
+    protected RedBlackTree getVars() {
         return null;
     }
 
     /**
      * Read one argument expression
+     *
      * @param lt program lt
      * @return expression
      * @throws BASICSyntaxError
      */
-    public Expression getNumericArg(LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    public Expression getNumericArg(LexicalTokenizer lt) throws BASICSyntaxError {
         Token t = lt.nextToken();
-        switch (t.typeNum())
-        {
+        switch (t.typeNum()) {
             case CONSTANT:
             case VARIABLE:
             case FUNCTION:
-            lt.unGetToken();
+                lt.unGetToken();
                 return ParseExpression.expression(lt);
             default:
                 throw new BASICSyntaxError("param must be constant or variable");
         }
     }
 
-    protected String getStringArg (LexicalTokenizer lt) throws BASICSyntaxError
-    {
-        Token t = lt.nextToken();
-        if (t.typeNum() == KeyWords.STRING)
-        {
-            return t.stringValue();
-        }
-        lt.unGetToken();
-        throw new BASICSyntaxError("param must be constant or variable");
-    }
+//    protected String getStringArg (LexicalTokenizer lt) throws BASICSyntaxError
+//    {
+//        Token t = lt.nextToken();
+//        if (t.typeNum() == KeyWords.STRING)
+//        {
+//            return t.stringValue();
+//        }
+//        lt.unGetToken();
+//        throw new BASICSyntaxError("param must be constant or variable");
+//    }
 
-    public void checkComma(LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    public void checkComma(LexicalTokenizer lt) throws BASICSyntaxError {
         Token t = lt.nextToken();
-        if (!t.isSymbol(','))
-        {
+        if (!t.isSymbol(',')) {
             lt.unGetToken();
             throw new BASICSyntaxError("missing comma separator");
         }

@@ -168,7 +168,7 @@ public class CommandInterpreter {
                     return pgm;
                 }
                 try {
-                    pgm = Program.load(t.stringValue(), outStream, pgm.area);
+                    pgm = Program.load(t.stringValue(), pgm.area);
                     outStream.println("File loaded.");
                 } catch (IOException e) {
                     outStream.println("File " + t.stringValue() + " not found.");
@@ -202,6 +202,12 @@ public class CommandInterpreter {
                 if (zzz != outStream) {
                     zzz.close();
                 }
+                return pgm;
+
+            case CMD_RENUMBER:
+                Program p2 = pgm.renumber();
+                if (p2 != null)
+                    return p2;
                 return pgm;
 
             case CMD_LIST:
