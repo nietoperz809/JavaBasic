@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<div align="center">
 
 # JavaBasic
 BASIC in an MDI environment<br>
@@ -7,11 +7,12 @@ Feature-rich (e.g. 2 speech synthesizers) old-school BASIC interpreter.
 
 ![Alt text](javabasic.jpg?raw=true "Title")
 
-**New: Renumber command.**
+**New: Renumber command.**<br>
 Renumber your code by using one of<br> `renumber`, `renumber a`, or `renumber a,b`<br>
 Where a is the start value and b is the step width.<br>
 10,10 are the default values
 
+</div>
 
 Keywords:
 --------
@@ -138,4 +139,3 @@ Operators
     OP_BNOT ("NOT"),  // Boolean negation '.NOT.'
     OP_NEG ("-"),  // Unary minus
 
-</div>
