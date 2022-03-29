@@ -302,8 +302,8 @@ public class Program //implements Runnable, Serializable
         }
     }
 
-    Program renumber() {
-        Renumberer ren = new Renumberer(this);
+    Program renumber(int start, int step) {
+        Renumberer ren = new Renumberer(this, start, step);
         Set<Integer> set = stmts.keySet();
         for (Integer i : set) {
             Statement stat = stmts.get(i);

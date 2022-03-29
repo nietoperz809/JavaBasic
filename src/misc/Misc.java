@@ -34,10 +34,10 @@ public class Misc
 
     public static FutureTask<?> execute (Runnable r)
     {
-        if (getExecutorFreeSlots() <= 0)
-        {
-            System.out.println("Thread pool exhausted");
-        }
+//        if (getExecutorFreeSlots() <= 0)
+//        {
+//            System.out.println("Thread pool exhausted");
+//        }
         return (FutureTask<?>) globalExecutor.submit(r);
     }
 

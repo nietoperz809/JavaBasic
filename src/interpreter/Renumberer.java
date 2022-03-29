@@ -9,9 +9,13 @@ public class Renumberer {
     private final HashMap<String, String> jumpMap = new HashMap<>();
     private final ArrayList<String> lines = new ArrayList<>();
     private final Program prg;
+    private final int start;
+    private final int step;
 
-    public Renumberer (Program prg) {
+    public Renumberer (Program prg, int start, int step) {
         this.prg = prg;
+        this.start = start;
+        this.step = step;
     }
 
     public void add (String s) {
@@ -53,14 +57,14 @@ public class Renumberer {
     }
 
     public void doIt() {
-        int num = 100;
+        int num = this.start;
         // pass 1
         for (int s = 0; s<lines.size(); s++) {
             String[] ss = lines.get(s).split(" ");
             jumpMap.put(ss[0], ""+num);
             ss[0] = jumpMap.get(ss[0]);
             lines.set(s, String.join(" ", ss));
-            num += 100;
+            num += this.step;
         }
         // pass 2
         for (int s = 0; s<lines.size(); s++) {

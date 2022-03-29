@@ -23,6 +23,7 @@ import midisystem.MidiSynthSystem;
 import misc.Transmitter;
 
 import javax.sound.midi.Instrument;
+import java.awt.*;
 import java.io.*;
 import java.util.List;
 import java.util.concurrent.FutureTask;
@@ -52,9 +53,7 @@ public class CommandInterpreter {
         m_bg = bg;
     }
 
-    /**
-     * This method basically dispatches the commands of the command interpreter.
-     */
+    // This method basically dispatches the commands of the command interpreter.
     private Program processCommand(Program pgm, LexicalTokenizer lt, Token x) throws Exception {
         Token t;
 
@@ -205,10 +204,8 @@ public class CommandInterpreter {
                 return pgm;
 
             case CMD_RENUMBER:
-                Program p2 = pgm.renumber();
-                if (p2 != null)
-                    return p2;
-                return pgm;
+                Point pt = get2Val(lt);
+                return pgm.renumber(pt.x, pt.y);
 
             case CMD_LIST:
                 t = lt.nextToken();
@@ -248,6 +245,30 @@ public class CommandInterpreter {
         streamingTextArea.destroy();
     }
 
+    private Point get2Val (LexicalTokenizer lt) {
+        int start = 10;
+        int step = 10;
+        Token t = lt.nextToken();
+        if (t.typeNum() == KeyWords.EOL) {
+            return new Point(start, step);
+        }
+        if (t.typeNum() == KeyWords.CONSTANT) {
+            start = (int) t.numValue();
+            t = lt.nextToken();
+            if (t.typeNum() == KeyWords.EOL) {
+                return new Point(start, step);
+            }
+            if (t.isSymbol(',')) {
+                t = lt.nextToken();
+                if (t.typeNum() == KeyWords.CONSTANT) {
+                    step = (int) t.numValue();
+                    return new Point(start, step);
+                }
+            }
+        }
+        return new Point(start, step);
+    }
+
     /**
      * Starts the interactive session. When running the user should see the
      * "Ready." prompt. The session ends when the user types the
@@ -256,7 +277,6 @@ public class CommandInterpreter {
      * @return EndReason 1 == BYE detected
      * @throws java.lang.Exception
      */
-
     public void prestart(StreamingTextArea area) {
         System.err.println("start BASIC system");
         streamingTextArea = area;
