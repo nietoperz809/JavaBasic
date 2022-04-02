@@ -48,7 +48,17 @@ public class Renumberer {
     private void doForPass2(String keyword, String[] line) {
         int g = findJump(line, keyword);
         if (g >= 0) {
-            line[g + 1] = jumpMap.get(line[g + 1]);
+            String targ = line[g+1];
+            if (targ.contains(",")) { // list
+                String[] ss = targ.split(",");
+                for (int n = 0; n<ss.length; n++) {
+                    ss[n] = jumpMap.get(ss[n]);
+                }
+                targ = String.join(",", ss);
+                line[g+1] = targ;
+            } else { // single number
+                line[g + 1] = jumpMap.get(targ);
+            }
         }
     }
 
