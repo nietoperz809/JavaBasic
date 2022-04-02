@@ -3,6 +3,8 @@
  */
 package misc;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
@@ -55,8 +57,32 @@ public class Misc
         return "  " + myFormatter.format(bytes);
     }
 
+    private static String formatHelper (String in) {
+        in = in.replaceAll("\\s{2,}"," ").trim();
+        String in2;
+        do {
+            in2 = in;
+            in = in.replaceAll (", | ,",",");
+        } while (!in.equals(in2));
+        //in = in.replaceAll (" ,",",");
+        return in;
+    }
+
+    public static String formatBasicLine (String in)
+    {
+        String[] str = StringUtils.substringsBetween(in, "\"", "\"");
+        if (str == null)
+            return formatHelper (in);
+        for (int s = 0; s < str.length; s++)
+            in = in.replace(str[s], "#" + s);
+        in = formatHelper (in);
+        for (int s = 0; s < str.length; s++)
+            in = in.replace("#" + s, str[s]);
+        return in;
+    }
+
     /**
-     * @return
+     * @return string on the clipboard
      */
     public static String getClipBoardString ()
     {

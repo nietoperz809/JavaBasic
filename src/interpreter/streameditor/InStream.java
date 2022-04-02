@@ -46,7 +46,7 @@ class InStream extends java.io.InputStream
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             return -1;
         }
     }

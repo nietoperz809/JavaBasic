@@ -12,17 +12,17 @@ public class Renumberer {
     private final int start;
     private final int step;
 
-    public Renumberer (Program prg, int start, int step) {
+    public Renumberer(Program prg, int start, int step) {
         this.prg = prg;
         this.start = start;
         this.step = step;
     }
 
-    public void add (String s) {
+    public void add(String s) {
         lines.add(s);
     }
 
-    private boolean isLineNum (String in) {
+    private boolean isLineNum(String in) {
         try {
             int i = Integer.parseInt(in);
             return i >= 0;
@@ -31,15 +31,11 @@ public class Renumberer {
         }
     }
 
-    private int findJump (String[] arr, String what)
-    {
-        for (int s=0; s<arr.length; s++)
-        {
-            if (arr[s].equalsIgnoreCase(what))
-            {
-                if (what.equalsIgnoreCase("then"))
-                {
-                    if (isLineNum(arr[s+1]))
+    private int findJump(String[] arr, String what) {
+        for (int s = 0; s < arr.length; s++) {
+            if (arr[s].equalsIgnoreCase(what)) {
+                if (what.equalsIgnoreCase("then")) {
+                    if (isLineNum(arr[s + 1]))
                         return s;
                     return -1;
                 }
@@ -49,29 +45,29 @@ public class Renumberer {
         return -1;
     }
 
-    private void doForPass2 (String keyword, String[] line) {
-        int g = findJump (line, keyword);
+    private void doForPass2(String keyword, String[] line) {
+        int g = findJump(line, keyword);
         if (g >= 0) {
-            line[g+1] = jumpMap.get (line[g+1]);
+            line[g + 1] = jumpMap.get(line[g + 1]);
         }
     }
 
     public void doIt() {
         int num = this.start;
         // pass 1
-        for (int s = 0; s<lines.size(); s++) {
+        for (int s = 0; s < lines.size(); s++) {
             String[] ss = lines.get(s).split(" ");
-            jumpMap.put(ss[0], ""+num);
+            jumpMap.put(ss[0], "" + num);
             ss[0] = jumpMap.get(ss[0]);
             lines.set(s, String.join(" ", ss));
             num += this.step;
         }
         // pass 2
-        for (int s = 0; s<lines.size(); s++) {
+        for (int s = 0; s < lines.size(); s++) {
             String[] ss = lines.get(s).split(" ");
-            doForPass2 ("goto", ss);
-            doForPass2 ("gosub", ss);
-            doForPass2 ("then", ss);
+            doForPass2("goto", ss);
+            doForPass2("gosub", ss);
+            doForPass2("then", ss);
             lines.set(s, String.join(" ", ss));
         }
     }
@@ -81,11 +77,11 @@ public class Renumberer {
         for (String s : lines) {
             sb.append(s).append("\r\n");
         }
-        InputStream targetStream = new ByteArrayInputStream (sb.toString().getBytes());
+        InputStream targetStream = new ByteArrayInputStream(sb.toString().getBytes());
         try {
             return Program.load(targetStream, prg.area);
         } catch (Exception e) {
-            System.out.println("ren fail "+e.toString());
+            System.out.println("ren fail " + e.toString());
         }
         return null;
     }

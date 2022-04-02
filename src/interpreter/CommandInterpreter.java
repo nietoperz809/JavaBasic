@@ -21,6 +21,7 @@ import applications.BasicGUI;
 import interpreter.streameditor.StreamingTextArea;
 import midisystem.MidiSynthSystem;
 import misc.Transmitter;
+import org.apache.commons.lang.StringUtils;
 
 import javax.sound.midi.Instrument;
 import java.awt.*;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import static interpreter.ParseStatement.statement;
+import static misc.Misc.formatBasicLine;
 
 /**
  * This class is an "interactive" BASIC environment. You can think of it as
@@ -204,35 +206,12 @@ public class CommandInterpreter {
                 return pgm;
 
             case CMD_RENUMBER:
-                Point pt = get2Val(lt);
+                Point pt = get2Val(lt, new Point(10,10));
                 return pgm.renumber(pt.x, pt.y);
 
             case CMD_LIST:
-                t = lt.nextToken();
-                if (t.typeNum() == KeyWords.EOL) {
-                    pgm.list(outStream);
-                } else if (t.typeNum() == KeyWords.CONSTANT) {
-                    int strt = (int) t.numValue();
-                    t = lt.nextToken();
-                    if (t.typeNum() == KeyWords.EOL) {
-                        pgm.list(strt, outStream);
-                    } else if (t.isSymbol(',')) {
-                        t = lt.nextToken();
-                        if (t.typeNum() != KeyWords.CONSTANT) {
-                            outStream.println("Illegal parameter to LIST command.");
-                            outStream.println(lt.showError());
-                            return pgm;
-                        }
-                        int e = (int) t.numValue();
-                        pgm.list(strt, e, outStream);
-                    } else {
-                        outStream.println("Syntax error in LIST command.");
-                        outStream.println(lt.showError());
-                    }
-                } else {
-                    outStream.println("Syntax error in LIST command.");
-                    outStream.println(lt.showError());
-                }
+                Point pt2 = get2Val(lt, new Point(0,Integer.MAX_VALUE));
+                pgm.list (pt2.x, pt2.y, outStream);
                 return pgm;
         }
         outStream.println("Command not implemented.");
@@ -245,28 +224,32 @@ public class CommandInterpreter {
         streamingTextArea.destroy();
     }
 
-    private Point get2Val (LexicalTokenizer lt) {
-        int start = 10;
-        int step = 10;
+    /**
+     * Read 2 values sparated by comma
+     * @param lt used tokenizer
+     * @param pt default values
+     * @return a point as carrier for both values
+     */
+    private Point get2Val (LexicalTokenizer lt, Point pt) {
         Token t = lt.nextToken();
         if (t.typeNum() == KeyWords.EOL) {
-            return new Point(start, step);
+            return pt;
         }
         if (t.typeNum() == KeyWords.CONSTANT) {
-            start = (int) t.numValue();
+            pt.x = (int) t.numValue();
             t = lt.nextToken();
             if (t.typeNum() == KeyWords.EOL) {
-                return new Point(start, step);
+                return pt;
             }
             if (t.isSymbol(',')) {
                 t = lt.nextToken();
                 if (t.typeNum() == KeyWords.CONSTANT) {
-                    step = (int) t.numValue();
-                    return new Point(start, step);
+                    pt.y = (int) t.numValue();
+                    return pt;
                 }
             }
         }
-        return new Point(start, step);
+        return pt;
     }
 
     /**
@@ -295,9 +278,22 @@ public class CommandInterpreter {
         outStream.println("*JavaBasic*\nType CMDS or CMDS n to see commands (beginning with n)\n");
     }
 
+
+//    public static void main(String[] args) {
+//        String laal = "nop     \"hello\"  blah   fick \"    duumm \"";
+//        String[] str = StringUtils.substringsBetween(laal , "\"", "\"");
+//        for (int s = 0; s<str.length; s++)
+//            laal = laal.replace(str[s], "#"+s);
+//        laal = laal.trim().replaceAll("  +", " ");
+//        for (int s = 0; s<str.length; s++)
+//            laal = laal.replace("#"+s, str[s]);
+//        System.out.println(laal);
+//    }
+
     public void runCLI() throws Exception {
         while (true) {
-            String lineData = streamingTextArea.getBufferedLine();
+            String lineData = formatBasicLine (streamingTextArea.getBufferedLine());
+
             m_bg.setLineInList(lineData);
 
             tokenizer.reset(lineData);
