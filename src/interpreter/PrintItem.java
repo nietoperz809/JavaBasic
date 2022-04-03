@@ -80,23 +80,6 @@ public class PrintItem
         return ((type != TAB) && (type != SEMI));
     }
 
-    public String unparse ()
-    {
-        switch (type)
-        {
-            case EXPRESSION:
-                return ((Expression) thing).unparse();
-            case STRING_VARIABLE:
-                return ((Variable) thing).unparse();
-            case STRING_CONSTANT:
-                return "\"" + (String) thing + "\"";
-            case TAB:
-                return (", ");
-            case SEMI:
-                return ("; ");
-        }
-        return "BOGUS";
-    }
 
     void print(PrintStream p)
     {

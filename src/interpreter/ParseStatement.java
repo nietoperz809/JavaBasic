@@ -109,16 +109,6 @@ public class ParseStatement extends Statement
         {
             switch (KeyWords.values()[(int)t.numValue()])       //((int) t.numValue())
             {
-                case TRON:
-                    s = new TRONStatement(lt);
-                    t = lt.nextToken();
-                    return nextStep (lt, t,s);
-
-                case TROFF:
-                    s = new TROFFStatement(lt);
-                    t = lt.nextToken();
-                    return nextStep (lt, t,s);
-
                 case END:
                     s = new ENDStatement(lt);
                     t = lt.nextToken();
@@ -339,6 +329,15 @@ public class ParseStatement extends Statement
                 case REM:
                     s = new REMStatement(lt);
                     return s;
+
+                case DO:
+                    s = new DOStatement(lt);
+                    return s;
+
+                case LOOP:
+                    s = new LOOPStatement(lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
 
                 case FOR:
                     s = new FORStatement(lt);

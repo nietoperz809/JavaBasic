@@ -58,12 +58,12 @@ public class Misc
 
     private static String formatHelper (String in) {
         in = in.replaceAll("\\s{2,}"," ").trim();
+        in = in.replace("\t", " ");
         String in2;
         do {
             in2 = in;
             in = in.replaceAll (", | ,",",");
         } while (!in.equals(in2));
-        //in = in.replaceAll (" ,",",");
         return in;
     }
 
@@ -74,7 +74,6 @@ public class Misc
      */
     public static String formatBasicLine (String in)
     {
-        in = in.replace("\t", " ");
         String[] str = StringUtils.substringsBetween(in, "\"", "\"");
         if (str == null)
             return formatHelper (in);

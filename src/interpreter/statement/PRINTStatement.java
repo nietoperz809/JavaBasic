@@ -69,20 +69,6 @@ public class PRINTStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    @Override
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PRINT ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            PrintItem pi = (PrintItem) (args.elementAt(i));
-            sb.append(pi.unparse());
-        }
-        return sb.toString();
-    }
-
-
     private static void parse(PRINTStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
         s.args = StringExParser.parseStringExpression(lt);

@@ -71,12 +71,6 @@ public class VariableExpression extends Expression
         return ("" + pgm.getVariable(v));
     }
 
-    @Override
-    public String unparse ()
-    {
-        return v.unparse();
-    }
-
     /**
      * Add the value of this variable to the trace record.
      */

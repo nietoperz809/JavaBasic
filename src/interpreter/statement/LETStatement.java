@@ -60,13 +60,6 @@ public class LETStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        return "LET " +
-                myVar.unparse() +
-                " = " +
-                nExp.unparse();
-    }
 
     /**
      * Generate a trace record for the LET statement.

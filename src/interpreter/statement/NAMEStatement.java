@@ -31,18 +31,6 @@ public class NAMEStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    @Override
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(keyword.name()).append(" ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            PrintItem pi = (PrintItem) (args.elementAt(i));
-            sb.append(pi.unparse());
-        }
-        return sb.toString();
-    }
 
     private static void parse(NAMEStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {

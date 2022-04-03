@@ -48,12 +48,4 @@ public class RATEStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        if (nExpn != null)
-        {
-            return super.unparse() + nExpn.unparse();
-        }
-        return null;
-    }
 }

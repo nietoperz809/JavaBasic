@@ -46,13 +46,4 @@ public class PITCHStatement extends Statement
         }
         return pgm.nextStatement(this);
     }
-
-    public String unparse()
-    {
-        if (nExpn != null)
-        {
-            return keyword.name() + " " + nExpn.unparse();
-        }
-        return null;
-    }
 }

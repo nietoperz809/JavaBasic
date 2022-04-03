@@ -60,30 +60,9 @@ public class FunctionExpression extends Expression
     @Override
     public String toString ()
     {
-        return "FunctionExpression:: '" + unparse () + "'";
+        return "FunctionExpression:: '";
     }
 
-    @Override
-    public String unparse ()
-    {
-        StringBuilder sb = new StringBuilder ();
-
-        sb.append (oper.toString ().toUpperCase ());
-        sb.append ("(");
-        if (sVar != null)
-        {
-            sb.append (sVar.unparse ());
-            sb.append (", ");
-        }
-        if (arg1 != null)
-        {
-            sb.append (arg1.unparse ());
-            sb.append (", ");
-        }
-        sb.append (arg2.unparse ());
-        sb.append (")");
-        return sb.toString ();
-    }
 
     private FunctionExpression (KeyWords t, Expression e)
     {

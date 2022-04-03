@@ -79,28 +79,6 @@ public class ONStatement extends Statement
     }
 
     @Override
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ON ");
-        sb.append(nExp.unparse()).append(" ");
-        sb.append(keyword.toString().toUpperCase()).append(" ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            Token t = (Token) (args.elementAt(i));
-            if (i < (args.size() - 1))
-            {
-                sb.append(t.unparse()).append(", ");
-            }
-            else
-            {
-                sb.append(t.unparse());
-            }
-        }
-        return sb.toString();
-    }
-
-    @Override
     public RedBlackTree getVars ()
     {
         RedBlackTree vv = new RedBlackTree();

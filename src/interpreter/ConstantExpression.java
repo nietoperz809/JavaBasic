@@ -53,14 +53,6 @@ public class ConstantExpression extends Expression
         return v;
     }
 
-    public String unparse ()
-    {
-        if (strCons != null)
-        {
-            return ("\"" + strCons + "\"");
-        }
-        return "" + v;
-    }
 
     String stringValue(Program pgm, int c) throws BASICRuntimeError
     {

@@ -120,33 +120,6 @@ public class Variable extends Token {
      * tree. This can be very useful debugging information and is used in the
      * trace function.
      */
-    @Override
-    public String unparse() {
-        if (!isArray()) {
-            return name;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(name);
-        sb.append("( ");
-        if (ndx != null) {
-            for (int i = 0; i < ndx.length; i++) {
-                if (i < (ndx.length - 1)) {
-                    sb.append(ndx[i]).append(", ");
-                } else {
-                    sb.append(ndx[i]).append(")");
-                }
-            }
-        } else {
-            for (int i = 0; i < expns.length; i++) {
-                if (i < (expns.length - 1)) {
-                    sb.append(expns[i].unparse()).append(", ");
-                } else {
-                    sb.append(expns[i].unparse()).append(")");
-                }
-            }
-        }
-        return sb.toString();
-    }
 
     /**
      * This method takes an array of indices and computes a linear offset into

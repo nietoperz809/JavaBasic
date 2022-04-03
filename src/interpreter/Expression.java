@@ -98,19 +98,6 @@ Expression arg1;
         return sb.toString();
     }
 
-    public String unparse ()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        if (arg1 != null)
-        {
-            sb.append(arg1.unparse());
-            sb.append(" ").append(oper.toString()).append(" ");
-        }
-        sb.append(arg2.unparse());
-        sb.append(")");
-        return sb.toString();
-    }
 
     /**
      * Generate a set of trace records for this expression. All of the variables

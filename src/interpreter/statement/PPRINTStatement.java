@@ -31,17 +31,6 @@ public class PPRINTStatement extends Statement
         s.args = StringExParser.parseStringExpression(lt);
     }
 
-    public String unparse ()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PPRINT "+_x+","+_y+", ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            PrintItem pi = (PrintItem) (args.elementAt(i));
-            sb.append(pi.unparse());
-        }
-        return sb.toString();
-    }
 
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {

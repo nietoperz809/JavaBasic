@@ -60,14 +60,6 @@ public class RANDOMIZEStatement extends Statement
         }
     }
 
-    public String unparse ()
-    {
-        if (nExpn != null)
-        {
-            return "RANDOMIZE " + nExpn.unparse();
-        }
-        return "RANDOMIZE";
-    }
 
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {

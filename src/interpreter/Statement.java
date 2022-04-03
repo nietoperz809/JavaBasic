@@ -164,7 +164,6 @@ public abstract class Statement {
                 } catch (BASICRuntimeError bse) {
                     t = "Not yet defined.";
                 }
-                ps.println("        :" + vi.unparse() + " = " + (vi.isString() ? "\"" + t + "\"" : t));
             }
         }
     }

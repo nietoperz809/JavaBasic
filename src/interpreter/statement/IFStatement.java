@@ -81,30 +81,6 @@ public class IFStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        Statement qq;
-
-        sb.append("IF ");
-        sb.append(nExp.unparse());
-        sb.append(" THEN ");
-        if (thenClause == null)
-        {
-            sb.append(lineTarget);
-            return sb.toString();
-        }
-        for (qq = thenClause; qq != null; qq = qq.nxt)
-        {
-            sb.append(qq.unparse());
-            if (qq.nxt != null)
-            {
-                sb.append(" : ");
-            }
-        }
-        return sb.toString();
-    }
-
     public RedBlackTree getVars ()
     {
         RedBlackTree vv = new RedBlackTree();

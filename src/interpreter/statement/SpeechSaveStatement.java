@@ -26,18 +26,6 @@ public class SpeechSaveStatement extends Statement
             parse(lt);
     }
 
-    @Override
-    public String unparse ()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(keyword.name()).append(" ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            PrintItem pi = (PrintItem) (args.elementAt(i));
-            sb.append(pi.unparse());
-        }
-        return sb.toString();
-    }
 
     @Override
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError

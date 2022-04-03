@@ -45,7 +45,7 @@ public class FORStatement extends Statement
 {
 
     // This is the line number to transfer control too.
-    int lineTarget;
+    //int lineTarget;
     Expression nExp;
     Expression eExp;
     Expression sExp;
@@ -63,23 +63,6 @@ public class FORStatement extends Statement
         pgm.setVariable(myVar, nExp.value(pgm));
         pgm.push(this);
         return pgm.nextStatement(this);
-    }
-
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(keyword.toString()).append(" ");
-        sb.append(myVar.unparse());
-        sb.append(" = ");
-        sb.append(nExp.unparse());
-        sb.append(" TO ");
-        sb.append(eExp.unparse());
-        if (sExp != null)
-        {
-            sb.append(" STEP ");
-            sb.append(sExp.unparse());
-        }
-        return sb.toString();
     }
 
     /**
