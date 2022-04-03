@@ -54,8 +54,7 @@ public class Renumberer {
                 for (int n = 0; n<ss.length; n++) {
                     ss[n] = jumpMap.get(ss[n]);
                 }
-                targ = String.join(",", ss);
-                line[g+1] = targ;
+                line[g+1] = String.join(",", ss);
             } else { // single number
                 line[g + 1] = jumpMap.get(targ);
             }

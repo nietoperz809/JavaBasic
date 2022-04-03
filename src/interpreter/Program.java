@@ -30,6 +30,7 @@ import java.io.*;
 import java.util.*;
 
 import static interpreter.ParseStatement.statement;
+import static misc.Misc.formatBasicLine;
 
 /**
  * This class instantiates a BASIC program. A valid program is one that is
@@ -127,6 +128,7 @@ public class Program //implements Runnable, Serializable
                 continue;
             }
 
+            lineData = formatBasicLine(lineData);
             lt.reset(lineData);
             t = lt.nextToken();
             if (t.typeNum() != KeyWords.CONSTANT) {

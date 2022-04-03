@@ -182,7 +182,15 @@ public class CommandInterpreter {
                 return pgm;
 
             case CMD_DIR:
-                File[] filesInFolder = new File(".").listFiles();
+                t = lt.nextToken();
+                String path;
+                if (t.typeNum() != KeyWords.STRING) {
+                     path = ".";
+                }
+                else {
+                    path = t.stringValue();
+                }
+                File[] filesInFolder = new File(path).listFiles();
                 for (final File fileEntry : filesInFolder) {
                     if (fileEntry.isFile()) {
                         outStream.println(fileEntry.getName() + " -- " + fileEntry.length());

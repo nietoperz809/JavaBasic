@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
-import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -68,8 +67,14 @@ public class Misc
         return in;
     }
 
+    /**
+     * remove multple banks exxcept between "
+     * @param in raw input line
+     * @return trimmed line
+     */
     public static String formatBasicLine (String in)
     {
+        in = in.replace("\t", " ");
         String[] str = StringUtils.substringsBetween(in, "\"", "\"");
         if (str == null)
             return formatHelper (in);

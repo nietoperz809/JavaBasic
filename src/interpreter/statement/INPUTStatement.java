@@ -285,9 +285,9 @@ public class INPUTStatement extends Statement
         {
             s.prompt = t.stringValue();
             t = lt.nextToken();
-            if (!t.isSymbol(';'))
+            if (!t.isSymbol(';') && !t.isSymbol(','))
             {
-                throw new BASICSyntaxError("semi-colon expected after prompt string.");
+                throw new BASICSyntaxError("semi-colon or comma expected after prompt string.");
             }
         }
         else
