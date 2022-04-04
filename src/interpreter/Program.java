@@ -320,13 +320,13 @@ public class Program //implements Runnable, Serializable
     /**
      * Dump the symbol table
      */
-    void dump(PrintStream p) {
-        for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
-            Map.Entry<String, Variable> entry = (Map.Entry<String, Variable>) e.nextElement();
-            Variable v = entry.getValue();
-            p.println(v.unparse() + " = " + (v.isString() ? "\"" + v.stringValue() + "\"" : "" + v.numValue()));
-        }
-    }
+//    void dump(PrintStream p) {
+//        for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
+//            Map.Entry<String, Variable> entry = (Map.Entry<String, Variable>) e.nextElement();
+//            Variable v = entry.getValue();
+//            p.println(v.unparse() + " = " + (v.isString() ? "\"" + v.stringValue() + "\"" : "" + v.numValue()));
+//        }
+//    }
 
     /**
      * This is the first variation on list, it simply list from the starting

@@ -54,24 +54,24 @@ public class DATAStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(keyword.toString()).append(" ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            Token t = (Token) args.elementAt(i);
-            if (i < (args.size() - 1))
-            {
-                sb.append(t.unparse()).append(", ");
-            }
-            else
-            {
-                sb.append(t.unparse());
-            }
-        }
-        return sb.toString();
-    }
+//    public String unparse()
+//    {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(keyword.toString()).append(" ");
+//        for (int i = 0; i < args.size(); i++)
+//        {
+//            Token t = (Token) args.elementAt(i);
+//            if (i < (args.size() - 1))
+//            {
+//                sb.append(t.unparse()).append(", ");
+//            }
+//            else
+//            {
+//                sb.append(t.unparse());
+//            }
+//        }
+//        return sb.toString();
+//    }
 
     /**
      * Parse DATA Statement.

@@ -123,19 +123,6 @@ public class Token implements Serializable
         return type.toString();
     }
 
-    public String unparse ()
-    {
-        switch (type)
-        {
-            case STRING:
-                return "\"" + sValue + "\"";
-            case CONSTANT:
-                return "" + nValue;
-            default:
-                return "Token (" + type.toString() + ")";
-        }
-    }
-
     @Override
     public String toString()
     {

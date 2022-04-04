@@ -78,24 +78,24 @@ public class READStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("READ ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            Variable vi = (Variable) args.elementAt(i);
-            if (i < (args.size() - 1))
-            {
-                sb.append(vi.unparse()).append(", ");
-            }
-            else
-            {
-                sb.append(vi.unparse());
-            }
-        }
-        return sb.toString();
-    }
+//    public String unparse()
+//    {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("READ ");
+//        for (int i = 0; i < args.size(); i++)
+//        {
+//            Variable vi = (Variable) args.elementAt(i);
+//            if (i < (args.size() - 1))
+//            {
+//                sb.append(vi.unparse()).append(", ");
+//            }
+//            else
+//            {
+//                sb.append(vi.unparse());
+//            }
+//        }
+//        return sb.toString();
+//    }
 
     /**
      * Parse READ Statement.

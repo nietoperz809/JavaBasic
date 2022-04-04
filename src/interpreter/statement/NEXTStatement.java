@@ -65,15 +65,14 @@ public class NEXTStatement extends Statement
         {
             lt.unGetToken();
             return;
-//          throw new BASICSyntaxError("NEXT requires a variable");
         }
         s.myVar = (Variable) t;
     }
 
-    public String unparse ()
-    {
-        return " NEXT " + ((myVar != null) ? myVar.unparse() : "");
-    }
+//    public String unparse ()
+//    {
+//        return " NEXT " + ((myVar != null) ? myVar.unparse() : "");
+//    }
 
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {

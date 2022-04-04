@@ -63,22 +63,22 @@ public class DIMStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public String unparse()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(keyword.toString()).append(" ");
-        for (int i = 0; i < args.size(); i++)
-        {
-            Variable va = (Variable) args.elementAt(i);
-            sb.append(va.unparse());
-            if (i < args.size() - 1)
-            {
-                sb.append(", ");
-            }
-        }
-        return sb.toString();
-    }
+//    public String unparse()
+//    {
+//        StringBuilder sb = new StringBuilder();
+//
+//        sb.append(keyword.toString()).append(" ");
+//        for (int i = 0; i < args.size(); i++)
+//        {
+//            Variable va = (Variable) args.elementAt(i);
+//            sb.append(va.unparse());
+//            if (i < args.size() - 1)
+//            {
+//                sb.append(", ");
+//            }
+//        }
+//        return sb.toString();
+//    }
 
     /**
      * Parse the DIMENSION statement.
