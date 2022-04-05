@@ -121,7 +121,6 @@ public class MainWindow extends javax.swing.JFrame
         JMenu fileMenu = new JMenu();
         JMenu jMenu1 = new JMenu();
         JMenuItem jMenuItem7 = new JMenuItem();
-        //    private javax.swing.JMenu jMenu2;
         JMenuItem jMenuItem11 = new JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -136,9 +135,14 @@ public class MainWindow extends javax.swing.JFrame
         fileMenu.setText("Start ...");
 
         JMenuItem jMenuItemBasic = new JMenuItem();
-        jMenuItemBasic.setText("New BASIC");
+        jMenuItemBasic.setText("New 1st.BASIC");
         jMenuItemBasic.addActionListener(evt -> createMDIChild(applications.BasicGUI.class, null));
         fileMenu.add(jMenuItemBasic);
+
+        JMenuItem jMenuItemTC = new JMenuItem();
+        jMenuItemTC.setText("New TinyCat BASIC");
+        jMenuItemTC.addActionListener(evt -> createMDIChild(applications.TinyCatGUI.class, null));
+        fileMenu.add(jMenuItemTC);
 
         JMenuItem jMenuItemMon = new JMenuItem();
         jMenuItemMon.setText("Mem Monitor");

@@ -5,8 +5,8 @@
  */
 package applications;
 
-import interpreter.CommandInterpreter;
-import interpreter.streameditor.StreamingTextArea;
+import basic_1.CommandInterpreter;
+import basic_1.streameditor.StreamingTextArea;
 import misc.MDIChild;
 import misc.Misc;
 
@@ -27,9 +27,9 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
     private CommandInterpreter commandInterpreter;
 
     /* sleep/wakeup map */
-    transient public static final
+    public static final
         ConcurrentHashMap<Long, CountDownLatch> latchMap = new ConcurrentHashMap<>();
-    transient public static final
+    public static final
         ConcurrentHashMap<Long, StreamingTextArea> streamMap = new ConcurrentHashMap<>();
 
     private boolean cbDirectInsertFlag;

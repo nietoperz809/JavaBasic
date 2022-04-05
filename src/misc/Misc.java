@@ -42,13 +42,13 @@ public class Misc
         return (FutureTask<?>) globalExecutor.submit(r);
     }
 
-    private static int getExecutorFreeSlots ()
-    {
-        int tc = ((ThreadPoolExecutor) globalExecutor).getActiveCount();
-        int tm = ((ThreadPoolExecutor) globalExecutor).getCorePoolSize();
-        //System.out.println(tc + "/" + tm);
-        return tm - tc;
-    }
+//    private static int getExecutorFreeSlots ()
+//    {
+//        int tc = ((ThreadPoolExecutor) globalExecutor).getActiveCount();
+//        int tm = ((ThreadPoolExecutor) globalExecutor).getCorePoolSize();
+//        //System.out.println(tc + "/" + tm);
+//        return tm - tc;
+//    }
 
     public static String humanReadableByteCount (long bytes)
     {
@@ -56,7 +56,7 @@ public class Misc
         return "  " + myFormatter.format(bytes);
     }
 
-    private static String formatHelper (String in) {
+    private static String formatBlHelper(String in) {
         in = in.replaceAll("\\s{2,}"," ").trim();
         in = in.replace("\t", " ");
         String in2;
@@ -76,10 +76,10 @@ public class Misc
     {
         String[] str = StringUtils.substringsBetween(in, "\"", "\"");
         if (str == null)
-            return formatHelper (in);
+            return formatBlHelper(in);
         for (int s = 0; s < str.length; s++)
             in = in.replace(str[s], "#" + s);
-        in = formatHelper (in);
+        in = formatBlHelper(in);
         for (int s = 0; s < str.length; s++)
             in = in.replace("#" + s, str[s]);
         return in;
@@ -108,31 +108,6 @@ public class Misc
         }
         return null;
     }
-
-// --Commented out by Inspection START (10/19/2020 2:23 AM):
-//    /**
-//     * Centers Component
-//     *
-//     * @param a Component to center
-//     * @param b Parent component
-//     */
-//    public static void centerComponent (Component a, Component b)
-//    {
-//        Dimension db = b.getSize();
-//        Dimension da = a.getSize();
-//        Point pt = new Point((db.width - da.width) / 2, (db.height - da.height) / 2);
-//        if (pt.x < 0)
-//        {
-//            pt.x = 0;
-//        }
-//        if (pt.y < 0)
-//        {
-//            pt.y = 0;
-//        }
-//        a.setLocation(pt);
-//    }
-// --Commented out by Inspection STOP (10/19/2020 2:23 AM)
-
 
     /**
      * Get byte array from resource bundle

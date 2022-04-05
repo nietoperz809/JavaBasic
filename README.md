@@ -2,7 +2,7 @@
 
 # JavaBasic
 BASIC in an MDI environment<br>
-Feature-rich (e.g. 2 speech synthesizers) old-school BASIC interpreter.
+Feature-rich (e.g. 2 speech synthesizers) old-school BASIC basic_1.
 
 
 ![Alt text](javabasic.jpg?raw=true "Title")
