@@ -23,8 +23,8 @@ import static java.awt.datatransfer.DataFlavor.stringFlavor;
  */
 public class Misc
 {
-    private static final String BUILD_NUMBER = "51";
-    private static final String BUILD_DATE = "10/18/2020 02:41:41 AM";
+    private static final String BUILD_NUMBER = "57";
+    private static final String BUILD_DATE = "04/06/2022 02:10:41 PM";
 
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");
@@ -68,7 +68,7 @@ public class Misc
     }
 
     /**
-     * remove multple banks exxcept between "
+     * remove multiple blanks, exxcept between "
      * @param in raw input line
      * @return trimmed line
      */

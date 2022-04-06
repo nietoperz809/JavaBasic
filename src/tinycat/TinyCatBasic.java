@@ -794,7 +794,7 @@ public class TinyCatBasic {
         }
     }
 
-    public void load_file(final String fn) {
+    public boolean load_file(final String fn) {
         try {
             final BufferedReader f =
                     new BufferedReader(new FileReader(fn));
@@ -808,10 +808,9 @@ public class TinyCatBasic {
                 }
             } while (ln != null);
             f.close();
-        } catch (FileNotFoundException e) {
-            error.println(e);
+            return true;
         } catch (IOException e) {
-            error.println(e);
+            return false;
         }
     }
 
@@ -847,7 +846,6 @@ public class TinyCatBasic {
             output.print(">");
 
             line = area.getBufferedLine().substring(1);
-            if (line == null) break;
             if (line.length() == 0) continue;
 
             cursor = 0;
@@ -878,8 +876,11 @@ public class TinyCatBasic {
                 }
             } else if (token.equals("load")) {
                 if (match_string()) {
-                    load_file(token);
-                    output.println("File loaded");
+                    if (load_file(token)) {
+                        output.println("File loaded");
+                    } else {
+                        output.println("Error: Cannot Load!");
+                    }
                 } else {
                     error.println("String expected");
                 }
@@ -909,18 +910,18 @@ public class TinyCatBasic {
     }
 
 
-    public static void main(String[] args) {
-        TinyCatBasic basic = new TinyCatBasic();
-
-        if (args.length > 0) {
-            for (int i = 0; i < args.length; i++)
-                basic.load_file(args[i]);
-            basic.run_program();
-            if (!basic.stop)
-                return;
-        }
-
-        basic.command_loop(
-                "Tinycat BASIC v1.1.1 READY\nType BYE to quit.");
-    }
+//    public static void main(String[] args) {
+//        TinyCatBasic basic = new TinyCatBasic();
+//
+//        if (args.length > 0) {
+//            for (int i = 0; i < args.length; i++)
+//                basic.load_file(args[i]);
+//            basic.run_program();
+//            if (!basic.stop)
+//                return;
+//        }
+//
+//        basic.command_loop(
+//                "Tinycat BASIC v1.1.1 READY\nType BYE to quit.");
+//    }
 }

@@ -70,32 +70,14 @@ public class READStatement extends Statement
             {
                 if (q.typeNum() != KeyWords.STRING)
                 {
-                    throw new BASICRuntimeError("Type mismatch reading variable " + vi);
+                    // throw new BASICRuntimeError("Type mismatch reading variable " + vi);
+                    pgm.setVariable(vi, Double.toString(q.numValue()));
                 }
                 pgm.setVariable(vi, q.stringValue());
             }
         }
         return pgm.nextStatement(this);
     }
-
-//    public String unparse()
-//    {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("READ ");
-//        for (int i = 0; i < args.size(); i++)
-//        {
-//            Variable vi = (Variable) args.elementAt(i);
-//            if (i < (args.size() - 1))
-//            {
-//                sb.append(vi.unparse()).append(", ");
-//            }
-//            else
-//            {
-//                sb.append(vi.unparse());
-//            }
-//        }
-//        return sb.toString();
-//    }
 
     /**
      * Parse READ Statement.

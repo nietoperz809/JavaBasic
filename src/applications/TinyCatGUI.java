@@ -191,7 +191,7 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
     // cls
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        area.setText("");
+        area.setText("\n>");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // stop running prg
@@ -199,6 +199,7 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
     {//GEN-HEADEREND:event_jButton2ActionPerformed
         // end possible wait state
         //basicTask.cancel(true);
+        area.interrupt();
         basic.stopProgram();
     }//GEN-LAST:event_jButton2ActionPerformed
 

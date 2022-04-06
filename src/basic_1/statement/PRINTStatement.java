@@ -57,7 +57,7 @@ public class PRINTStatement extends Statement
         for (int i = 0; i < args.size(); i++)
         {
             String z;
-            pi = (PrintItem) (args.elementAt(i));
+            pi = args.elementAt(i);
             z = pi.value(pgm, col);
             out.print(z);
             col += z.length();

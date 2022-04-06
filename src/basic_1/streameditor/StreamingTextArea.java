@@ -24,6 +24,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public char lastKey = 0xffff;
     private int previousLinenum = 0;
     volatile private boolean basicIsRunning = false;
+    private boolean interrupt;
 
     public StreamingTextArea ()
     {
@@ -114,7 +115,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
         {
             return lineBuffer.take();
         }
-        catch (InterruptedException e)
+        catch (Exception e)
         {
             //e.printStackTrace();
             return "";
@@ -123,7 +124,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
     public final void startThread ()
     {
-        thread = null;
+        // thread = null;
         Misc.execute(this);
     }
 
@@ -199,6 +200,11 @@ public class StreamingTextArea extends JTextArea implements Runnable
         fakeIn ("bye\n");
     }
 
+    public void interrupt() {
+        interrupt = true;
+        thread.interrupt();
+    }
+
 
     @Override
     public void run ()
@@ -214,8 +220,13 @@ public class StreamingTextArea extends JTextArea implements Runnable
             }
             catch (InterruptedException ex)
             {
-                System.out.println("stream thread ended");
-                return;
+                if (interrupt) {
+                    c = 0;
+                }
+                else {
+                    System.out.println("stream thread ended");
+                    return;
+                }
             }
             try
             {
