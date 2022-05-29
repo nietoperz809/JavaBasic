@@ -12,5 +12,6 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="AbsoluteLayout" level="project" />
     <orderEntry type="library" name="commons.lang" level="project" />
+    <orderEntry type="library" name="mathIT" level="project" />
   </component>
 </module>

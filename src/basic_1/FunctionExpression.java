@@ -79,6 +79,12 @@ public class FunctionExpression extends Expression
         oper = t;
     }
 
+    public FunctionExpression(KeyWords t, LexicalTokenizer lt, Expression e) {
+        super ();
+        oper = t;
+        arg2 = e;
+    }
+
     @Override
     public double value (Program p) throws BASICRuntimeError
     {
@@ -98,6 +104,8 @@ public class FunctionExpression extends Expression
                     return Math.floor (arg2.value (p));
                 case SIN:
                     return Math.sin (arg2.value (p));
+                case FN:
+                    return 0.0; //arg2.value (p);
                 case COS:
                     return Math.cos (arg2.value (p));
                 case TAN:
@@ -143,11 +151,11 @@ public class FunctionExpression extends Expression
                     return 0.0;
 
                 case VAL:
-                    Double dd;
+                    double dd;
                     String zz = (arg2.stringValue (p)).trim ();
                     try
                     {
-                        dd = Double.valueOf (zz);
+                        dd = Double.parseDouble(zz);
                     } catch (NumberFormatException nfe)
                     {
                         throw new BASICRuntimeError ("Invalid string for VAL function.");
@@ -200,7 +208,7 @@ public class FunctionExpression extends Expression
     {
         String ss = null;
         int len = 0;
-        StringBuffer sb;
+        StringBuilder sb;
         int a;
 
         if (sVar != null)
@@ -239,7 +247,7 @@ public class FunctionExpression extends Expression
                 return Misc.df.format (arg2.value (pgm));
 
             case SPC:
-                sb = new StringBuffer ();
+                sb = new StringBuilder();
                 a = (int) arg2.value (pgm);
                 for (int i = 0; i < a; i++)
                 {
@@ -249,7 +257,7 @@ public class FunctionExpression extends Expression
 
             case TAB:
                 a = (int) arg2.value (pgm);
-                sb = new StringBuffer ();
+                sb = new StringBuilder();
                 for (int i = column; i < a; i++)
                 {
                     sb.append (' ');
@@ -282,6 +290,7 @@ public class FunctionExpression extends Expression
         }
 
         t = lt.nextToken ();
+
         if (!t.isSymbol ('('))
         {
             if (ty == KeyWords.TID)
@@ -299,11 +308,11 @@ public class FunctionExpression extends Expression
                 lt.unGetToken ();
                 return new FunctionExpression (ty, new ConstantExpression (0));
             }
-            else if (ty == KeyWords.SPAWN)
-            {
-                lt.unGetToken ();
-                return new FunctionExpression (ty, new ConstantExpression (0));
-            }
+//            else if (ty == KeyWords.SPAWN)
+//            {
+//                lt.unGetToken ();
+//                return new FunctionExpression (ty, new ConstantExpression (0));
+//            }
             throw new BASICSyntaxError ("Missing argument for function.");
         }
         switch (ty)
@@ -335,22 +344,31 @@ public class FunctionExpression extends Expression
                 result = new FunctionExpression (ty, a);
                 break;
 
-            case MAX:
+            case FN:
+                a = ParseExpression.expression (lt);
+                if (!a.isString ())
+                {
+                    throw new BASICSyntaxError ("function name missing.");
+                }
+                result = new FunctionExpression (ty, a);
+                break;
+
+                case MAX:
             case MIN:
                 a = ParseExpression.expression (lt);
                 if (a instanceof BooleanExpression)
                 {
-                    throw new BASICSyntaxError (ty.toString () + " function cannot accept boolean expression.");
+                    throw new BASICSyntaxError (ty + " function cannot accept boolean expression.");
                 }
                 t = lt.nextToken ();
                 if (!t.isSymbol (','))
                 {
-                    throw new BASICSyntaxError (ty.toString () + " function expects two arguments.");
+                    throw new BASICSyntaxError (ty + " function expects two arguments.");
                 }
                 b = ParseExpression.expression (lt);
                 if (b instanceof BooleanExpression)
                 {
-                    throw new BASICSyntaxError (ty.toString () + " function cannot accept boolean expression.");
+                    throw new BASICSyntaxError (ty + " function cannot accept boolean expression.");
                 }
                 result = new FunctionExpression (ty, a, b);
                 break;
@@ -359,7 +377,7 @@ public class FunctionExpression extends Expression
                 a = ParseExpression.expression (lt);
                 if (!a.isString ())
                 {
-                    throw new BASICSyntaxError (ty.toString ()
+                    throw new BASICSyntaxError (ty
                             + " function expects a string argumnet.");
                 }
                 result = new FunctionExpression (ty, a);
@@ -376,7 +394,7 @@ public class FunctionExpression extends Expression
                 t = lt.nextToken ();
                 if (!t.isSymbol (','))
                 {
-                    throw new BASICSyntaxError (ty.toString ()
+                    throw new BASICSyntaxError (ty
                             + " function requires two arguments.");
                 }
                 a = ParseExpression.expression (lt);
@@ -394,7 +412,7 @@ public class FunctionExpression extends Expression
                 t = lt.nextToken ();
                 if (!t.isSymbol (','))
                 {
-                    throw new BASICSyntaxError (ty.toString ()
+                    throw new BASICSyntaxError (ty
                             + " function requires at least two arguments.");
                 }
                 a = ParseExpression.expression (lt);
@@ -410,7 +428,7 @@ public class FunctionExpression extends Expression
                 }
                 else
                 {
-                    throw new BASICSyntaxError (ty.toString ()
+                    throw new BASICSyntaxError (ty
                             + " unexpected symbol in expression.");
                 }
                 result = new FunctionExpression (ty, a, b);

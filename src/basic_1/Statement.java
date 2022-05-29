@@ -37,9 +37,9 @@ public abstract class Statement {
     protected Statement() {
     }
 
-    public KeyWords getKeyWord() {
-        return keyword;
-    }
+//    public KeyWords getKeyWord() {
+//        return keyword;
+//    }
 
     /**
      * This method does the actual statement execution. It works by calling the
@@ -51,6 +51,7 @@ public abstract class Statement {
         Statement nxt;
         try {
             nxt = doit(pgm, in, out);
+            //System.out.println(nxt);
         } catch (BASICRuntimeError e) {
             throw new BASICRuntimeError(this, e.getMsg());
         } catch (Exception ex) {

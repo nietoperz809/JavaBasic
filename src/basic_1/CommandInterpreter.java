@@ -152,9 +152,10 @@ public class CommandInterpreter {
                 String fname = t.stringValue();
                 if (!fname.endsWith(".bas"))
                     fname = fname + ".bas";
-                outStream.println("Saving file...");
                 FileOutputStream fos;
-                fos = new FileOutputStream(fname);
+                File ff = new File (fname);
+                fos = new FileOutputStream(ff);
+                outStream.println("Saving file... "+ff.getAbsolutePath());
                 PrintStream pp = new PrintStream(fos);
                 pgm.list(pp);
                 pp.flush();

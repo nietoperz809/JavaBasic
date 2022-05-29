@@ -306,6 +306,11 @@ public class ParseStatement extends Statement
                     t = lt.nextToken();
                     return nextStep (lt, t,s);
 
+                case DEF:
+                    s = new DEFStatement(lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
+
                 case SEQ:
                     s = new SEQStatement(lt);
                     t = lt.nextToken();

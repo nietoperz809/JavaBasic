@@ -30,13 +30,13 @@ public class Variable extends Token {
     public enum SUBTYPE {NUMBER, INTEGER, thSTRING, NUMBER_ARRAY, STRING_ARRAY, INTEGER_ARRAY}
 
     public String name;
-    private SUBTYPE subType;
+    private final SUBTYPE subType;
 
     /*
      * If the variable is in the symbol table these values are
      * initialized.
      */
-    private int[] ndx;  // array indices.
+    private double[] ndx;  // array indices.
     private int[] mult; // array multipliers
     private double[] nArrayValues;
     private String[] sArrayValues;
@@ -89,14 +89,14 @@ public class Variable extends Token {
     /**
      * Create a symbol table entry for this array.
      */
-    Variable(String someName, int ii[]) {
+    Variable(String someName, double ii[]) {
         int offset;
         ndx = ii;
         mult = new int[ii.length];
         mult[0] = 1;
-        offset = ii[0];
+        offset = (int)ii[0];
         for (int i = 1; i < ii.length; i++) {
-            mult[i] = mult[i - 1] * ii[i];
+            mult[i] = mult[i - 1] * (int)ii[i];
             offset *= ii[i];
         }
         name = someName;
@@ -127,7 +127,7 @@ public class Variable extends Token {
      * there values exceed the max value here in the symbol table entry, a
      * runtime error is thrown.
      */
-    private int computeIndex(int ii[]) throws BASICRuntimeError {
+    private int computeIndex(double ii[]) throws BASICRuntimeError {
         int offset = 0;
         if ((ndx == null) || (ii.length != ndx.length)) {
             throw new BASICRuntimeError("Wrong number of indices.");
@@ -156,14 +156,14 @@ public class Variable extends Token {
         return 0;
     }
 
-    double numValue(int ii[]) throws BASICRuntimeError {
+    double numValue(double ii[]) throws BASICRuntimeError {
         return nArrayValues[computeIndex(ii)];
     }
 
     /**
      * Returns value as a string, even if this internally is a number.
      */
-    String stringValue(int ii[]) throws BASICRuntimeError {
+    String stringValue(double ii[]) throws BASICRuntimeError {
         if (subType == SUBTYPE.NUMBER_ARRAY || subType == SUBTYPE.INTEGER_ARRAY) {
             return "" + nArrayValues[computeIndex(ii)];
         }
@@ -200,7 +200,7 @@ public class Variable extends Token {
 //        sValue = s;
 //    }
 
-    <T> void setValue(T v, int ii[]) throws BASICRuntimeError {
+    <T> void setValue(T v, double ii[]) throws BASICRuntimeError {
         int offset = computeIndex(ii);
         if (nArrayValues == null) {
             throw new BASICRuntimeError("ARRAY storage not initialized.");

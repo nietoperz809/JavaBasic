@@ -19,10 +19,7 @@ package basic_1.statement;
 
 import basic_1.*;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Vector;
 
 /**
@@ -108,8 +105,9 @@ public class INPUTStatement extends Statement
     private final char[] buffer = new char[256];
     String sbuff = "";
 
-    private void getMoreData (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError
+    private void getMoreData (DataInputStream inx, PrintStream out, String prompt) throws BASICRuntimeError
     {
+        BufferedReader brx = new BufferedReader(new InputStreamReader(inx));
         if (prompt != null)
         {
             out.print(prompt);
@@ -122,7 +120,7 @@ public class INPUTStatement extends Statement
 
         try
         {
-            sbuff = in.readLine();
+            sbuff = brx.readLine();
         }
         catch (IOException ioe)
         {
@@ -160,7 +158,7 @@ public class INPUTStatement extends Statement
             getMoreData(in, out, prompt);
         }
 
-        while (Character.isSpace(buffer[currentPos]))
+        while (Character.isWhitespace(buffer[currentPos]))
         {
             if (buffer[currentPos] == '\n')
             {
@@ -260,7 +258,7 @@ public class INPUTStatement extends Statement
                     break;
                 }
 
-                if (Character.isSpace(buffer[currentPos]))
+                if (Character.isWhitespace(buffer[currentPos]))
                 {
                     currentPos++;
                     continue;

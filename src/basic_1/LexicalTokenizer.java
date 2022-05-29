@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Vector;
 
+//import static misc.Misc.convertFN;
+
 /**
  * This class parses the keywords and symbols out of a line of BASIC code (or
  * command line) and returns them as tokens. Each tokenizer maintains state on
@@ -109,6 +111,7 @@ public class LexicalTokenizer implements Serializable
      */
     public void reset (String x)
     {
+        //x = convertFN(x);  // TODO: experimental
         int l = x.length();
         for (int i = 0; i < l; i++)
         {

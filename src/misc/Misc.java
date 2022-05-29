@@ -17,14 +17,15 @@ import java.util.concurrent.*;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.datatransfer.DataFlavor.stringFlavor;
+import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author Administrator
  */
 public class Misc
 {
-    private static final String BUILD_NUMBER = "57";
-    private static final String BUILD_DATE = "04/06/2022 02:10:41 PM";
+    private static final String BUILD_NUMBER = "120";
+    private static final String BUILD_DATE = "04/27/2022 08:01:39 AM";
 
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");
@@ -64,7 +65,7 @@ public class Misc
             in2 = in;
             in = in.replaceAll (", | ,",",");
         } while (!in.equals(in2));
-        return in;
+        return in.toUpperCase();
     }
 
     /**
@@ -146,4 +147,35 @@ public class Misc
         clip.open (AudioSystem.getAudioInputStream (inp));
         clip.start ();
     }
+
+//    /**
+//     * Convert standard FN syntax int functional representation
+//     * @param in BASIC line
+//     * @return Transformed line
+//     */
+//    public static String convertFN(String in) {
+//        if (in.contains("DEF FN"))
+//            return in;
+//        String fname = substringBetween (in, "FN ", "(");
+//        if (fname == null)
+//            return in;
+//        String args = substringBetween (in, fname+"(", ")");
+////        System.out.println("---------------");
+////        System.out.println(in);
+////        System.out.println(fname);
+////        System.out.println(args);
+//
+//        String out = "FN "+"("+"\""+fname+"\","+args+")";
+////        System.out.println(out);
+//
+//        String before = substringBefore(in, "FN");
+//        String after = substringAfter(in, ":");
+//        String combined;
+//        if (after.isEmpty())
+//            combined = before+out;
+//        else
+//            combined = before+out+":"+after;
+////        System.out.println(combined);
+//        return combined;
+//    }
 }

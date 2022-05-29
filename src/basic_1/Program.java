@@ -24,6 +24,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 import com.sun.speech.freetts.audio.SingleFileAudioPlayer;
 import midisystem.MidiSynthSystem;
 import misc.MainWindow;
+import org.mathIT.util.FunctionParser;
 
 import javax.sound.sampled.AudioFileFormat;
 import java.io.*;
@@ -48,19 +49,16 @@ import static misc.Misc.formatBasicLine;
  */
 public class Program //implements Runnable, Serializable
 {
-    private AudioPlayer audioPlayer;
-
     public final StreamingTextArea area;
+    // this tree holds all of the statements.
+    private final RedBlackTree<Integer, Statement> stmts = new RedBlackTree<>();
     public boolean basic_prg_running = true;  // Program basic_prg_running
     public boolean thread_running = true; // Thread basic_prg_running 
     public long basetime = System.currentTimeMillis();
-
-    // this tree holds all of the statements.
-    private final RedBlackTree<Integer, Statement> stmts = new RedBlackTree<>();
-
+    public HashMap<String, FunctionParser> defFuncs = new HashMap<>();
+    private AudioPlayer audioPlayer;
     // this tree holds all of the variables.
     private RedBlackTree<String, Variable> vars = new RedBlackTree<>();
-
     private Stack<Statement> stmtStack = new Stack<>();
     private Vector<Token> dataStore = new Vector<>();
     private int dataPtr = 0;
@@ -69,39 +67,35 @@ public class Program //implements Runnable, Serializable
     private boolean traceState = false;
     private PrintStream traceFile = null;
 
+//    public static void main(String[] args) {
+//        FunctionParser fp = new FunctionParser("3*X");
+//        System.out.println(fp.evaluate(0, 3.0));
+//    }
+
     public Program(StreamingTextArea ta) {
         area = ta;
     }
 
-    public void trace(boolean a) {
-        traceState = a;
-    }
-
-    public void trace(boolean a, String f) {
-        if (traceFile == null) {
-            try {
-                traceFile = new PrintStream(new FileOutputStream(f));
-            } catch (IOException e) {
-                System.out.println("Couldn't open trace file.");
-                traceFile = null;
-            }
-        }
-        trace(a);
-    }
-
-    public Random getRandom() {
-        return r;
-    }
-
-    public void randomize(double seed) {
-        r = new Random((long) seed);
-    }
+//    public void trace(boolean a) {
+//        traceState = a;
+//    }
+//
+//    public void trace(boolean a, String f) {
+//        if (traceFile == null) {
+//            try {
+//                traceFile = new PrintStream(new FileOutputStream(f));
+//            } catch (IOException e) {
+//                System.out.println("Couldn't open trace file.");
+//                traceFile = null;
+//            }
+//        }
+//        trace(a);
+//    }
 
     /**
      * There are two ways to create a new program object, you can load one from
      * an already open stream or you can pass in a file name and load one from
      * the file system.
-     *
      */
     public static Program load(InputStream source, StreamingTextArea ar) throws IOException, BASICSyntaxError {
         BufferedReader dis
@@ -112,7 +106,7 @@ public class Program //implements Runnable, Serializable
         String lineData;
         Statement s;
         Token t;
-        Program result = new Program(ar);
+        Program prog = new Program(ar);
 
         while (true) {
             // read a line of our BASIC program.
@@ -120,7 +114,7 @@ public class Program //implements Runnable, Serializable
 
             // if EOF simply return.
             if (lineData == null) {
-                return result;
+                return prog;
             }
 
             // if the line was blank, ignore it.
@@ -144,7 +138,7 @@ public class Program //implements Runnable, Serializable
             }
             s.addText(lineData);
             s.addLine((int) t.numValue());
-            result.add((int) t.numValue(), s);
+            prog.add((int) t.numValue(), s);
         }
     }
 
@@ -169,6 +163,14 @@ public class Program //implements Runnable, Serializable
         return r;
     }
 
+    public Random getRandom() {
+        return r;
+    }
+
+    public void randomize(double seed) {
+        r = new Random((long) seed);
+    }
+
     /**
      * Add a statement to the current program. Statements are indexed by line
      * number. If the add fails for some reason this method returns false.
@@ -189,11 +191,11 @@ public class Program //implements Runnable, Serializable
     /**
      * Compute the indices based on the expressions in the variable object.
      */
-    private int[] getIndices(Variable v) throws BASICRuntimeError {
-        int[] result = new int[v.numExpn()];
+    private double[] getIndices(Variable v) throws BASICRuntimeError {
+        double[] result = new double[v.numExpn()];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = (int) v.expn(i).value(this);
+            result[i] = v.expn(i).value(this);
         }
         return result;
     }
@@ -205,13 +207,21 @@ public class Program //implements Runnable, Serializable
      */
     public double getVariable(Variable v) throws BASICRuntimeError {
         Variable vi = vars.get(v.name);
+        if (v.name.startsWith("fn")) { // TODO: function?
+            String fname = v.name.substring(2).toUpperCase();
+            FunctionParser fp = defFuncs.get (fname);
+            double[] ii = getIndices(v);
+            if (ii.length == 1)
+                return fp.evaluate(0,ii[0]);
+            return fp.evaluate(0, ii[0], ii[1]);
+        }
         if (vi == null) {
             throw new BASICRuntimeError("Undefined variable '" + v.name + "'");
         }
         if (!vi.isArray()) {
             return vi.numValue();
         }
-        int[] ii = getIndices(v);
+        double[] ii = getIndices(v);
         return vi.numValue(ii);
     }
 
@@ -228,7 +238,7 @@ public class Program //implements Runnable, Serializable
         if (!v.isArray()) {
             return vi.stringValue();
         }
-        int[] ii = getIndices(v);
+        double[] ii = getIndices(v);
         return vi.stringValue(ii);
     }
 
@@ -250,7 +260,7 @@ public class Program //implements Runnable, Serializable
             vi.setValue(value);
             return;
         }
-        int[] ii = getIndices(v);
+        double[] ii = getIndices(v);
         vi.setValue(value, ii);
     }
 
@@ -261,7 +271,7 @@ public class Program //implements Runnable, Serializable
      */
     public void declareArray(Variable v) throws BASICRuntimeError {
         Variable vi;
-        int[] ii = getIndices(v);
+        double[] ii = getIndices(v);
         vi = new Variable(v.name, ii);
         vars.put(v.name, vi);
     }
@@ -316,7 +326,6 @@ public class Program //implements Runnable, Serializable
     }
 
 
-
     /**
      * Dump the symbol table
      */
@@ -354,7 +363,7 @@ public class Program //implements Runnable, Serializable
      *
      * @throws BASICRuntimeError if an error occurs while basic_prg_running.
      */
-    public void run (InputStream in, OutputStream out, int firstline) throws Exception {
+    public void run(InputStream in, OutputStream out, int firstline) throws Exception {
         PrintStream pout;
         Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements();
         stmtStack = new Stack();    // assume no stacked statements ...
@@ -378,6 +387,7 @@ public class Program //implements Runnable, Serializable
         /* First we load all of the data statements */
         while (e.hasMoreElements()) {
             s = (e.nextElement()).getValue();
+            System.out.println(s + " -- " + s.unparse());  // TODO test
             if (s.keyword == KeyWords.DATA) {
                 s.execute(this, in, pout);
             }
@@ -514,7 +524,6 @@ public class Program //implements Runnable, Serializable
 
     /**
      * opem voice file
-     *
      */
     public void setVoiceFilename(String sss) {
         audioPlayer = new SingleFileAudioPlayer(sss, AudioFileFormat.Type.WAVE);

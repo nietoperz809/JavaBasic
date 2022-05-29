@@ -50,7 +50,7 @@ public class PRINTStatement extends Statement
     }
 
     @Override
-    public Statement doit(Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
+    public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {
         PrintItem pi = null;
         int col = 0;
