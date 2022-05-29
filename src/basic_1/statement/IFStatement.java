@@ -62,7 +62,7 @@ public class IFStatement extends Statement
         Statement s;
 
         v = nExp.value(pgm);
-        if (v == 1.0)
+        if (v != 0.0)
         {
             if (thenClause != null)
             {
@@ -106,10 +106,10 @@ public class IFStatement extends Statement
     private static void parse(IFStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
         s.nExp = ParseExpression.expression(lt);
-        if (!(s.nExp instanceof BooleanExpression))
-        {
-            throw new BASICSyntaxError("Boolean expression required for IF.");
-        }
+//        if (!(s.nExp instanceof BooleanExpression))
+//        {
+//            throw new BASICSyntaxError("Boolean expression required for IF.");
+//        }
         Token t = lt.nextToken();
         if (t.isSymbol(')'))
         {
