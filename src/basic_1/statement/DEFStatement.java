@@ -25,10 +25,13 @@ public class DEFStatement extends Statement
     }
 
     // 10 DEF FN FTEST1(X) = X*3
-    // FN FTEST1(X) -> FN ("FTEST","X")
     private static void parse(DEFStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
-        String[] toks = lt.asString().trim().split("\\s+");
+        String line = lt.asString().trim();
+        if (!Character.isWhitespace(line.charAt(2))) {
+            line = line.substring(0,2)+' '+line.substring(2);
+        }
+        String[] toks = line.split("\\s+");
         if (toks.length != 4)
             throw new BASICSyntaxError("Malformed DEF FN");
         if (!toks[0].toUpperCase().equals("FN"))

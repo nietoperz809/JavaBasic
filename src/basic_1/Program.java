@@ -210,6 +210,9 @@ public class Program //implements Runnable, Serializable
         if (v.name.startsWith("fn")) { // TODO: function?
             String fname = v.name.substring(2).toUpperCase();
             FunctionParser fp = defFuncs.get (fname);
+            if (fp == null) {
+                throw new BASICRuntimeError("Func not defined: " + fname);
+            }
             double[] ii = getIndices(v);
             if (ii.length == 1)
                 return fp.evaluate(0,ii[0]);
@@ -387,7 +390,7 @@ public class Program //implements Runnable, Serializable
         /* First we load all of the data statements */
         while (e.hasMoreElements()) {
             s = (e.nextElement()).getValue();
-            System.out.println(s + " -- " + s.unparse());  // TODO test
+            //System.out.println(s + " -- " + s.unparse());  // TODO test
             if (s.keyword == KeyWords.DATA) {
                 s.execute(this, in, pout);
             }

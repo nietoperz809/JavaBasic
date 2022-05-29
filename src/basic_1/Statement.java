@@ -65,17 +65,17 @@ public abstract class Statement {
      * was set then use that, otherwise reconstruct the string from the parse
      * tree.
      */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("BASIC Statement :");
-        if (orig != null) {
-            sb.append(orig);
-        } else {
-            sb.append(unparse());
-        }
-        return sb.toString();
-    }
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("BASIC Statement :");
+//        if (orig != null) {
+//            sb.append(orig);
+//        } else {
+//            sb.append(unparse());
+//        }
+//        return sb.toString();
+//    }
 
     /**
      * Put a reference to the original string from which this statement was
