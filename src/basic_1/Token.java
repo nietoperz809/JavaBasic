@@ -85,15 +85,17 @@ public class Token implements Serializable
         nValue = v;
     }
 
-    /**
-     * Create a token with both a string and a numeric value.
-     */
-    Token (KeyWords t, String sv, int iv)
-    {
-        type = t;
-        sValue = sv;
-        nValue = iv;
-    }
+// --Commented out by Inspection START (5/29/2022 8:00 PM):
+//    /**
+//     * Create a token with both a string and a numeric value.
+//     */
+//    Token (KeyWords t, String sv, int iv)
+//    {
+//        type = t;
+//        sValue = sv;
+//        nValue = iv;
+//    }
+// --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
     Token (KeyWords t, KeyWords kw)
     {
@@ -118,10 +120,12 @@ public class Token implements Serializable
         return type;
     }
 
-    String typeString()
-    {
-        return type.toString();
-    }
+// --Commented out by Inspection START (5/29/2022 8:00 PM):
+//    String typeString()
+//    {
+//        return type.toString();
+//    }
+// --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
     @Override
     public String toString()

@@ -14,7 +14,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 class InStream extends java.io.InputStream
 {
-    private ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128,true);
+    private final ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128,true);
 
     /**
      *
@@ -31,8 +31,7 @@ class InStream extends java.io.InputStream
     }
 
     @Override
-    public synchronized void reset() throws IOException
-    {
+    public synchronized void reset() {
         buffer.clear();
     }
 

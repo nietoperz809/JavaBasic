@@ -18,8 +18,7 @@ public class DEFStatement extends Statement
             parse(this, lt);
     }
 
-    public Statement doit(Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
-    {
+    public Statement doit(Program pgm, InputStream in, PrintStream out) {
         pgm.defFuncs.put (name, new FunctionParser(func.toLowerCase()));
         return pgm.nextStatement(this);
     }
@@ -34,13 +33,13 @@ public class DEFStatement extends Statement
         String[] toks = line.split("\\s+");
         if (toks.length != 4)
             throw new BASICSyntaxError("Malformed DEF FN");
-        if (!toks[0].toUpperCase().equals("FN"))
+        if (!toks[0].equalsIgnoreCase("FN"))
             throw new BASICSyntaxError("missing FN");
         if (!toks[2].equals("="))
             throw new BASICSyntaxError("missing =");
         String[] fparts = toks[1].split("\\(");
         s.name = fparts[0];
-        s.func = toks[3]; //new DefFunc(fparts[0], fparts[1].substring(0, fparts[1].length() - 1), toks[3]);
+        s.func = toks[3];
     }
 
 }

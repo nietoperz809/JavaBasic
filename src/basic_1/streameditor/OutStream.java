@@ -15,7 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 class OutStream extends OutputStream implements Serializable
 {
-    public ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128, true);
+    public final ArrayBlockingQueue<Character> buffer = new ArrayBlockingQueue<>(128, true);
 
 
     public OutStream ()
@@ -30,7 +30,7 @@ class OutStream extends OutputStream implements Serializable
         {
             buffer.put((char)bt);
         }
-        catch (InterruptedException e)
+        catch (InterruptedException ignored)
         {
         }
     }

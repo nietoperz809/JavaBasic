@@ -19,9 +19,9 @@ public class SCLRStatement extends Statement
 {
     /**
      * CLC command
-     * @param lt
+     * @param ignoredLt
      */
-    public SCLRStatement (LexicalTokenizer lt) {
+    public SCLRStatement (LexicalTokenizer ignoredLt) {
         super(KeyWords.SCLR);
     }
 

@@ -44,8 +44,7 @@ public class NEXTStatement extends Statement
     // This is the line number to transfer control too.
     private Variable myVar;
 
-    public NEXTStatement (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    public NEXTStatement (LexicalTokenizer lt) {
         super(KeyWords.NEXT);
 
         if (lt.getBuffer() != null)
@@ -68,11 +67,6 @@ public class NEXTStatement extends Statement
         }
         s.myVar = (Variable) t;
     }
-
-//    public String unparse ()
-//    {
-//        return " NEXT " + ((myVar != null) ? myVar.unparse() : "");
-//    }
 
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {

@@ -74,7 +74,7 @@ public class SAMStatement extends Statement
         String[] arg = {"-stdout","dummy",txt};
         ByteArrayOutputStream ba = new ByteArrayOutputStream();
         PrintStream p = new PrintStream (ba);
-        meth.invoke(null, p, (Object) arg);
+        meth.invoke(null, p, arg);
         return ba.toByteArray ();
     }
 

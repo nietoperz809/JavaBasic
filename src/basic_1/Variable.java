@@ -29,7 +29,7 @@ public class Variable extends Token {
     // Legal variable sub types
     public enum SUBTYPE {NUMBER, INTEGER, thSTRING, NUMBER_ARRAY, STRING_ARRAY, INTEGER_ARRAY}
 
-    public String name;
+    public final String name;
     private final SUBTYPE subType;
 
     /*
@@ -58,7 +58,7 @@ public class Variable extends Token {
     /**
      * Create a reference to this array.
      */
-    Variable(String someName, Expression ee[]) {
+    Variable(String someName, Expression[] ee) {
         type = KeyWords.VARIABLE;
         if (someName.endsWith("$")) {
             subType = SUBTYPE.STRING_ARRAY;
@@ -89,7 +89,7 @@ public class Variable extends Token {
     /**
      * Create a symbol table entry for this array.
      */
-    Variable(String someName, double ii[]) {
+    Variable(String someName, double[] ii) {
         int offset;
         ndx = ii;
         mult = new int[ii.length];
@@ -127,7 +127,7 @@ public class Variable extends Token {
      * there values exceed the max value here in the symbol table entry, a
      * runtime error is thrown.
      */
-    private int computeIndex(double ii[]) throws BASICRuntimeError {
+    private int computeIndex(double[] ii) throws BASICRuntimeError {
         int offset = 0;
         if ((ndx == null) || (ii.length != ndx.length)) {
             throw new BASICRuntimeError("Wrong number of indices.");
@@ -142,28 +142,30 @@ public class Variable extends Token {
         return offset;
     }
 
-    int numIndex() {
-        if (!isArray()) {
-            return 0;
-        }
+// --Commented out by Inspection START (5/29/2022 8:00 PM):
+//    int numIndex() {
+//        if (!isArray()) {
+//            return 0;
+//        }
+//
+//        if (ndx != null) {
+//            return ndx.length;
+//        }
+//        if (expns != null) {
+//            return expns.length;
+//        }
+//        return 0;
+//    }
+// --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
-        if (ndx != null) {
-            return ndx.length;
-        }
-        if (expns != null) {
-            return expns.length;
-        }
-        return 0;
-    }
-
-    double numValue(double ii[]) throws BASICRuntimeError {
+    double numValue(double[] ii) throws BASICRuntimeError {
         return nArrayValues[computeIndex(ii)];
     }
 
     /**
      * Returns value as a string, even if this internally is a number.
      */
-    String stringValue(double ii[]) throws BASICRuntimeError {
+    String stringValue(double[] ii) throws BASICRuntimeError {
         if (subType == SUBTYPE.NUMBER_ARRAY || subType == SUBTYPE.INTEGER_ARRAY) {
             return "" + nArrayValues[computeIndex(ii)];
         }
@@ -192,15 +194,7 @@ public class Variable extends Token {
             sValue = (String) v;
     }
 
-//    /**
-//     * Set this variables string value.
-//     */
-//    <T> void setValue(T s)
-//    {
-//        sValue = s;
-//    }
-
-    <T> void setValue(T v, double ii[]) throws BASICRuntimeError {
+    <T> void setValue(T v, double[] ii) throws BASICRuntimeError {
         int offset = computeIndex(ii);
         if (nArrayValues == null) {
             throw new BASICRuntimeError("ARRAY storage not initialized.");
@@ -210,16 +204,6 @@ public class Variable extends Token {
         else if (v instanceof String)
             sArrayValues[offset] = (String) v;
     }
-
-//    void setValue(String v, int ii[]) throws BASICRuntimeError
-//    {
-//        int offset = computeIndex(ii);
-//        if (sArrayValues == null)
-//        {
-//            throw new BASICRuntimeError("ARRAY storage not initialized.");
-//        }
-//        sArrayValues[offset] = v;
-//    }
 
     /**
      * Return true if this variable holds a string value.

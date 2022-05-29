@@ -35,10 +35,10 @@ public class LexicalTokenizer implements Serializable
 
     private final static EnumSet<KeyWords> boolTokens
             = EnumSet.of(KeyWords.OP_BAND, KeyWords.OP_BIOR, KeyWords.OP_BXOR, KeyWords.OP_BNOT);
-    private int currentPos = 0;
+    private int currentPos;
     private int previousPos = 0;
     private int markPos = 0;
-    private char[] buffer = null;
+    private char[] buffer;
     // we just keep this around 'cuz we return it a lot.
     private final Token EOLToken = new Token(KeyWords.EOL, 0);
 
@@ -47,7 +47,7 @@ public class LexicalTokenizer implements Serializable
         return buffer;
     }
 
-    public LexicalTokenizer (char data[])
+    public LexicalTokenizer (char[] data)
     {
         buffer = data;
         currentPos = 0;
@@ -91,7 +91,7 @@ public class LexicalTokenizer implements Serializable
     /**
      * Reset the tokenizer with a new data buffer.
      */
-    void reset (char buf[])
+    void reset (char[] buf)
     {
         buffer = buf;
         currentPos = 0;
@@ -388,7 +388,7 @@ public class LexicalTokenizer implements Serializable
         {
             currentPos++;
             Vector<Expression> expVec = new Vector<>();
-            Expression expn[];
+            Expression[] expn;
 
             // This line sets the maximum number of indices.
             for (int i = 0; i < 4; i++)
@@ -409,7 +409,7 @@ public class LexicalTokenizer implements Serializable
                     expn = new Expression[expVec.size()]; // this recurses to us
                     for (int k = 0; k < expVec.size(); k++)
                     {
-                        expn[k] = (Expression) (expVec.elementAt(k));
+                        expn[k] = expVec.elementAt(k);
                     }
                     previousPos = savePos; // this is so we can "unget"
                     return new Variable(t, expn);
@@ -530,47 +530,6 @@ public class LexicalTokenizer implements Serializable
     /**
      * Check the input stream to see if it is one of the boolean operations.
      */
-//    Token parseBooleanOp()
-//    {
-//        int oldPos = currentPos;
-//        StringBuffer sb = new StringBuffer();
-//        int len = 0;
-//        Token r = null;
-//
-//        if (buffer[currentPos] != '.')
-//        {
-//            return null;
-//        }
-//        sb.append('.');
-//        currentPos++;
-//        do
-//        {
-//            sb.append(buffer[currentPos + len]);
-//            len++;
-//        }
-//        while ((len < 7) && isLetter(buffer[currentPos + len]));
-//        if (buffer[currentPos + len] == '.')
-//        {
-//            sb.append('.');
-//            len++;
-//            String x = sb.toString();
-//            for (int i = 0; i < boolOps.length; i++)
-//            {
-//                if (x.equalsIgnoreCase(boolOps[i]))
-//                {
-//                    r = new Token(Token.OPERATOR, boolOps[i], boolTokens[i]);
-//                    break;
-//                }
-//            }
-//            if (r != null)
-//            {
-//                currentPos += len;
-//                return r;
-//            }
-//        }
-//        currentPos = oldPos;
-//        return null;
-//    }
     private Token parseBooleanOp ()
     {
         int oldPos = currentPos;

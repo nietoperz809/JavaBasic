@@ -35,7 +35,7 @@ import java.io.PrintStream;
 public class ENDStatement extends Statement
 {
 
-    public ENDStatement (LexicalTokenizer lt) {
+    public ENDStatement (LexicalTokenizer ignoredLt) {
         super(KeyWords.END);
     }
 

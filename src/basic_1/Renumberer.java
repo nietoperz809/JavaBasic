@@ -90,7 +90,7 @@ public class Renumberer {
         try {
             return Program.load(targetStream, prg.area);
         } catch (Exception e) {
-            System.out.println("ren fail " + e.toString());
+            System.out.println("ren fail " + e);
         }
         return null;
     }

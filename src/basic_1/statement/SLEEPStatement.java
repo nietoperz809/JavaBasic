@@ -52,7 +52,7 @@ public class SLEEPStatement extends Statement
         }
         catch (InterruptedException ex)
         {
-            throw new BASICRuntimeError("SLEEP " + ex.toString());
+            throw new BASICRuntimeError("SLEEP " + ex);
         }
         return s;
     }

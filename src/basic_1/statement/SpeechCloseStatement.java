@@ -15,9 +15,9 @@ public class SpeechCloseStatement extends Statement
 {
     /**
      * CLC command
-     * @param lt
+     * @param ignoredLt
      */
-    public SpeechCloseStatement (LexicalTokenizer lt) {
+    public SpeechCloseStatement (LexicalTokenizer ignoredLt) {
         super(KeyWords.SPCLOSE);
     }
 

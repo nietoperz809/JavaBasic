@@ -48,12 +48,6 @@ public class RANDOMIZEStatement extends Statement
                 case FUNCTION:
                     lt.unGetToken();
                     nExpn = ParseExpression.expression(lt);
-//                case KEYWORD:
-//                    if (t.kwValue != KeyWords.TIMER)
-//                    {
-//                        throw new BASICSyntaxError("Badly formed randomize statement.");
-//                    }
-//                    useTimeOfDay = true;
                 default:
                     lt.unGetToken();
             }

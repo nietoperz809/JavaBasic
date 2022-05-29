@@ -30,7 +30,7 @@ public class NOTESStatement extends Statement
 
     @Override
     public Statement doit(Program pgm, InputStream in, PrintStream out) {
-        out.println (new Notes().toString());
+        out.println (new Notes());
         return pgm.nextStatement(this);
     }
 }

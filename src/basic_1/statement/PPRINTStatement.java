@@ -42,7 +42,7 @@ public class PPRINTStatement extends Statement
         for (int i = 0; i < args.size(); i++)
         {
             String z;
-            pi = (PrintItem) (args.elementAt(i));
+            pi = args.elementAt(i);
             z = pi.value(pgm, col);
             text = text + z;
             col += z.length();

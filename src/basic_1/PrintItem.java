@@ -29,8 +29,8 @@ public class PrintItem
     public final static int TAB = 3;
     public final static int SEMI = 4;
 
-    private int type;
-    private Object thing;
+    private final int type;
+    private final Object thing;
 
     public PrintItem(int t, Object o)
     {
@@ -81,25 +81,27 @@ public class PrintItem
     }
 
 
-    void print(PrintStream p)
-    {
-        switch (type)
-        {
-            case EXPRESSION:
-                ((Expression) thing).print(p);
-                return;
-            case STRING_VARIABLE:
-                p.print((String) thing);
-                return;
-            case STRING_CONSTANT:
-                p.print("\"" + (String) thing + "\"");
-                return;
-            case TAB:
-                p.print(",");
-                return;
-            case SEMI:
-                p.print(";");
-                return;
-        }
-    }
+// --Commented out by Inspection START (5/29/2022 8:01 PM):
+//    void print(PrintStream p)
+//    {
+//        switch (type)
+//        {
+//            case EXPRESSION:
+//                ((Expression) thing).print(p);
+//                return;
+//            case STRING_VARIABLE:
+//                p.print((String) thing);
+//                return;
+//            case STRING_CONSTANT:
+//                p.print("\"" + (String) thing + "\"");
+//                return;
+//            case TAB:
+//                p.print(",");
+//                return;
+//            case SEMI:
+//                p.print(";");
+//                return;
+//        }
+//    }
+// --Commented out by Inspection STOP (5/29/2022 8:01 PM)
 }

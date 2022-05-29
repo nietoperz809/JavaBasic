@@ -37,10 +37,6 @@ public abstract class Statement {
     protected Statement() {
     }
 
-//    public KeyWords getKeyWord() {
-//        return keyword;
-//    }
-
     /**
      * This method does the actual statement execution. It works by calling the
      * abstract function 'doit' which is defined in each statement subclass. The
@@ -55,7 +51,7 @@ public abstract class Statement {
         } catch (BASICRuntimeError e) {
             throw new BASICRuntimeError(this, e.getMsg());
         } catch (Exception ex) {
-            throw new BASICRuntimeError(this, "Java Error: " + ex.toString());
+            throw new BASICRuntimeError(this, "Java Error: " + ex);
         }
         return nxt;
     }
@@ -65,17 +61,6 @@ public abstract class Statement {
      * was set then use that, otherwise reconstruct the string from the parse
      * tree.
      */
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("BASIC Statement :");
-//        if (orig != null) {
-//            sb.append(orig);
-//        } else {
-//            sb.append(unparse());
-//        }
-//        return sb.toString();
-//    }
 
     /**
      * Put a reference to the original string from which this statement was
@@ -119,8 +104,6 @@ public abstract class Statement {
         return keyword.name();
     }
 
-    ;
-
 
     /**
      * This method "runs" this statement and returns a reference on the next
@@ -155,7 +138,7 @@ public abstract class Statement {
         sb.append(n);
         sb.append(':');
         sb.append(unparse());
-        ps.println(sb.toString());
+        ps.println(sb);
         if (vars != null) {
             for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
                 VariableExpression vi = (VariableExpression) e.nextElement();
@@ -195,17 +178,6 @@ public abstract class Statement {
                 throw new BASICSyntaxError("param must be constant or variable");
         }
     }
-
-//    protected String getStringArg (LexicalTokenizer lt) throws BASICSyntaxError
-//    {
-//        Token t = lt.nextToken();
-//        if (t.typeNum() == KeyWords.STRING)
-//        {
-//            return t.stringValue();
-//        }
-//        lt.unGetToken();
-//        throw new BASICSyntaxError("param must be constant or variable");
-//    }
 
     public void checkComma(LexicalTokenizer lt) throws BASICSyntaxError {
         Token t = lt.nextToken();

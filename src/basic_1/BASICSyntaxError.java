@@ -29,9 +29,11 @@ public class BASICSyntaxError extends BASICError {
         super(errorMessage);
     }
 
-    BASICSyntaxError(Statement thisStatement, String errorMessage) {
-        super(thisStatement, errorMessage);
-    }
+// --Commented out by Inspection START (5/29/2022 7:58 PM):
+//    BASICSyntaxError(Statement thisStatement, String errorMessage) {
+//        super(thisStatement, errorMessage);
+//    }
+// --Commented out by Inspection STOP (5/29/2022 7:58 PM)
 
     /**
      * Return the syntax error message.

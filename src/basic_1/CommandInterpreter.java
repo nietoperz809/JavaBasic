@@ -119,7 +119,7 @@ public class CommandInterpreter {
                     sb.append(instr[n].toString());
                     sb.append('\n');
                 }
-                outStream.println(sb.toString());
+                outStream.println(sb);
                 return pgm;
 
             case CMD_CAT:
@@ -197,21 +197,6 @@ public class CommandInterpreter {
                     }
                 }
                 return pgm;
-
-//            case CMD_DUMP:
-//                PrintStream zzz = outStream;
-//                t = lt.nextToken();
-//                if (t.typeNum() == KeyWords.STRING) {
-//                    try {
-//                        zzz = new PrintStream(new FileOutputStream(t.stringValue()));
-//                    } catch (IOException ii) {
-//                    }
-//                }
-//                pgm.dump(zzz);
-//                if (zzz != outStream) {
-//                    zzz.close();
-//                }
-//                return pgm;
 
             case CMD_RENUMBER:
                 Point pt = get2Val(lt, new Point(10,10));

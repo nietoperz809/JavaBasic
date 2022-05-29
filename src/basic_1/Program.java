@@ -54,8 +54,8 @@ public class Program //implements Runnable, Serializable
     private final RedBlackTree<Integer, Statement> stmts = new RedBlackTree<>();
     public boolean basic_prg_running = true;  // Program basic_prg_running
     public boolean thread_running = true; // Thread basic_prg_running 
-    public long basetime = System.currentTimeMillis();
-    public HashMap<String, FunctionParser> defFuncs = new HashMap<>();
+    public final long basetime = System.currentTimeMillis();
+    public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
     private AudioPlayer audioPlayer;
     // this tree holds all of the variables.
     private RedBlackTree<String, Variable> vars = new RedBlackTree<>();
@@ -64,33 +64,12 @@ public class Program //implements Runnable, Serializable
     private int dataPtr = 0;
     private Random r = new Random(0);
 
-    private boolean traceState = false;
-    private PrintStream traceFile = null;
-
-//    public static void main(String[] args) {
-//        FunctionParser fp = new FunctionParser("3*X");
-//        System.out.println(fp.evaluate(0, 3.0));
-//    }
+    private final boolean traceState = false;
+    private final PrintStream traceFile = null;
 
     public Program(StreamingTextArea ta) {
         area = ta;
     }
-
-//    public void trace(boolean a) {
-//        traceState = a;
-//    }
-//
-//    public void trace(boolean a, String f) {
-//        if (traceFile == null) {
-//            try {
-//                traceFile = new PrintStream(new FileOutputStream(f));
-//            } catch (IOException e) {
-//                System.out.println("Couldn't open trace file.");
-//                traceFile = null;
-//            }
-//        }
-//        trace(a);
-//    }
 
     /**
      * There are two ways to create a new program object, you can load one from
@@ -332,13 +311,6 @@ public class Program //implements Runnable, Serializable
     /**
      * Dump the symbol table
      */
-//    void dump(PrintStream p) {
-//        for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
-//            Map.Entry<String, Variable> entry = (Map.Entry<String, Variable>) e.nextElement();
-//            Variable v = entry.getValue();
-//            p.println(v.unparse() + " = " + (v.isString() ? "\"" + v.stringValue() + "\"" : "" + v.numValue()));
-//        }
-//    }
 
     /**
      * This is the first variation on list, it simply list from the starting

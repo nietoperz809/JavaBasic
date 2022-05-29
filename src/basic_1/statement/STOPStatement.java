@@ -41,7 +41,7 @@ import java.io.PrintStream;
  */
 public class STOPStatement extends Statement {
 
-    public STOPStatement (LexicalTokenizer lt) {
+    public STOPStatement (LexicalTokenizer ignoredLt) {
         super(KeyWords.STOP);
     }
 

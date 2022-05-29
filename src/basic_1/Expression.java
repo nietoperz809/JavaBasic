@@ -38,8 +38,6 @@ import java.io.PrintStream;
 public class Expression
 {
 
-//    final static String typeError
-//            = "Expression: cannot combine boolean term with arithmetic term.";
 Expression arg1;
     Expression arg2;
     KeyWords oper;
@@ -51,8 +49,7 @@ Expression arg1;
     /**
      * Create a new expression.
      */
-    Expression (KeyWords op, Expression a, Expression b) throws BASICSyntaxError
-    {
+    Expression (KeyWords op, Expression a, Expression b) {
         arg1 = a;
         arg2 = b;
         oper = op;
@@ -64,8 +61,7 @@ Expression arg1;
     /**
      * Create a unary expression.
      */
-    Expression (KeyWords op, Expression a) throws BASICSyntaxError
-    {
+    Expression (KeyWords op, Expression a) {
         arg2 = a;
         oper = op;
     }
@@ -90,7 +86,7 @@ Expression arg1;
         sb.append("(");
         if (arg1 != null)
         {
-            sb.append(arg1.toString());
+            sb.append(arg1);
         }
         sb.append(oper.toString());
         sb.append(arg2.toString());

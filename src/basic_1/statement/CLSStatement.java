@@ -22,9 +22,9 @@ public class CLSStatement extends Statement
 {
     /**
      * CLC command
-     * @param lt
+     * @param ignoredLt
      */
-    public CLSStatement (LexicalTokenizer lt) {
+    public CLSStatement (LexicalTokenizer ignoredLt) {
         super(KeyWords.CLS);
     }
 

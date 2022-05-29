@@ -75,28 +75,6 @@ public class INPUTStatement extends Statement
     /**
      * Reconstruct this statement from its parsed data.
      */
-//    public String unparse()
-//    {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("INPUT ");
-//        if (prompt != null)
-//        {
-//            sb.append("\"").append(prompt).append("\"; ");
-//        }
-//        for (int i = 0; i < args.size(); i++)
-//        {
-//            Variable va = (Variable) args.elementAt(i);
-//            if (i < (args.size() - 1))
-//            {
-//                sb.append(va.unparse()).append(", ");
-//            }
-//            else
-//            {
-//                sb.append(va.unparse());
-//            }
-//        }
-//        return sb.toString();
-//    }
 
     /**
      * This is our buffer for processing INPUT statement requests.
@@ -143,8 +121,7 @@ public class INPUTStatement extends Statement
     /*
      * Read a floating point number from the character buffer array.
      */
-    private double getNumber (DataInputStream in, PrintStream out, String prompt) throws BASICRuntimeError
-    {
+    private double getNumber (DataInputStream in, PrintStream out, String prompt) {
         currentPos = sbuff.length();
         return Double.parseDouble(sbuff);
     }

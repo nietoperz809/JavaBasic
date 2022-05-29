@@ -26,7 +26,7 @@ package basic_1;
  */
 class BASICError extends Exception
 {
-    private String msg;
+    private final String msg;
     private Statement s = null;
 
     /** A new runtime error with message <i>errorMessage</i>.

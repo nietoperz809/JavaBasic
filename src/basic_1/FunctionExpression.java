@@ -308,11 +308,6 @@ public class FunctionExpression extends Expression
                 lt.unGetToken ();
                 return new FunctionExpression (ty, new ConstantExpression (0));
             }
-//            else if (ty == KeyWords.SPAWN)
-//            {
-//                lt.unGetToken ();
-//                return new FunctionExpression (ty, new ConstantExpression (0));
-//            }
             throw new BASICSyntaxError ("Missing argument for function.");
         }
         switch (ty)

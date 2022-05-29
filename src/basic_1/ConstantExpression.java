@@ -44,8 +44,7 @@ public class ConstantExpression extends Expression
         p.print((strCons == null) ? v + " " : strCons);
     }
 
-    public double value (Program pgm) throws BASICRuntimeError
-    {
+    public double value (Program pgm) {
         if (strCons != null)
         {
             return 0;
@@ -54,8 +53,7 @@ public class ConstantExpression extends Expression
     }
 
 
-    String stringValue(Program pgm, int c) throws BASICRuntimeError
-    {
+    String stringValue(Program pgm, int c) {
         if (strCons != null)
         {
             return strCons;
@@ -63,8 +61,7 @@ public class ConstantExpression extends Expression
         return "" + v;
     }
 
-    public String stringValue (Program pgm) throws BASICRuntimeError
-    {
+    public String stringValue (Program pgm) {
         if (strCons != null)
         {
             return strCons;

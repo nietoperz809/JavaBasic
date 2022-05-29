@@ -49,7 +49,7 @@ public class ParseExpression extends Expression
 
     private static Expression element (LexicalTokenizer lt) throws BASICSyntaxError
     {
-        Expression result = null;
+        Expression result;
 
         Token t = lt.nextToken();
 

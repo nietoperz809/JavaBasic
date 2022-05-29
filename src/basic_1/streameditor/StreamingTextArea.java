@@ -69,7 +69,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
                 previousLinenum = editArea.getLineOfOffset(caretpos)-1;
                 //columnnum = caretpos - editArea.getLineStartOffset(linenum);
             }
-            catch (Exception ex)
+            catch (Exception ignored)
             {
             }
         });
@@ -138,10 +138,12 @@ public class StreamingTextArea extends JTextArea implements Runnable
         return new PrintStream(out);
     }
 
-    public DataInputStream getDataInputStream ()
-    {
-        return new DataInputStream(in);
-    }
+// --Commented out by Inspection START (5/29/2022 8:00 PM):
+//    public DataInputStream getDataInputStream ()
+//    {
+//        return new DataInputStream(in);
+//    }
+// --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
     public OutputStream getOutputStream ()
     {
@@ -213,7 +215,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
         System.out.println("stream thread start");
         while (true) //!thread.isInterrupted())
         {
-            Character c;
+            char c;
             try
             {
                 c = out.buffer.take();
@@ -253,10 +255,6 @@ public class StreamingTextArea extends JTextArea implements Runnable
     public synchronized void stopRunMode()
     {
         basicIsRunning = false;
-        try {
-            in.reset();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        in.reset();
     }
 }
