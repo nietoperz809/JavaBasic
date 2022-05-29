@@ -101,10 +101,10 @@ public class LETStatement extends Statement
         {
             throw new BASICSyntaxError("String assignment needs string expression.");
         }
-        if (s.nExp instanceof BooleanExpression)
-        {
-            throw new BASICSyntaxError("Boolean expression not allowed in LET.");
-        }
+//        if (s.nExp instanceof BooleanExpression)
+//        {
+//            throw new BASICSyntaxError("Boolean expression not allowed in LET.");
+//        }
         t = lt.nextToken();
         if (t.isSymbol(')'))
         {
