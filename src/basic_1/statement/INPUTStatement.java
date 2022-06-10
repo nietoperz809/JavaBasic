@@ -98,7 +98,7 @@ public class INPUTStatement extends Statement
 
         try
         {
-            sbuff = brx.readLine();
+            sbuff = inx.readLine();
         }
         catch (IOException ioe)
         {

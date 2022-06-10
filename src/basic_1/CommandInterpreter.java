@@ -190,7 +190,9 @@ public class CommandInterpreter {
                 else {
                     path = t.stringValue();
                 }
-                File[] filesInFolder = new File(path).listFiles();
+                File dir = new File(path);
+                outStream.println ("List of Dir: "+dir.getAbsolutePath());
+                File[] filesInFolder = dir.listFiles();
                 for (final File fileEntry : filesInFolder) {
                     if (fileEntry.isFile()) {
                         outStream.println(fileEntry.getName() + " -- " + fileEntry.length());

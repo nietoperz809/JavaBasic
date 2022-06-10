@@ -89,7 +89,7 @@ public class LETStatement extends Statement
         if (!t.isOp(KeyWords.OP_EQ))
         {
             String ss = lt.getFirstTokenInBuffer();
-            if (ss.endsWith("eady."))
+            if (ss.endsWith("EADY."))
             {
                 lt.unGetToken();
                 return;

@@ -42,6 +42,7 @@ public class LexicalTokenizer implements Serializable
     // we just keep this around 'cuz we return it a lot.
     private final Token EOLToken = new Token(KeyWords.EOL, 0);
 
+
     public char[] getBuffer()
     {
         return buffer;
@@ -111,7 +112,7 @@ public class LexicalTokenizer implements Serializable
      */
     public void reset (String x)
     {
-        //x = convertFN(x);  // TODO: experimental
+        x = x.replace(" FN ", " FN"); // remove spc after fn
         int l = x.length();
         for (int i = 0; i < l; i++)
         {
