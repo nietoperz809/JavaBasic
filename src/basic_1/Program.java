@@ -80,8 +80,7 @@ public class Program //implements Runnable, Serializable
         BufferedReader dis
                 = new BufferedReader(new InputStreamReader(source));
 
-        char[] data = new char[256];
-        LexicalTokenizer lt = new LexicalTokenizer(data);
+        LexicalTokenizer lt = new LexicalTokenizer();
         String lineData;
         Statement s;
         Token t;
@@ -102,7 +101,7 @@ public class Program //implements Runnable, Serializable
             }
 
             lineData = formatBasicLine(lineData);
-            lt.reset(lineData);
+            lt.feedNewLine(lineData);
             t = lt.nextToken();
             if (t.typeNum() != KeyWords.CONSTANT) {
                 throw new BASICSyntaxError("Line failed to start with a line number.");

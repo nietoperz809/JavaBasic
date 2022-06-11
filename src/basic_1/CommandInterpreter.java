@@ -213,7 +213,7 @@ public class CommandInterpreter {
         return pgm;
     }
 
-    private final char[] data = new char[256];
+    //private final char[] data = new char[256];
 
     public void dispose() {
         streamingTextArea.destroy();
@@ -263,7 +263,7 @@ public class CommandInterpreter {
 
         if (tokenizer == null) {
             System.out.println("create Tokenizer");
-            tokenizer = new LexicalTokenizer(data);
+            tokenizer = new LexicalTokenizer();
         }
         if (basicProgram == null) {
             System.out.println("create BASIC prog");
@@ -279,7 +279,7 @@ public class CommandInterpreter {
 
             m_bg.setLineInList(lineData);
 
-            tokenizer.reset(lineData);
+            tokenizer.feedNewLine(lineData);
 
             if (!tokenizer.hasMoreTokens()) {
                 //System.out.println("no more tokens");

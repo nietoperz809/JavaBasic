@@ -37,7 +37,6 @@ public class LexicalTokenizer implements Serializable
             = EnumSet.of(KeyWords.OP_BAND, KeyWords.OP_BIOR, KeyWords.OP_BXOR, KeyWords.OP_BNOT);
     private int currentPos;
     private int previousPos = 0;
-    private int markPos = 0;
     private char[] buffer;
     // we just keep this around 'cuz we return it a lot.
     private final Token EOLToken = new Token(KeyWords.EOL, 0);
@@ -48,11 +47,11 @@ public class LexicalTokenizer implements Serializable
         return buffer;
     }
 
-    public LexicalTokenizer (char[] data)
-    {
-        buffer = data;
-        currentPos = 0;
-    }
+//    public LexicalTokenizer (char[] data)
+//    {
+//        //buffer = data;
+//        //currentPos = 0;
+//    }
 
     public String getFirstTokenInBuffer() {
         StringBuilder sb = new StringBuilder();
@@ -78,47 +77,17 @@ public class LexicalTokenizer implements Serializable
      */
     void mark ()
     {
-        markPos = currentPos;
-    }
-
-    /**
-     * Reset the line pointer to the mark for reparsing.
-     */
-    void resetToMark ()
-    {
-        currentPos = markPos;
-    }
-
-    /**
-     * Reset the tokenizer with a new data buffer.
-     */
-    void reset (char[] buf)
-    {
-        buffer = buf;
-        currentPos = 0;
-    }
-
-    /**
-     * Reset the current buffer to zero.
-     */
-    void reset ()
-    {
-        currentPos = 0;
+        int markPos = currentPos;
     }
 
     /**
      * Reset the tokenizer by first filling its data buffer with the passed in
      * string, then reset the mark to zero for parsing.
      */
-    public void reset (String x)
+    public void feedNewLine(String x)
     {
         x = x.replace(" FN ", " FN"); // remove spc after fn
-        int l = x.length();
-        for (int i = 0; i < l; i++)
-        {
-            buffer[i] = x.charAt(i);
-        }
-        buffer[l] = '\n'; // mark the end of the line.
+        buffer = (x+'\n').toCharArray();
         currentPos = 0;
     }
 
