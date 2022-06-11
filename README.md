@@ -7,12 +7,24 @@ Feature-rich (e.g. 2 speech synthesizers) old-school BASIC basic_1.
 
 ![Alt text](javabasic.jpg?raw=true "Title")
 
-**New: Renumber command.**<br>
-Renumber your code by using one of<br> `renumber`, `renumber a`, or `renumber a,b`<br>
-Where a is the start value and b is the step width.<br>
-10,10 are the default values
-
 </div>
+
+**New: Renumber command**<br>
+&emsp;Renumber your code by using one of<br>
+&emsp;renumber, renumber a, or renumber a,b<br>
+&emsp;Where a is the start value and b is the step width.<br>
+&emsp;10,10 are the default values
+<br><br>
+**New: Defining an calling functions**
+<pre>
+10 DEF FN FTEST1(X) = X*3
+20 INPUT "Type in a number:"; A
+29 REM Line 30 and 31 wil do the same ...
+30 PRINT FNFTEST1(A)
+31 PRINT FN FTEST1(A)
+40 IF A<>64 THEN 20
+</pre>
+
 
 Keywords:
 --------
@@ -41,8 +53,6 @@ Keywords:
     STOP ("stop", "stop the program"),
     DIM ("dim", "define arrays"),
     RANDOMIZE ("randomize", "initialize random generator"),
-    TRON ("tron", "start trace mode"),
-    TROFF ("troff", "end trace mode"),
     CLS ("cls", "clear BASIC window"),
     SLEEP ("sleep", "sleep for n milliseconds or * (infinite)"),
     WAKEUP ("wakeup", "wake a thread up"),
