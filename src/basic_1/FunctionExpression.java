@@ -191,6 +191,7 @@ public class FunctionExpression extends Expression
             case CONNECT:
             case RIGHT:
             case MID:
+            case CLOSE:
             case CHR:
             case STR:
             case IP:
@@ -243,7 +244,20 @@ public class FunctionExpression extends Expression
             case RIGHT:
                 assert ss != null;
                 return ss.substring (len - (int) arg2.value (pgm));
-            case MID:
+            case CLOSE:
+            {
+                Socket sock = pgm.sockMap.get(ss);
+                if (sock == null)
+                    return "no socket";
+                try {
+                    sock.close();
+                } catch (IOException e) {
+                    return "close failed";
+                }
+                pgm.sockMap.remove(ss);
+                return "closed";
+            }
+                case MID:
                 int t = (int) arg1.value (pgm);
                 assert ss != null;
                 return ss.substring (t - 1, (t - 1) + (int) arg2.value (pgm));
@@ -395,7 +409,18 @@ public class FunctionExpression extends Expression
                 result = new FunctionExpression (ty, a, b);
                 break;
 
-            case LEN:
+            case CLOSE:
+                a = ParseExpression.expression (lt);
+                if (!a.isString ())
+                {
+                    throw new BASICSyntaxError (ty
+                            + " function expects a string argumnet.");
+                }
+                result = new FunctionExpression (ty, a);
+                result.sVar = a;
+                break;
+
+                case LEN:
                 a = ParseExpression.expression (lt);
                 if (!a.isString ())
                 {
@@ -405,9 +430,7 @@ public class FunctionExpression extends Expression
                 result = new FunctionExpression (ty, a);
                 break;
 
-            case CONNECT:
-                case LEFT:
-            case RIGHT:
+            case CONNECT: case LEFT: case RIGHT:
                 se = ParseExpression.expression (lt);
                 if (!se.isString ())
                 {

@@ -102,6 +102,7 @@ public enum KeyWords
     TID ("tid", "get the thread id"),
     LEFT ("left$", "get left part of string"),
     CONNECT ("connect", "connect to other tcp"),
+    CLOSE ("close", "close a tcp connection"),
     RIGHT ("right$", "get right part of string"),
     MID ("mid$", "get middle part of string"),
     CHR ("chr$", "make character from integer"),
