@@ -21,6 +21,8 @@ import misc.MainWindow;
 import misc.Misc;
 
 import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
@@ -188,6 +190,7 @@ public class FunctionExpression extends Expression
             case MID:
             case CHR:
             case STR:
+            case IP:
             case SPC:
             case TAB:
             case INKEYS:
@@ -245,6 +248,14 @@ public class FunctionExpression extends Expression
 
             case STR:
                 return Misc.df.format (arg2.value (pgm));
+
+            case IP:
+                try {
+                    InetAddress in = InetAddress.getByName(arg2.stringValue(pgm));
+                    return in.getHostAddress();
+                } catch (UnknownHostException e) {
+                    return "unknown";
+                }
 
             case SPC:
                 sb = new StringBuilder();
@@ -324,6 +335,7 @@ public class FunctionExpression extends Expression
             case CHR:
             case VAL:
             case STR:
+            case IP:
             case SPC:
             case TAB:
             case LOG:

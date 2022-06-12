@@ -113,6 +113,7 @@ public enum KeyWords
     SGN ("sgn", "get sign of number, 1 or -1"),
     TAB ("tab", "create string of tabs"),
     STR ("str$", "convert number to string"),
+    IP ("ip$", "get IP address from hostname"),
     INKEYS ("inkey$", "get the last key the user typed"),
     TIME ("time", "get free running timer value"),
 
