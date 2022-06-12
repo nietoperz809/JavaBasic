@@ -20,8 +20,10 @@ package basic_1;
 import misc.MainWindow;
 import misc.Misc;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -186,6 +188,7 @@ public class FunctionExpression extends Expression
         {
             case GETNAME:
             case LEFT:
+            case CONNECT:
             case RIGHT:
             case MID:
             case CHR:
@@ -222,6 +225,18 @@ public class FunctionExpression extends Expression
 
         switch (oper)
         {
+            case CONNECT:
+            {
+                int port = (int) arg2.value (pgm);
+                try {
+                    InetAddress ip = InetAddress.getByName(ss);
+                    Socket sock = new Socket(ip, port);
+                    pgm.sockMap.put(sock.toString(), sock);
+                    return sock.toString();
+                } catch (IOException e) {
+                    return "failed";
+                }
+            }
             case LEFT:
                 assert ss != null;
                 return ss.substring (0, (int) arg2.value (pgm));
@@ -390,7 +405,8 @@ public class FunctionExpression extends Expression
                 result = new FunctionExpression (ty, a);
                 break;
 
-            case LEFT:
+            case CONNECT:
+                case LEFT:
             case RIGHT:
                 se = ParseExpression.expression (lt);
                 if (!se.isString ())

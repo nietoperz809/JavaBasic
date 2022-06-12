@@ -28,6 +28,7 @@ import org.mathIT.util.FunctionParser;
 
 import javax.sound.sampled.AudioFileFormat;
 import java.io.*;
+import java.net.Socket;
 import java.util.*;
 
 import static basic_1.ParseStatement.statement;
@@ -56,6 +57,7 @@ public class Program //implements Runnable, Serializable
     public boolean thread_running = true; // Thread basic_prg_running 
     public final long basetime = System.currentTimeMillis();
     public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
+    public final HashMap<String, Socket> sockMap = new HashMap<>();
     private AudioPlayer audioPlayer;
     // this tree holds all of the variables.
     private RedBlackTree<String, Variable> vars = new RedBlackTree<>();
