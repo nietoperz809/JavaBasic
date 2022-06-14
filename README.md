@@ -2,7 +2,7 @@
 
 # JavaBasic
 BASIC in an MDI environment<br>
-Feature-rich (e.g. 2 speech synthesizers) old-school BASIC basic_1.
+Feature-rich (e.g. 2 speech synthesizers) old-school BASIC.
 
 
 ![Alt text](javabasic.jpg?raw=true "Title")
@@ -15,7 +15,7 @@ Feature-rich (e.g. 2 speech synthesizers) old-school BASIC basic_1.
 &emsp;Where a is the start value and b is the step width.<br>
 &emsp;10,10 are the default values
 <br><br>
-**New: Defining an calling functions**
+**New: Defining and calling functions**
 <pre>
 10 DEF FN FTEST1(X) = X*3
 20 INPUT "Type in a number:"; A
@@ -23,6 +23,23 @@ Feature-rich (e.g. 2 speech synthesizers) old-school BASIC basic_1.
 30 PRINT FNFTEST1(A)
 31 PRINT FN FTEST1(A)
 40 IF A<>64 THEN 20
+</pre>
+**New: TCP/IP Connections**
+<pre>
+5 REM WAIT FOR CONNECTION ON PORT 1234
+10 A$ = LISTEN (1234)
+20 PRINT "connected: " + A$
+25 REM RECEIVE A STRING
+30 S$ = RECV(A$)
+40 IF S$ = "" THEN 30
+50 PRINT "received: " +S$
+55 REM TRANSMIT THE SAME STRING BACK
+60 TRANSMIT (A$,S$)
+65 REM REPEAT IF NOT "stop"
+70 IF S$ <> "stop" THEN 30
+75 REM CLOSE THE CONNECTION
+80 LET B$ = CLOSE (A$)
+90 PRINT "closed: "+B$
 </pre>
 
 
