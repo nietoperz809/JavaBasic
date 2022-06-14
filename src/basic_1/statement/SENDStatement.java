@@ -15,7 +15,7 @@ public class SENDStatement extends Statement
 
     public SENDStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {
-        super(KeyWords.PLINE);
+        super(KeyWords.SEND);
         if (lt.getBuffer() != null)
         {
             parse(this, lt);

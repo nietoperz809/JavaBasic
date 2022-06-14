@@ -291,6 +291,11 @@ public class ParseStatement extends Statement
                     t = lt.nextToken();
                     return nextStep (lt, t,s);
 
+                case TRANSMIT:
+                    s = new TransmitStatement(lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
+
                 case PPRINT:
                     s = new PPRINTStatement(lt);
                     t = lt.nextToken();

@@ -70,6 +70,7 @@ public enum KeyWords
     SEND ("send", "send msg to another thread"),
     PLINE ("pline", "draw line"),
     PPRINT ("pprint", "print into plot window"),
+    TRANSMIT ("transmit", "send data over tcp"),
     RATE ("rate", "set the speech rate"),   // Must be last statement
 
     CMD_NEW ("new", "erase program in memory"),
@@ -115,6 +116,7 @@ public enum KeyWords
     SGN ("sgn", "get sign of number, 1 or -1"),
     TAB ("tab", "create string of tabs"),
     STR ("str$", "convert number to string"),
+    LISTEN ("listen", "Listen for TCP connection"),
     IP ("ip$", "get IP address from hostname"),
     INKEYS ("inkey$", "get the last key the user typed"),
     TIME ("time", "get free running timer value"),
