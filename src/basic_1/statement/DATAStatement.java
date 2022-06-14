@@ -36,7 +36,6 @@ import java.util.Vector;
  */
 public class DATAStatement extends Statement
 {
-
     private Vector<Token> args;
 
     public DATAStatement (LexicalTokenizer lt) throws BASICSyntaxError

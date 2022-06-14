@@ -4,14 +4,18 @@ import applications.BasicGUI;
 import basic_1.*;
 import basic_1.streameditor.StreamingTextArea;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.Socket;
 import java.util.Vector;
 
 public class TransmitStatement extends Statement
 {
-    private String socket;
-    private Vector _text;
+    private Expression socket;
+    private Expression text;
+
+    // TRANSMIT ("hallo","doof")
 
     public TransmitStatement(LexicalTokenizer lt) throws BASICSyntaxError
     {
@@ -21,33 +25,27 @@ public class TransmitStatement extends Statement
             parse(this, lt);
         }
     }
+
     private static void parse (TransmitStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
-        Vector args = StringExParser.parseStringExpression(lt);
-        System.out.println(args);
-
-//        s.socket = s.
-//        s.checkComma(lt);
-//        s._text = StringExParser.parseStringExpression(lt);
+        Token t1 = lt.nextToken(); //numeric 40 bracket open
+        s.socket = s.getStringArg(lt);
+        Token t3 = lt.nextToken(); // numeric 44 comma
+        s.text = s.getStringArg(lt);
+        Token t5 = lt.nextToken(); // bracket close
     }
-
-//    public String unparse ()
-//    {
-//        return keyword.name() + " " + _thread + "," + _text;
-//    }
 
 
     @Override
     protected Statement doit(Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {
-        Statement s;
-        s = pgm.nextStatement(this);
-//        StreamingTextArea cd = BasicGUI.streamMap.get((long) _thread.value(pgm));
-//        if (cd != null)
-//        {
-//            String str = StringExParser.printItemsToString(pgm, _text);
-//            cd.fakeIn(str+"\n");
-//        }
-        return s;
+        Socket sock = pgm.sockMap.get (socket.stringValue(pgm));
+        byte[] dat = text.stringValue(pgm).getBytes();
+        try {
+            sock.getOutputStream().write(dat);
+        } catch (IOException e) {
+            System.out.println("socket tx fail");
+        }
+        return pgm.nextStatement(this);
     }
 }

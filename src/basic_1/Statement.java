@@ -179,6 +179,19 @@ public abstract class Statement {
         }
     }
 
+    public Expression getStringArg(LexicalTokenizer lt) throws BASICSyntaxError {
+        Token t = lt.nextToken();
+        switch (t.typeNum()) {
+            case STRING:
+            case VARIABLE:
+            case FUNCTION:
+                lt.unGetToken();
+                return ParseExpression.expression(lt);
+            default:
+                throw new BASICSyntaxError("param must be constant or variable");
+        }
+    }
+
     public void checkComma(LexicalTokenizer lt) throws BASICSyntaxError {
         Token t = lt.nextToken();
         if (!t.isSymbol(',')) {
