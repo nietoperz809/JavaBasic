@@ -119,38 +119,38 @@ public abstract class Statement {
      * The trace method can be used during execution to print out what the
      * program is doing.
      */
-    public void trace(Program pgm, PrintStream ps) {
-        StringBuilder sb = new StringBuilder();
-        String n;
-        sb.append("**:");
-
-        if (vars == null) {
-            vars = getVars();
-        }
-
-        /*
-         * Print the line we're executing on the output stream.
-         */
-        n = line + "";
-        for (int zz = 0; zz < 5 - n.length(); zz++) {
-            sb.append(' ');
-        }
-        sb.append(n);
-        sb.append(':');
-        sb.append(unparse());
-        ps.println(sb);
-        if (vars != null) {
-            for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
-                VariableExpression vi = (VariableExpression) e.nextElement();
-                String t;
-                try {
-                    t = vi.stringValue(pgm);
-                } catch (BASICRuntimeError bse) {
-                    t = "Not yet defined.";
-                }
-            }
-        }
-    }
+//    public void trace(Program pgm, PrintStream ps) {
+//        StringBuilder sb = new StringBuilder();
+//        String n;
+//        sb.append("**:");
+//
+//        if (vars == null) {
+//            vars = getVars();
+//        }
+//
+//        /*
+//         * Print the line we're executing on the output stream.
+//         */
+//        n = line + "";
+//        for (int zz = 0; zz < 5 - n.length(); zz++) {
+//            sb.append(' ');
+//        }
+//        sb.append(n);
+//        sb.append(':');
+//        sb.append(unparse());
+//        ps.println(sb);
+//        if (vars != null) {
+//            for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
+//                VariableExpression vi = (VariableExpression) e.nextElement();
+//                String t;
+//                try {
+//                    t = vi.stringValue(pgm);
+//                } catch (BASICRuntimeError bse) {
+//                    t = "Not yet defined.";
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Can be overridden by statements that use variables in their execution.

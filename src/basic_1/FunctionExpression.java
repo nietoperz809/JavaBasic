@@ -21,6 +21,7 @@ import misc.MainWindow;
 import misc.Misc;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -170,6 +171,7 @@ public class FunctionExpression extends Expression {
             case RIGHT:
             case MID:
             case CLOSE:
+            case RECV:
             case CHR:
             case STR:
             case LISTEN:
@@ -231,6 +233,18 @@ public class FunctionExpression extends Expression {
                 assert ss != null;
                 return ss.substring(len - (int) arg2.value(pgm));
 
+            case RECV: {
+                Socket sock = pgm.sockMap.get(ss);
+                try {
+                    InputStream is = sock.getInputStream();
+                    byte[] b = new byte[is.available()];
+                    is.read(b);
+                    return new String(b);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             case CLOSE: {
                 Socket sock = pgm.sockMap.get(ss);
                 if (sock == null)
@@ -241,7 +255,7 @@ public class FunctionExpression extends Expression {
                     return "close failed";
                 }
                 pgm.sockMap.remove(ss);
-                return "closed";
+                return ss;
             }
 
             case MID:
@@ -379,6 +393,7 @@ public class FunctionExpression extends Expression {
                 result = new FunctionExpression(ty, a, b);
                 break;
 
+            case RECV:
             case CLOSE:
                 a = ParseExpression.expression(lt);
                 if (!a.isString()) {

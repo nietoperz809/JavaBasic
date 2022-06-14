@@ -15,7 +15,6 @@ public class TransmitStatement extends Statement
     private Expression socket;
     private Expression text;
 
-    // TRANSMIT ("hallo","doof")
 
     public TransmitStatement(LexicalTokenizer lt) throws BASICSyntaxError
     {

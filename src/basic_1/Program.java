@@ -66,9 +66,6 @@ public class Program //implements Runnable, Serializable
     private int dataPtr = 0;
     private Random r = new Random(0);
 
-    private final boolean traceState = false;
-    private final PrintStream traceFile = null;
-
     public Program(StreamingTextArea ta) {
         area = ta;
     }
@@ -119,6 +116,12 @@ public class Program //implements Runnable, Serializable
             s.addText(lineData);
             s.addLine((int) t.numValue());
             prog.add((int) t.numValue(), s);
+        }
+    }
+
+    void closeAllSockets() throws Exception {
+        for (Socket s : sockMap.values()) {
+            s.close();
         }
     }
 
@@ -310,10 +313,6 @@ public class Program //implements Runnable, Serializable
 
 
     /**
-     * Dump the symbol table
-     */
-
-    /**
      * This is the first variation on list, it simply list from the starting
      * line to the the end of the program.
      */
@@ -342,8 +341,8 @@ public class Program //implements Runnable, Serializable
     public void run(InputStream in, OutputStream out, int firstline) throws Exception {
         PrintStream pout;
         Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements();
-        stmtStack = new Stack();    // assume no stacked statements ...
-        dataStore = new Vector();   // ...  and no data to be read.
+        stmtStack = new Stack<>();    // assume no stacked statements ...
+        dataStore = new Vector<>();   // ...  and no data to be read.
         dataPtr = 0;
         Statement s;
 
@@ -393,9 +392,6 @@ public class Program //implements Runnable, Serializable
                 throw new Exception("Basic Thread forced to stop");
             }
             if (s.keyword != KeyWords.DATA) {
-                if (traceState) {
-                    s.trace(this, (traceFile != null) ? traceFile : pout);
-                }
 
                 s = s.execute(this, in, pout);
             } else {
@@ -403,8 +399,9 @@ public class Program //implements Runnable, Serializable
             }
         }
         while (s != null);
+        closeAllSockets();
         if (MidiSynthSystem.wasUsed())
-            MidiSynthSystem.get().shutdown();
+            Objects.requireNonNull(MidiSynthSystem.get()).shutdown();
     }
 
     /**
@@ -439,9 +436,6 @@ public class Program //implements Runnable, Serializable
                 break;
             }
             if (s.keyword != KeyWords.DATA) {
-                if (traceState) {
-                    s.trace(this, (traceFile != null) ? traceFile : pout);
-                }
 
                 s = s.execute(this, in, pout);
             } else {
