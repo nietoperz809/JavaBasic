@@ -71,6 +71,7 @@ public enum KeyWords
     PLINE ("pline", "draw line"),
     PPRINT ("pprint", "print into plot window"),
     TRANSMIT ("transmit", "send data over tcp"),
+    SOCKMODE ("sockmode", "set socket mode"),
     RATE ("rate", "set the speech rate"),   // Must be last statement
 
     CMD_NEW ("new", "erase program in memory"),

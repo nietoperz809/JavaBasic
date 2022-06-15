@@ -57,7 +57,16 @@ public class Program //implements Runnable, Serializable
     public boolean thread_running = true; // Thread basic_prg_running 
     public final long basetime = System.currentTimeMillis();
     public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
-    public final HashMap<String, Socket> sockMap = new HashMap<>();
+
+    public static class ExtendedSocket {
+        public Socket sock;
+        public boolean textMode = false;
+        public ExtendedSocket(Socket s) {
+            this.sock = s;
+
+        }
+    }
+    public final HashMap<String, ExtendedSocket> sockMap = new HashMap<>();
     private AudioPlayer audioPlayer;
     // this tree holds all of the variables.
     private RedBlackTree<String, Variable> vars = new RedBlackTree<>();
@@ -120,8 +129,8 @@ public class Program //implements Runnable, Serializable
     }
 
     void closeAllSockets() throws Exception {
-        for (Socket s : sockMap.values()) {
-            s.close();
+        for (ExtendedSocket s : sockMap.values()) {
+            s.sock.close();
         }
     }
 

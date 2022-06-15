@@ -291,6 +291,11 @@ public class ParseStatement extends Statement
                     t = lt.nextToken();
                     return nextStep (lt, t,s);
 
+                case SOCKMODE:
+                    s = new SockModeStatement (lt);
+                    t = lt.nextToken();
+                    return nextStep (lt, t,s);
+
                 case TRANSMIT:
                     s = new TransmitStatement(lt);
                     t = lt.nextToken();

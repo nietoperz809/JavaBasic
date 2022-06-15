@@ -20,9 +20,7 @@ package basic_1;
 import misc.MainWindow;
 import misc.Misc;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -208,7 +206,7 @@ public class FunctionExpression extends Expression {
                 try {
                     InetAddress ip = InetAddress.getByName(ss);
                     Socket sock = new Socket(ip, port);
-                    pgm.sockMap.put(sock.toString(), sock);
+                    pgm.sockMap.put(sock.toString(), new Program.ExtendedSocket(sock));
                     return sock.toString();
                 } catch (IOException e) {
                     return "failed";
@@ -220,7 +218,7 @@ public class FunctionExpression extends Expression {
                     ServerSocket zsock = new ServerSocket(port);
                     Socket sock = zsock.accept();
                     zsock.close();
-                    pgm.sockMap.put(sock.toString(), sock);
+                    pgm.sockMap.put(sock.toString(), new Program.ExtendedSocket(sock));
                     return sock.toString();
                 } catch (IOException e) {
                     return "failed";
@@ -234,9 +232,13 @@ public class FunctionExpression extends Expression {
                 return ss.substring(len - (int) arg2.value(pgm));
 
             case RECV: {
-                Socket sock = pgm.sockMap.get(ss);
+                Program.ExtendedSocket ext = pgm.sockMap.get(ss);
                 try {
-                    InputStream is = sock.getInputStream();
+                    if (ext.textMode) {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(ext.sock.getInputStream()));
+                        return br.readLine();
+                    }
+                    InputStream is = ext.sock.getInputStream();
                     byte[] b = new byte[is.available()];
                     is.read(b);
                     return new String(b);
@@ -246,7 +248,7 @@ public class FunctionExpression extends Expression {
             }
 
             case CLOSE: {
-                Socket sock = pgm.sockMap.get(ss);
+                Socket sock = pgm.sockMap.get(ss).sock;
                 if (sock == null)
                     return "no socket";
                 try {
