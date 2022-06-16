@@ -46,10 +46,10 @@ public class ParseStatement extends Statement
         return "THE PARSESTATEMENT OBJECT, NOT A STATEMENT.";
     }
 
-    public void trace(Program pgm, PrintStream ps)
-    {
-        ps.println("ParseStatement");
-    }
+//    public void trace(Program pgm, PrintStream ps)
+//    {
+//        ps.println("ParseStatement");
+//    }
 
     /**
      * Given a 'full' tokenizer buffer, return us a parsed statement.

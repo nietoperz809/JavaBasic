@@ -72,12 +72,12 @@ public class FORStatement extends Statement
     public RedBlackTree getVars ()
     {
         RedBlackTree vv = new RedBlackTree();
-        nExp.trace(vv);
-        eExp.trace(vv);
-        if (sExp != null)
-        {
-            sExp.trace(vv);
-        }
+        //nExp.trace(vv);
+        //eExp.trace(vv);
+//        if (sExp != null)
+//        {
+//            sExp.trace(vv);
+//        }
         return vv;
     }
 

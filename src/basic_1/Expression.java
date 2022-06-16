@@ -99,17 +99,17 @@ Expression arg1;
      * Generate a set of trace records for this expression. All of the variables
      * in the expression are added to the tracer vector.
      */
-    public void trace (RedBlackTree tracer)
-    {
-        if (arg1 != null)
-        {
-            arg1.trace(tracer);
-        }
-        if (arg2 != null)
-        {
-            arg2.trace(tracer);
-        }
-    }
+//    public void trace (RedBlackTree tracer)
+//    {
+//        if (arg1 != null)
+//        {
+//            arg1.trace(tracer);
+//        }
+//        if (arg2 != null)
+//        {
+//            arg2.trace(tracer);
+//        }
+//    }
 
     /**
      * This method evaluates the expression in the context of the passed in

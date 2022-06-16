@@ -66,7 +66,7 @@ public class LETStatement extends Statement
     public RedBlackTree getVars ()
     {
         RedBlackTree vv = new RedBlackTree();
-        nExp.trace(vv);
+        //nExp.trace(vv);
         return (vv);
     }
 

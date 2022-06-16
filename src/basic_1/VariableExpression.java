@@ -74,18 +74,18 @@ public class VariableExpression extends Expression
     /**
      * Add the value of this variable to the trace record.
      */
-    @Override
-    public void trace (RedBlackTree tracer)
-    {
-        tracer.put(v.name, this);
-        if (v.isArray() && (v.numExpn() != 0))
-        {
-            for (int i = 0; i < v.numExpn(); i++)
-            {
-                (v.expn(i)).trace(tracer);
-            }
-        }
-    }
+//    @Override
+//    public void trace (RedBlackTree tracer)
+//    {
+//        tracer.put(v.name, this);
+//        if (v.isArray() && (v.numExpn() != 0))
+//        {
+//            for (int i = 0; i < v.numExpn(); i++)
+//            {
+//                (v.expn(i)).trace(tracer);
+//            }
+//        }
+//    }
 
     @Override
     public boolean isString ()
