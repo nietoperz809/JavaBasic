@@ -63,12 +63,12 @@ public class LETStatement extends Statement
     /**
      * Generate a trace record for the LET statement.
      */
-    public RedBlackTree getVars ()
-    {
-        RedBlackTree vv = new RedBlackTree();
-        //nExp.trace(vv);
-        return (vv);
-    }
+//    public RedBlackTree getVars ()
+//    {
+//        RedBlackTree vv = new RedBlackTree();
+//        //nExp.trace(vv);
+//        return (vv);
+//    }
 
     /**
      * Parse LET Statement.

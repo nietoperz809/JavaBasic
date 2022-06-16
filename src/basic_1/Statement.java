@@ -155,9 +155,9 @@ public abstract class Statement {
     /**
      * Can be overridden by statements that use variables in their execution.
      */
-    protected RedBlackTree getVars() {
-        return null;
-    }
+//    protected RedBlackTree getVars() {
+//        return null;
+//    }
 
     /**
      * Read one argument expression

@@ -81,12 +81,12 @@ public class IFStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    public RedBlackTree getVars ()
-    {
-        RedBlackTree vv = new RedBlackTree();
-        // nExp.trace(vv);
-        return vv;
-    }
+//    public RedBlackTree getVars ()
+//    {
+//        RedBlackTree vv = new RedBlackTree();
+//        // nExp.trace(vv);
+//        return vv;
+//    }
 
     /**
      * This method verifies that the expression *isn't* boolean. This is perhaps

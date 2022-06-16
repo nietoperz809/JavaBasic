@@ -78,13 +78,13 @@ public class ONStatement extends Statement
         return s;
     }
 
-    @Override
-    public RedBlackTree getVars ()
-    {
-        RedBlackTree vv = new RedBlackTree();
-        //nExp.trace(vv);
-        return vv;
-    }
+//    @Override
+//    public RedBlackTree getVars ()
+//    {
+//        RedBlackTree vv = new RedBlackTree();
+//        //nExp.trace(vv);
+//        return vv;
+//    }
 
     /**
      * Parse ON Statement.

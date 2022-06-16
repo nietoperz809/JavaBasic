@@ -68,18 +68,18 @@ public class FORStatement extends Statement
     /**
      * Collect the variables associated with the execution of this statement.
      */
-    @Override
-    public RedBlackTree getVars ()
-    {
-        RedBlackTree vv = new RedBlackTree();
-        //nExp.trace(vv);
-        //eExp.trace(vv);
-//        if (sExp != null)
-//        {
-//            sExp.trace(vv);
-//        }
-        return vv;
-    }
+//    @Override
+//    public RedBlackTree getVars ()
+//    {
+//        RedBlackTree vv = new RedBlackTree();
+//        //nExp.trace(vv);
+//        //eExp.trace(vv);
+////        if (sExp != null)
+////        {
+////            sExp.trace(vv);
+////        }
+//        return vv;
+//    }
 
     private static boolean noBool(Expression e)
     {

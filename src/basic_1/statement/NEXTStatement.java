@@ -149,11 +149,11 @@ public class NEXTStatement extends Statement
 
     }
 
-    public RedBlackTree getVars ()
-    {
-        RedBlackTree vv = new RedBlackTree();
-        vv.put(myVar.name, new VariableExpression(myVar));
-        return vv;
-    }
+//    public RedBlackTree getVars ()
+//    {
+//        RedBlackTree vv = new RedBlackTree();
+//        vv.put(myVar.name, new VariableExpression(myVar));
+//        return vv;
+//    }
 
 }
