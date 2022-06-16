@@ -114,14 +114,6 @@ public class Variable extends Token {
     }
 
     /**
-     * Return a string represention of this variables "name"
-     * <p>
-     * The unparse functions are used to reconstruct the source from the parse
-     * tree. This can be very useful debugging information and is used in the
-     * trace function.
-     */
-
-    /**
      * This method takes an array of indices and computes a linear offset into
      * the storage array. If either the number of indices are different, or
      * there values exceed the max value here in the symbol table entry, a

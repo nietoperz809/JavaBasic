@@ -18,7 +18,7 @@
 package basic_1.statement;
 
 import basic_1.*;
-import basic_1.util.RedBlackTree;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -68,22 +68,9 @@ public class FORStatement extends Statement
     /**
      * Collect the variables associated with the execution of this statement.
      */
-//    @Override
-//    public RedBlackTree getVars ()
-//    {
-//        RedBlackTree vv = new RedBlackTree();
-//        //nExp.trace(vv);
-//        //eExp.trace(vv);
-////        if (sExp != null)
-////        {
-////            sExp.trace(vv);
-////        }
-//        return vv;
-//    }
 
-    private static boolean noBool(Expression e)
+    private static void noBool(Expression e)
     {
-        return (!(e instanceof BooleanExpression));
     }
 
     /**

@@ -5,7 +5,6 @@
  */
 package basic_1.streameditor;
 
-import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**

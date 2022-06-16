@@ -24,8 +24,8 @@ import static org.apache.commons.lang.StringUtils.*;
  */
 public class Misc
 {
-    private static final String BUILD_NUMBER = "221";
-    private static final String BUILD_DATE = "06/16/2022 06:13:44 AM";
+    private static final String BUILD_NUMBER = "227";
+    private static final String BUILD_DATE = "06/16/2022 06:45:09 AM";
 
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty ("java.version");

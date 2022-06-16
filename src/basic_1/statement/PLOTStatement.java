@@ -14,14 +14,7 @@ import java.io.PrintStream;
 public class PLOTStatement extends Statement
 {
     private static final ThreadLocal<DrawingGUI> plotter =
-            new ThreadLocal<DrawingGUI>()
-            {
-                @Override
-                protected DrawingGUI initialValue ()
-                {
-                    return null;
-                }
-            };
+            ThreadLocal.withInitial(() -> null);
 
     public static DrawingGUI getPlotWindow()
     {

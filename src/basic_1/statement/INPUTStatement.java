@@ -49,7 +49,7 @@ public class INPUTStatement extends Statement
     /**
      * This vector holds a list of variables to fill
      */
-    private Vector args;
+    private Vector<Token> args;
 
     /**
      * Construct a new INPUT statement object.
@@ -71,10 +71,6 @@ public class INPUTStatement extends Statement
         fillArgs(in, out, prompt, pgm, args);
         return (pgm.nextStatement(this));
     }
-
-    /**
-     * Reconstruct this statement from its parsed data.
-     */
 
     /**
      * This is our buffer for processing INPUT statement requests.
@@ -252,7 +248,7 @@ public class INPUTStatement extends Statement
     {
         Token t;
         boolean needComma = false;
-        s.args = new Vector();
+        s.args = new Vector<>();
 
         // get optional prompt string.
         t = lt.nextToken();

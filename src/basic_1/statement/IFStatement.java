@@ -18,7 +18,7 @@
 package basic_1.statement;
 
 import basic_1.*;
-import basic_1.util.RedBlackTree;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -81,13 +81,6 @@ public class IFStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-//    public RedBlackTree getVars ()
-//    {
-//        RedBlackTree vv = new RedBlackTree();
-//        // nExp.trace(vv);
-//        return vv;
-//    }
-
     /**
      * This method verifies that the expression *isn't* boolean. This is perhaps
      * an arbitrary restriction, but part of the spec none-the-less.
@@ -106,10 +99,6 @@ public class IFStatement extends Statement
     private static void parse(IFStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
         s.nExp = ParseExpression.expression(lt);
-//        if (!(s.nExp instanceof BooleanExpression))
-//        {
-//            throw new BASICSyntaxError("Boolean expression required for IF.");
-//        }
         Token t = lt.nextToken();
         if (t.isSymbol(')'))
         {

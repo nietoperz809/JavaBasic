@@ -4,7 +4,6 @@ import basic_1.util.RedBlackTree;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Enumeration;
 
 /**
  * This class defines BASIC statements. As with expressions, there is a subclass
@@ -22,7 +21,7 @@ public abstract class Statement {
     // original string that was parsed into this statement.
 
     public Statement nxt;  // if there are chained statements
-    private RedBlackTree vars; // variables used by this statement.
+    //private RedBlackTree vars; // variables used by this statement.
     // variables used by this statement.
 
     /**
@@ -55,12 +54,6 @@ public abstract class Statement {
         }
         return nxt;
     }
-
-    /**
-     * Return a string representation of this statement. If the original text
-     * was set then use that, otherwise reconstruct the string from the parse
-     * tree.
-     */
 
     /**
      * Put a reference to the original string from which this statement was
@@ -114,50 +107,6 @@ public abstract class Statement {
      */
     protected abstract Statement doit(Program pgm, InputStream in, PrintStream out)
             throws BASICRuntimeError;
-
-    /**
-     * The trace method can be used during execution to print out what the
-     * program is doing.
-     */
-//    public void trace(Program pgm, PrintStream ps) {
-//        StringBuilder sb = new StringBuilder();
-//        String n;
-//        sb.append("**:");
-//
-//        if (vars == null) {
-//            vars = getVars();
-//        }
-//
-//        /*
-//         * Print the line we're executing on the output stream.
-//         */
-//        n = line + "";
-//        for (int zz = 0; zz < 5 - n.length(); zz++) {
-//            sb.append(' ');
-//        }
-//        sb.append(n);
-//        sb.append(':');
-//        sb.append(unparse());
-//        ps.println(sb);
-//        if (vars != null) {
-//            for (Enumeration e = vars.elements(); e.hasMoreElements(); ) {
-//                VariableExpression vi = (VariableExpression) e.nextElement();
-//                String t;
-//                try {
-//                    t = vi.stringValue(pgm);
-//                } catch (BASICRuntimeError bse) {
-//                    t = "Not yet defined.";
-//                }
-//            }
-//        }
-//    }
-
-    /**
-     * Can be overridden by statements that use variables in their execution.
-     */
-//    protected RedBlackTree getVars() {
-//        return null;
-//    }
 
     /**
      * Read one argument expression

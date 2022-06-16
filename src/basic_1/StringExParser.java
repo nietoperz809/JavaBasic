@@ -53,7 +53,7 @@ public interface StringExParser
         }
     }
 
-    static String printItemsToString (Program pgm, Vector args) throws BASICRuntimeError
+    static String printItemsToString (Program pgm, Vector<PrintItem> args) throws BASICRuntimeError
     {
         StringBuilder buff = new StringBuilder();
         PrintItem pi = null;
@@ -61,7 +61,7 @@ public interface StringExParser
         for (int i = 0; i < args.size(); i++)
         {
             String z;
-            pi = (PrintItem) (args.elementAt(i));
+            pi = args.elementAt(i);
             z = pi.value(pgm, col);
             buff.append(z);
             col += z.length();

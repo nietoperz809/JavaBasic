@@ -47,12 +47,6 @@ public class LexicalTokenizer implements Serializable
         return buffer;
     }
 
-//    public LexicalTokenizer (char[] data)
-//    {
-//        //buffer = data;
-//        //currentPos = 0;
-//    }
-
     public String getFirstTokenInBuffer() {
         StringBuilder sb = new StringBuilder();
         for (char b : buffer) {

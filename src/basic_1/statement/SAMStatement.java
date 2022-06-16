@@ -80,7 +80,7 @@ public class SAMStatement extends Statement
 
 
     // This is the line number to transfer control too.
-    private Vector args;
+    private Vector<PrintItem> args;
 
     public SAMStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {

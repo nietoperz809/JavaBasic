@@ -48,7 +48,7 @@ public class DATAStatement extends Statement
     public Statement doit (Program pgm, InputStream in, PrintStream out) {
         for (int i = 0; i < args.size(); i++)
         {
-            pgm.pushData((Token) args.elementAt(i));
+            pgm.pushData(args.elementAt(i));
         }
         return pgm.nextStatement(this);
     }
@@ -59,7 +59,7 @@ public class DATAStatement extends Statement
     private static void parse(DATAStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
         Token t;
-        s.args = new Vector<Token>();
+        s.args = new Vector<>();
 
         while (true)
         {

@@ -12,7 +12,7 @@ import java.util.Vector;
 public class NAMEStatement extends Statement
 {
     // This is the line number to transfer control too.
-    private Vector args;
+    private Vector<PrintItem> args;
 
     public NAMEStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {

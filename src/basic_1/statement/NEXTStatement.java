@@ -19,7 +19,6 @@
 package basic_1.statement;
 
 import basic_1.*;
-import basic_1.util.RedBlackTree;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -76,16 +75,13 @@ public class NEXTStatement extends Statement
         /*
          *
          */
-        while (true)
-        {
+        do {
             xs = pgm.pop();
-            if (xs == null)
-            {
+            if (xs == null) {
                 throw new BASICRuntimeError("NEXT without FOR");
             }
 
-            if (!(xs instanceof FORStatement))
-            {
+            if (!(xs instanceof FORStatement)) {
                 throw new BASICRuntimeError("Bogus intervening statement: " + xs.asString());
             }
             s = (FORStatement) xs;
@@ -96,21 +92,11 @@ public class NEXTStatement extends Statement
              * give it the variable of the first FOR statement we pop off
              * the stack.
              */
-            if (myVar == null)
-            {
+            if (myVar == null) {
                 myVar = s.myVar;
             }
-            if (s.myVar.name.equalsIgnoreCase(myVar.name))
-            {
-                break;
-            }
-            /*
-            if (! (s.myVar.name.equalsIgnoreCase(myVar.name))) {
-                throw new BASICRuntimeError("NEXT was expecting FOR "+myVar.name+
-                            " = ..., not variable '"+s.myVar.name+"'");
-            }
-            */
-        }
+        } while (!s.myVar.name.equalsIgnoreCase(myVar.name));
+
         double stepValue = s.sExp.value(pgm);
         if (stepValue == 0)
         {
@@ -148,12 +134,5 @@ public class NEXTStatement extends Statement
         }
 
     }
-
-//    public RedBlackTree getVars ()
-//    {
-//        RedBlackTree vv = new RedBlackTree();
-//        vv.put(myVar.name, new VariableExpression(myVar));
-//        return vv;
-//    }
 
 }

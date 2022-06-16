@@ -20,7 +20,7 @@ package basic_1;
 
 class StringExpression extends Expression {
 
-    StringExpression(KeyWords op, Expression a, Expression b) throws BASICSyntaxError {
+    StringExpression(KeyWords op, Expression a, Expression b) {
         super(op, a, b);
     }
 
@@ -44,14 +44,12 @@ class StringExpression extends Expression {
     }
 
     String stringValue(Program pgm, int c)  throws BASICRuntimeError {
-        switch (oper) {
-            case OP_ADD:
-                String z = arg1.stringValue(pgm, c);
-                int c2 = c + z.length();
-                return z + arg2.stringValue(pgm, c2);
-            default:
-                throw new BASICRuntimeError("Unknown operator in string expression.");
+        if (oper == KeyWords.OP_ADD) {
+            String z = arg1.stringValue(pgm, c);
+            int c2 = c + z.length();
+            return z + arg2.stringValue(pgm, c2);
         }
+        throw new BASICRuntimeError("Unknown operator in string expression.");
     }
 
     public String stringValue (Program pgm) throws BASICRuntimeError {

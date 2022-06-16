@@ -18,7 +18,7 @@
 package basic_1.statement;
 
 import basic_1.*;
-import basic_1.util.RedBlackTree;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -61,16 +61,6 @@ public class LETStatement extends Statement
 
 
     /**
-     * Generate a trace record for the LET statement.
-     */
-//    public RedBlackTree getVars ()
-//    {
-//        RedBlackTree vv = new RedBlackTree();
-//        //nExp.trace(vv);
-//        return (vv);
-//    }
-
-    /**
      * Parse LET Statement.
      */
     private static void parse(LETStatement s, LexicalTokenizer lt) throws BASICSyntaxError
@@ -101,10 +91,6 @@ public class LETStatement extends Statement
         {
             throw new BASICSyntaxError("String assignment needs string expression.");
         }
-//        if (s.nExp instanceof BooleanExpression)
-//        {
-//            throw new BASICSyntaxError("Boolean expression not allowed in LET.");
-//        }
         t = lt.nextToken();
         if (t.isSymbol(')'))
         {

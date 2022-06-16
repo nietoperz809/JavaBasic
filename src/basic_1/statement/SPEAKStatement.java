@@ -41,7 +41,7 @@ import java.util.Vector;
 public class SPEAKStatement extends Statement
 {
     // This is the line number to transfer control too.
-    private Vector args;
+    private Vector<PrintItem> args;
 
     public SPEAKStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {

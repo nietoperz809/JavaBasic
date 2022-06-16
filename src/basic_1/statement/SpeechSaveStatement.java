@@ -12,7 +12,7 @@ import java.util.Vector;
 public class SpeechSaveStatement extends Statement
 {
     // This is the line number to transfer control too.
-    private Vector args;
+    private Vector<PrintItem> args;
 
     /**
      * Construct a new statement object with a valid key.

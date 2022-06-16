@@ -18,7 +18,7 @@
 package basic_1.statement;
 
 import basic_1.*;
-import basic_1.util.RedBlackTree;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Vector;
@@ -45,7 +45,7 @@ public class ONStatement extends Statement
 
     // This is the line number to transfer control too.
     private Expression nExp;
-    private Vector args;
+    private Vector<Token> args;
 
     public ONStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {
@@ -78,14 +78,6 @@ public class ONStatement extends Statement
         return s;
     }
 
-//    @Override
-//    public RedBlackTree getVars ()
-//    {
-//        RedBlackTree vv = new RedBlackTree();
-//        //nExp.trace(vv);
-//        return vv;
-//    }
-
     /**
      * Parse ON Statement.
      */
@@ -111,7 +103,7 @@ public class ONStatement extends Statement
             s.keyword = KeyWords.ON_GOSUB;
         }
 
-        s.args = new Vector();
+        s.args = new Vector<>();
         while (true)
         {
             t = lt.nextToken();

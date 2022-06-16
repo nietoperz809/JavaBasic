@@ -59,7 +59,7 @@ public class Program //implements Runnable, Serializable
     public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
 
     public static class ExtendedSocket {
-        public Socket sock;
+        public final Socket sock;
         public boolean textMode = false;
         public ExtendedSocket(Socket s) {
             this.sock = s;
@@ -132,6 +132,7 @@ public class Program //implements Runnable, Serializable
         for (ExtendedSocket s : sockMap.values()) {
             s.sock.close();
         }
+        sockMap.clear();
     }
 
     /**
@@ -176,8 +177,8 @@ public class Program //implements Runnable, Serializable
      * line numbers. If the statement specified didn't exist, then this method
      * returns false.
      */
-    boolean del(int line) {
-        return stmts.remove(line) != null;
+    void del(int line) {
+        stmts.remove(line);
     }
 
     /**

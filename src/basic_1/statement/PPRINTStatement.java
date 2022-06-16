@@ -38,21 +38,21 @@ public class PPRINTStatement extends Statement
 
         PrintItem pi = null;
         int col = 0;
-        String text = "";
+        StringBuilder text = new StringBuilder();
         for (int i = 0; i < args.size(); i++)
         {
             String z;
             pi = args.elementAt(i);
             z = pi.value(pgm, col);
-            text = text + z;
+            text.append(z);
             col += z.length();
         }
         if ((pi == null) || pi.needCR())
         {
-            text = text + "\n";
+            text.append("\n");
         }
 
-        pw.canvas.print((int)_x.value(pgm), (int)_y.value(pgm), text);
+        pw.canvas.print((int)_x.value(pgm), (int)_y.value(pgm), text.toString());
         return pgm.nextStatement(this);
     }
 }

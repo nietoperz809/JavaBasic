@@ -23,13 +23,11 @@ package basic_1;
  */
 public class BooleanExpression extends Expression
 {
-    BooleanExpression(KeyWords t, Expression a, Expression b) throws BASICSyntaxError
-    {
+    BooleanExpression(KeyWords t, Expression a, Expression b) {
         super(t, a, b);
     }
 
-    BooleanExpression(KeyWords t, Expression a) throws BASICSyntaxError
-    {
+    BooleanExpression(KeyWords t, Expression a) {
         super(t, a);
     }
 

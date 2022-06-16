@@ -45,7 +45,7 @@ public class TransmitStatement extends Statement
                 ext.sock.getOutputStream().write(dat);
             }
         } catch (Exception e) {
-            System.out.println("socket tx fail: "+e.toString());
+            System.out.println("socket tx fail: "+ e);
         }
         return pgm.nextStatement(this);
     }

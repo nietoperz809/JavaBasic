@@ -11,7 +11,7 @@ import java.util.Vector;
 public class SENDStatement extends Statement
 {
     private Expression _thread;
-    private Vector _text;
+    private Vector<PrintItem> _text;
 
     public SENDStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {

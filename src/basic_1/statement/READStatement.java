@@ -37,7 +37,7 @@ import java.util.Vector;
 public class READStatement extends Statement
 {
 
-    private Vector args;
+    private Vector<Token> args;
 
     public READStatement (LexicalTokenizer lt) throws BASICSyntaxError
     {
@@ -85,7 +85,7 @@ public class READStatement extends Statement
     private static void parse(READStatement s, LexicalTokenizer lt) throws BASICSyntaxError
     {
         Token t;
-        s.args = new Vector();
+        s.args = new Vector<>();
         boolean needComma = false;
 
         while (true)

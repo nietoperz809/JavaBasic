@@ -25,6 +25,7 @@ import misc.Transmitter;
 import javax.sound.midi.Instrument;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 
@@ -129,7 +130,7 @@ public class CommandInterpreter {
                     return pgm;
                 }
                 File f = new File(t.stringValue());
-                InputStream in = new FileInputStream(f);
+                InputStream in = Files.newInputStream(f.toPath());
                 Transmitter tr = new Transmitter(in, outStream);
                 tr.doTransmission(null);
                 return pgm;

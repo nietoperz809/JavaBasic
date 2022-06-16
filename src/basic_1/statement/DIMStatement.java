@@ -39,7 +39,7 @@ import java.util.Vector;
  */
 public class DIMStatement extends Statement {
 
-    private Vector args;
+    private Vector<Token> args;
 
     public DIMStatement(LexicalTokenizer lt) throws BASICSyntaxError {
         super(KeyWords.DIM);
@@ -68,7 +68,7 @@ public class DIMStatement extends Statement {
     private static void parse(DIMStatement s, LexicalTokenizer lt) throws BASICSyntaxError {
         Token t;
         Variable va;
-        s.args = new Vector();
+        s.args = new Vector<>();
 
         while (true) {
             /* Get the variable name */

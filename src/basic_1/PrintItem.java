@@ -19,8 +19,6 @@ package basic_1;
 
 import misc.Misc;
 
-import java.io.PrintStream;
-
 public class PrintItem {
     public final static int EXPRESSION = 0;
     private final static int STRING_VARIABLE = 1;
