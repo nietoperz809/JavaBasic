@@ -65,7 +65,11 @@ public class INPUTStatement extends Statement {
     public Statement doit(Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError {
         DataInputStream dis = new DataInputStream(in);
         getMoreData(dis, out, prompt);
-        fillArgs(in, out, prompt, pgm, args);
+        try {
+            fillArgs(in, out, prompt, pgm, args);
+        } catch (BASICSyntaxError e) {
+            throw new RuntimeException(e);
+        }
         return (pgm.nextStatement(this));
     }
 
@@ -105,7 +109,7 @@ public class INPUTStatement extends Statement {
     /*
      * Read a floating point number from the character buffer array.
      */
-    private double getNumber(/*DataInputStream in, PrintStream out, String prompt*/) {
+    private double getNumber() throws BASICSyntaxError {
         currentPos = sbuff.length();
         //return Double.parseDouble(sbuff);
         FunctionParser fp = new FunctionParser("x+"+sbuff);
@@ -162,7 +166,7 @@ public class INPUTStatement extends Statement {
         }
     }
 
-    private void fillArgs(InputStream in, PrintStream out, String prompt, Program pgm, Vector v) throws BASICRuntimeError {
+    private void fillArgs(InputStream in, PrintStream out, String prompt, Program pgm, Vector v) throws BASICRuntimeError, BASICSyntaxError {
         DataInputStream d;
 
         if (in instanceof DataInputStream) {
