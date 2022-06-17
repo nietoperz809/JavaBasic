@@ -128,7 +128,7 @@ public class Program //implements Runnable, Serializable
         }
     }
 
-    void closeAllSockets() throws Exception {
+    void RemoveAllSockets() throws Exception {
         for (ExtendedSocket s : sockMap.values()) {
             s.sock.close();
         }
@@ -199,25 +199,24 @@ public class Program //implements Runnable, Serializable
      * @throws BASICRuntimeError if the variable isn't defined.
      */
     public double getVariable(Variable v) throws BASICRuntimeError {
-        Variable vi = vars.get(v.name);
+        double[] ii = getIndices(v);
         if (v.name.startsWith("fn")) { // TODO: function?
             String fname = v.name.substring(2).toUpperCase();
             FunctionParser fp = defFuncs.get (fname);
             if (fp == null) {
                 throw new BASICRuntimeError("Func not defined: " + fname);
             }
-            double[] ii = getIndices(v);
             if (ii.length == 1)
                 return fp.evaluate(0,ii[0]);
             return fp.evaluate(0, ii[0], ii[1]);
         }
+        Variable vi = vars.get(v.name);
         if (vi == null) {
             throw new BASICRuntimeError("Undefined variable '" + v.name + "'");
         }
         if (!vi.isArray()) {
             return vi.numValue();
         }
-        double[] ii = getIndices(v);
         return vi.numValue(ii);
     }
 
@@ -409,7 +408,7 @@ public class Program //implements Runnable, Serializable
             }
         }
         while (s != null);
-        closeAllSockets();
+        RemoveAllSockets();
         if (MidiSynthSystem.wasUsed())
             Objects.requireNonNull(MidiSynthSystem.get()).shutdown();
     }
