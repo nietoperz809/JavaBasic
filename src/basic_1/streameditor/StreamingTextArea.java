@@ -8,14 +8,14 @@ import javax.swing.text.BadLocationException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Administrator
  */
-public class StreamingTextArea extends JTextArea implements Runnable
-{
-    public final ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128,true);
+public class StreamingTextArea extends JTextArea implements Runnable {
+    public final ArrayBlockingQueue<String> lineBuffer = new ArrayBlockingQueue<>(128, true);
 
     private final InStream in;
     private final OutStream out;
@@ -26,8 +26,7 @@ public class StreamingTextArea extends JTextArea implements Runnable
     volatile private boolean basicIsRunning = false;
     private boolean manual_interrupt;
 
-    public StreamingTextArea ()
-    {
+    public StreamingTextArea() {
         super();
         setCaret(new BlockCaret());
         in = new InStream();
@@ -36,49 +35,38 @@ public class StreamingTextArea extends JTextArea implements Runnable
         startThread();
     }
 
-    public void setColors (int fore, int back)
-    {
+    public void setColors(int fore, int back) {
         setBackground(new java.awt.Color(back));
         setForeground(new java.awt.Color(fore));
     }
 
-    public String getPreviousLine()
-    {
-        try
-        {
-            int start = getLineStartOffset (previousLinenum);
-            int end = getLineEndOffset (previousLinenum);
-            return getText (start,end-start).trim();
-        }
-        catch (BadLocationException e)
-        {
+    public String getPreviousLine() {
+        try {
+            int start = getLineStartOffset(previousLinenum);
+            int end = getLineEndOffset(previousLinenum);
+            return getText(start, end - start).trim();
+        } catch (BadLocationException e) {
             return "";
         }
     }
 
-    private void listenCaret ()
-    {
+    private void listenCaret() {
         // Add a caretListener to the editor. This is an anonymous class because it is inline and has no specific name.
         this.addCaretListener((CaretEvent e) ->
         {
             JTextArea editArea = (JTextArea) e.getSource();
 
-            try
-            {
+            try {
                 int caretpos = editArea.getCaretPosition();
-                previousLinenum = editArea.getLineOfOffset(caretpos)-1;
+                previousLinenum = editArea.getLineOfOffset(caretpos) - 1;
                 //columnnum = caretpos - editArea.getLineStartOffset(linenum);
-            }
-            catch (Exception ignored)
-            {
+            } catch (Exception ignored) {
             }
         });
 
-        this.addKeyListener(new KeyListener()
-        {
+        this.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped (KeyEvent e)
-            {
+            public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 lastKey = c;
                 if (basicIsRunning)
@@ -86,22 +74,16 @@ public class StreamingTextArea extends JTextArea implements Runnable
             }
 
             @Override
-            public void keyPressed (KeyEvent e)
-            {
+            public void keyPressed(KeyEvent e) {
             }
 
             @Override
-            public void keyReleased (KeyEvent e)
-            {
-                if (e.getKeyChar() == '\n'&& !basicIsRunning)
-                {
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyChar() == '\n' && !basicIsRunning) {
                     String s = getPreviousLine();
-                    try
-                    {
+                    try {
                         lineBuffer.put(s);
-                    }
-                    catch (InterruptedException interruptedException)
-                    {
+                    } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     }
                 }
@@ -109,97 +91,67 @@ public class StreamingTextArea extends JTextArea implements Runnable
         });
     }
 
-    public String getBufferedLine()
-    {
-        try
-        {
+    public String getBufferedLine() {
+        try {
             return lineBuffer.take();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             //e.printStackTrace();
             return "";
         }
     }
 
-    public final void startThread ()
-    {
+    public final void startThread() {
         // thread = null;
         Misc.execute(this);
     }
 
-    public InputStream getInputStream ()
-    {
+    public InputStream getInputStream() {
         return in;
     }
 
-    public PrintStream getPrintStream ()
-    {
+    public PrintStream getPrintStream() {
         return new PrintStream(out);
     }
 
-// --Commented out by Inspection START (5/29/2022 8:00 PM):
-//    public DataInputStream getDataInputStream ()
-//    {
-//        return new DataInputStream(in);
-//    }
-// --Commented out by Inspection STOP (5/29/2022 8:00 PM)
-
-    public OutputStream getOutputStream ()
-    {
+    public OutputStream getOutputStream() {
         return out;
     }
 
     @Override
-    public void paste ()
-    {
+    public void paste() {
         super.paste();
         String clip = Misc.getClipBoardString();
-        String[] split = clip.split("\\n");
-        if (split == null)
-            return;
-        for (String s : split)
-        {
-            try
-            {
+        String[] split = Objects.requireNonNull(clip).split("\\n");
+        for (String s : split) {
+            try {
                 lineBuffer.put(s);
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void fakeIn (String s)
-    {
-        System.out.println("fake "+s);
+    public void fakeIn(String s) {
+        System.out.println("fake " + s);
         try {
-            if (basicIsRunning)
-            {
-                for (int n = 0; n < s.length(); n++)
-                {
+            if (basicIsRunning) {
+                for (int n = 0; n < s.length(); n++) {
                     in.write(s.charAt(n));
                 }
-            }
-            else
-            {
+            } else {
                 lineBuffer.put(s);
             }
-        }
-        catch (InterruptedException e)
-        {
-            System.out.println ("fakeIn interrupted");
+        } catch (InterruptedException e) {
+            System.out.println("fakeIn interrupted");
         }
     }
 
     /**
      *
      */
-    public synchronized void destroy ()
-    {
+    public synchronized void destroy() {
         thread.interrupt();
-        fakeIn ("bye\n");
+        fakeIn("bye\n");
     }
 
     public void interrupt() {
@@ -209,51 +161,40 @@ public class StreamingTextArea extends JTextArea implements Runnable
 
 
     @Override
-    public void run ()
-    {
+    public void run() {
         thread = Thread.currentThread();
         System.out.println("stream thread start");
         while (true) //!thread.isInterrupted())
         {
             char c;
-            try
-            {
+            try {
                 c = out.buffer.take();
-            }
-            catch (InterruptedException ex)
-            {
+            } catch (InterruptedException ex) {
                 if (manual_interrupt) {
                     c = 0;
-                }
-                else {
+                } else {
                     System.out.println("stream thread ended");
                     return;
                 }
             }
-            try
-            {
-                synchronized (this)
-                {
+            try {
+                synchronized (this) {
                     int cp = getCaretPosition();
-                    insert(""+c, cp);
-                    setCaretPosition(cp+1);
+                    insert("" + c, cp);
+                    setCaretPosition(cp + 1);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 System.out.println(ex + " -- " + c);
             }
         }
     }
 
-    public synchronized void startRunMode()
-    {
+    public synchronized void startRunMode() {
         basicIsRunning = true;
         lineBuffer.clear();
     }
 
-    public synchronized void stopRunMode()
-    {
+    public synchronized void stopRunMode() {
         basicIsRunning = false;
         in.reset();
     }

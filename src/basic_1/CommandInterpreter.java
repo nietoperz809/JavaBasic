@@ -27,6 +27,7 @@ import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.FutureTask;
 
 import static basic_1.ParseStatement.statement;
@@ -56,7 +57,7 @@ public class CommandInterpreter {
     }
 
     // This method basically dispatches the commands of the command interpreter.
-    private Program processCommand(Program pgm, LexicalTokenizer lt, Token x) throws Exception {
+    private Program processCommand(Program pgm, LexicalTokenizer lt, Token x) throws BASICError, IOException {
         Token t;
 
         switch (x.kwValue) {
@@ -96,11 +97,8 @@ public class CommandInterpreter {
             case CMD_CMDS:
                 t = lt.nextToken();
                 String search = "";
-                if (t.type == KeyWords.KEYWORD) {
-                    search = t.sValue;
-                } else if (t instanceof Variable) {
-                    Variable v1 = (Variable) t;
-                    search = v1.name;
+                if (t.type == KeyWords.STRING) {
+                    search = t.stringValue();
                 }
                 List<KeyWords> list = KeyWords.getFiltered(search);
                 for (KeyWords k : list) {
@@ -112,7 +110,7 @@ public class CommandInterpreter {
                 return pgm;
 
             case CMD_INSTRLIST:
-                Instrument[] instr = MidiSynthSystem.get().getInstruments();
+                Instrument[] instr = Objects.requireNonNull(MidiSynthSystem.get()).getInstruments();
                 StringBuilder sb = new StringBuilder();
                 for (int n = 0; n < instr.length; n++) {
                     sb.append(n);
@@ -154,9 +152,9 @@ public class CommandInterpreter {
                 if (!fname.endsWith(".bas"))
                     fname = fname + ".bas";
                 FileOutputStream fos;
-                File ff = new File (fname);
+                File ff = new File(fname);
                 fos = new FileOutputStream(ff);
-                outStream.println("Saving file... "+ff.getAbsolutePath());
+                outStream.println("Saving file... " + ff.getAbsolutePath());
                 PrintStream pp = new PrintStream(fos);
                 pgm.list(pp);
                 pp.flush();
@@ -186,28 +184,34 @@ public class CommandInterpreter {
                 t = lt.nextToken();
                 String path;
                 if (t.typeNum() != KeyWords.STRING) {
-                     path = ".";
-                }
-                else {
+                    path = ".";
+                } else {
                     path = t.stringValue();
                 }
                 File dir = new File(path);
-                outStream.println ("List of Dir: "+dir.getAbsolutePath());
+                outStream.println("List of Dir: " + dir.getAbsolutePath());
                 File[] filesInFolder = dir.listFiles();
-                for (final File fileEntry : filesInFolder) {
-                    if (fileEntry.isFile()) {
-                        outStream.println(fileEntry.getName() + " -- " + fileEntry.length());
+                if (filesInFolder != null) {
+                    for (final File fileEntry : filesInFolder) {
+                        if (fileEntry.isFile()) {
+                            outStream.println(fileEntry.getName() + " -- " + fileEntry.length());
+                        }
                     }
                 }
                 return pgm;
 
             case CMD_RENUMBER:
-                Point pt = get2Val(lt, new Point(10,10));
-                return pgm.renumber(pt.x, pt.y);
+                Point pt = get2Val(lt, new Point(10, 10));
+                try {
+                    return pgm.renumber(pt.x, pt.y);
+                } catch (NullPointerException e) {
+                    outStream.println("Could not renumber");
+                    return pgm;
+                }
 
             case CMD_LIST:
-                Point pt2 = get2Val(lt, new Point(0,Integer.MAX_VALUE));
-                pgm.list (pt2.x, pt2.y, outStream);
+                Point pt2 = get2Val(lt, new Point(0, Integer.MAX_VALUE));
+                pgm.list(pt2.x, pt2.y, outStream);
                 return pgm;
         }
         outStream.println("Command not implemented.");
@@ -222,11 +226,12 @@ public class CommandInterpreter {
 
     /**
      * Read 2 values sparated by comma
+     *
      * @param lt used tokenizer
      * @param pt default values
      * @return a point as carrier for both values
      */
-    private Point get2Val (LexicalTokenizer lt, Point pt) {
+    private Point get2Val(LexicalTokenizer lt, Point pt) {
         Token t = lt.nextToken();
         if (t.typeNum() == KeyWords.EOL) {
             return pt;
@@ -252,9 +257,6 @@ public class CommandInterpreter {
      * Starts the interactive session. When running the user should see the
      * "Ready." prompt. The session ends when the user types the
      * <code>bye</code> command.
-     *
-     * @return EndReason 1 == BYE detected
-     * @throws java.lang.Exception
      */
     public void prestart(StreamingTextArea area) {
         System.err.println("start BASIC system");
@@ -271,12 +273,12 @@ public class CommandInterpreter {
             basicProgram = new Program(area);
         }
 
-        outStream.println("*JavaBasic*\nType CMDS or CMDS n to see commands (beginning with n)\n");
+        outStream.println("*JavaBasic*\nType CMDS or CMDS \"abc\" to see commands (beginning with abc)\n");
     }
 
-    public void runCLI() throws Exception {
+    public void runCLI() throws BASICError, IOException {
         while (true) {
-            String lineData = formatBasicLine (streamingTextArea.getBufferedLine());
+            String lineData = formatBasicLine(streamingTextArea.getBufferedLine());
 
             m_bg.setLineInList(lineData);
 

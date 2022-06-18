@@ -128,7 +128,7 @@ public class Program //implements Runnable, Serializable
         }
     }
 
-    void RemoveAllSockets() throws Exception {
+    void RemoveAllSockets() throws IOException {
         for (ExtendedSocket s : sockMap.values()) {
             s.sock.close();
         }
@@ -309,7 +309,7 @@ public class Program //implements Runnable, Serializable
         }
     }
 
-    Program renumber(int start, int step) {
+    Program renumber(int start, int step) throws NullPointerException {
         Renumberer ren = new Renumberer(this, start, step);
         Set<Integer> set = stmts.keySet();
         for (Integer i : set) {
@@ -347,7 +347,7 @@ public class Program //implements Runnable, Serializable
      *
      * @throws BASICRuntimeError if an error occurs while basic_prg_running.
      */
-    public void run(InputStream in, OutputStream out, int firstline) throws Exception {
+    public void run(InputStream in, OutputStream out, int firstline) throws BASICError, IOException {
         PrintStream pout;
         Enumeration<Map.Entry<Integer, Statement>> e = stmts.elements();
         stmtStack = new Stack<>();    // assume no stacked statements ...
@@ -398,7 +398,7 @@ public class Program //implements Runnable, Serializable
             }
             if (!thread_running) {
                 thread_running = true;
-                throw new Exception("Basic Thread forced to stop");
+                throw new BASICError ("Basic Thread forced to stop");
             }
             if (s.keyword != KeyWords.DATA) {
 

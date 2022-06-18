@@ -31,7 +31,7 @@ public class Renumberer {
         }
     }
 
-    private int findJump(String[] arr, String what) {
+    private int findJump(String[] arr, String what) throws NullPointerException {
         for (int s = 0; s < arr.length; s++) {
             if (arr[s].equalsIgnoreCase(what)) {
                 if (what.equalsIgnoreCase("then")) {
@@ -45,7 +45,7 @@ public class Renumberer {
         return -1;
     }
 
-    private void doForPass2(String keyword, String[] line) {
+    private void doForPass2(String keyword, String[] line) throws NullPointerException {
         int g = findJump(line, keyword);
         if (g >= 0) {
             String targ = line[g+1];
@@ -61,7 +61,7 @@ public class Renumberer {
         }
     }
 
-    public void doIt() {
+    public void doIt() throws NullPointerException {
         int num = this.start;
         // pass 1
         for (int s = 0; s < lines.size(); s++) {
