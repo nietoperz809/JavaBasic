@@ -12,25 +12,21 @@ import java.beans.PropertyVetoException;
 import java.io.Serializable;
 
 /**
- *
  * @author Administrator
  */
-public abstract class MDIChild extends JInternalFrame implements Serializable
-{
+public abstract class MDIChild extends JInternalFrame implements Serializable {
     public static final long serialVersionUID = 1L;
 
-    public MDIChild ()
-    {
+    public MDIChild() {
         super();
-        System.err.println ("Starting "+this.getClass().getName());
+        System.err.println("Starting " + this.getClass().getName());
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         super.dispose();
-        System.err.println("Disposing "+this.getClass().getName());
-        System.gc ();
-        System.runFinalization ();
+        System.err.println("Disposing " + this.getClass().getName());
+        System.gc();
+        System.runFinalization();
     }
 }

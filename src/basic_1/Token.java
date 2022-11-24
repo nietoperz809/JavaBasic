@@ -22,15 +22,13 @@ import java.io.Serializable;
 /**
  * This class is the representation of a single token in the BASIC environment.
  */
-public class Token implements Serializable
-{
+public class Token implements Serializable {
     /**
      *
      */
     public static final long serialVersionUID = 1L;
-    
-    private static boolean isSymbol (Token t, char s)
-    {
+
+    private static boolean isSymbol(Token t, char s) {
         return ((t != null) && (t.typeNum() == KeyWords.SYMBOL) && (t.numValue() == s));
     }
 
@@ -50,19 +48,17 @@ public class Token implements Serializable
     String sValue;     // Its string value (if it has one)
 
     public KeyWords kwValue;
-    
+
     /**
      *
      */
-    Token ()
-    {
+    Token() {
     }
 
     /**
      * Create a token with a numeric value.
      */
-    Token (KeyWords t, double nv)
-    {
+    Token(KeyWords t, double nv) {
         type = t;
         nValue = nv;
     }
@@ -70,8 +66,7 @@ public class Token implements Serializable
     /**
      * Create a token with a string value.
      */
-    Token (KeyWords t, String sv)
-    {
+    Token(KeyWords t, String sv) {
         type = t;
         sValue = sv;
     }
@@ -79,8 +74,7 @@ public class Token implements Serializable
     /**
      * For operators, create token with numeric value.
      */
-    Token (KeyWords t, int v)
-    {
+    Token(KeyWords t, int v) {
         type = t;
         nValue = v;
     }
@@ -97,26 +91,22 @@ public class Token implements Serializable
 //    }
 // --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
-    Token (KeyWords t, KeyWords kw)
-    {
+    Token(KeyWords t, KeyWords kw) {
         type = t;
         kwValue = kw;
         sValue = kw.toString();
         nValue = kw.ordinal();
     }
-    
-    public double numValue ()
-    {
+
+    public double numValue() {
         return nValue;
     }
 
-    public String stringValue ()
-    {
+    public String stringValue() {
         return sValue;
     }
 
-    public KeyWords typeNum ()
-    {
+    public KeyWords typeNum() {
         return type;
     }
 
@@ -128,25 +118,20 @@ public class Token implements Serializable
 // --Commented out by Inspection STOP (5/29/2022 8:00 PM)
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ("TOKEN: Type=" + type.toString() + ", Numeric Value = " + nValue + ", String Value = '" + sValue + "'");
     }
 
-    public boolean isSymbol (char c)
-    {
+    public boolean isSymbol(char c) {
         return isSymbol(this, c);
     }
 
-    public boolean isOp (KeyWords op)
-    {
+    public boolean isOp(KeyWords op) {
         return ((type == KeyWords.OPERATOR) && kwValue == op); //((int) nValue == op));
     }
 
-    public void negate ()
-    {
-        if (type != KeyWords.CONSTANT)
-        {
+    public void negate() {
+        if (type != KeyWords.CONSTANT) {
             return;
         }
         nValue = -nValue;

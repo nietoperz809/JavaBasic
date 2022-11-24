@@ -20,11 +20,11 @@ package basic_1;
 /**
  * This class implements a recursive-descent parser for the expression grammar
  * we have designed for BASIC.
- *
+ * <p>
  * This grammar is defined with some nonterminals that allow us to embed the
  * precedence relationship of operators into the grammar. The grammar is defined
  * as follows:
- *
+ * <p>
  * ELEMENT ::= id | ( expression ) | function PRIMARY ::= - ELEMENT | ! ELEMENT
  * | .NOT. ELEMENT | ELEMENT FACTOR ::= PRIMARY ** FACTOR | PRIMARY TERM ::=
  * TERM * FACTOR | TERM / FACTOR | FACTOR SUM ::= SUM + TERM | SUM - TERM | TERM
@@ -32,55 +32,40 @@ package basic_1;
  * LOGIC | LOGIC < LOGIC  | LOGIC > LOGIC | LOGIC <> LOGIC | LOGIC <= LOGIC | LOGIC
  * >= LOGIC | LOGIC | EXPRESSION ::= RELATION .AND. RELATION | RELATION .OR.
  * RELATION | RELATION .XOR. RELATION | RELATION
- *
+ * <p>
  * STRELEMENT ::= id | strfunction
- *
+ * <p>
  * STREXP ::= STRELEMENT + STREXP | STRELEMENT
- *
+ * <p>
  * Expressions that are parsed as either EXPRESSIONs or RELATIONs have the type
  * BooleanExpression when they are returned.
- *
+ * <p>
  * Precidence rules from lowest to highest : 0. .AND., .OR., .XOR. 1. =, < , <=,
  * >, >= 2. &, |, ^ 3. +, - 4. *, / 5. ** 6. unary -, unary !, unary .NOT.
- *
  */
-public class ParseExpression extends Expression
-{
+public class ParseExpression extends Expression {
 
-    private static Expression element (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression element(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
 
         Token t = lt.nextToken();
 
-        if (t.isSymbol('('))
-        {
+        if (t.isSymbol('(')) {
             result = expression(lt);
             t = lt.nextToken();
-            if (!t.isSymbol(')'))
-            {
+            if (!t.isSymbol(')')) {
                 lt.unGetToken();
                 throw new BASICSyntaxError("mismatched parenthesis in expression");
             }
-        }
-        else if (t.typeNum() == KeyWords.CONSTANT)
-        {
+        } else if (t.typeNum() == KeyWords.CONSTANT) {
             result = new ConstantExpression(t.numValue());
-        }
-        else if (t.typeNum() == KeyWords.STRING)
-        {
+        } else if (t.typeNum() == KeyWords.STRING) {
             result = new ConstantExpression(t.stringValue());
-        }
-        else if (t.typeNum() == KeyWords.VARIABLE)
-        {
+        } else if (t.typeNum() == KeyWords.VARIABLE) {
             result = new VariableExpression((Variable) t);
-        }
-        else if (t.typeNum() == KeyWords.FUNCTION)
-        {
-            result = FunctionExpression.parse(KeyWords.values()[(int)t.numValue()], lt);
-        }
-        else
-        {
+        } else if (t.typeNum() == KeyWords.FUNCTION) {
+            result = FunctionExpression.parse(KeyWords.values()[(int) t.numValue()], lt);
+        } else {
             lt.unGetToken();
             throw new BASICSyntaxError("Unexpected symbol in expression.");
         }
@@ -88,70 +73,53 @@ public class ParseExpression extends Expression
         return result;
     }
 
-    private static Expression primary (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression primary(LexicalTokenizer lt) throws BASICSyntaxError {
         Token t = lt.nextToken();
 
-        if (t.isOp(KeyWords.OP_NOT))
-        {
+        if (t.isOp(KeyWords.OP_NOT)) {
             return new Expression(KeyWords.OP_NOT, primary(lt));
-        }
-        else if (t.isOp(KeyWords.OP_SUB))
-        {
+        } else if (t.isOp(KeyWords.OP_SUB)) {
             return new Expression(KeyWords.OP_NEG, primary(lt));
-        }
-        else if (t.isOp(KeyWords.OP_BNOT))
-        {
+        } else if (t.isOp(KeyWords.OP_BNOT)) {
             return new BooleanExpression(KeyWords.OP_BNOT, primary(lt));
         }
         lt.unGetToken();
         return element(lt);
     }
 
-    private static Expression factor (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression factor(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = primary(lt);
-        if (result.isString())
-        {
+        if (result.isString()) {
             return result;
         }
 
         t = lt.nextToken();
-        if (t.isOp(KeyWords.OP_EXP))
-        {
+        if (t.isOp(KeyWords.OP_EXP)) {
             return new Expression(KeyWords.OP_EXP, result, factor(lt));
         }
         lt.unGetToken();
         return result;
     }
 
-    private static Expression term (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression term(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = factor(lt);
-        if (result.isString())
-        {
+        if (result.isString()) {
             return result;
         }
 
-        while (true)
-        {
+        while (true) {
             t = lt.nextToken();
-            if (t.isOp(KeyWords.OP_MUL))
-            {
+            if (t.isOp(KeyWords.OP_MUL)) {
                 result = new Expression(KeyWords.OP_MUL, result, factor(lt));
-            }
-            else if (t.isOp(KeyWords.OP_DIV))
-            {
+            } else if (t.isOp(KeyWords.OP_DIV)) {
                 result = new Expression(KeyWords.OP_DIV, result, factor(lt));
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -159,30 +127,22 @@ public class ParseExpression extends Expression
         return result;
     }
 
-    private static Expression sum (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression sum(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = term(lt);
-        if (result.isString())
-        {
+        if (result.isString()) {
             return result;
         }
 
-        while (true)
-        {
+        while (true) {
             t = lt.nextToken();
-            if (t.isOp(KeyWords.OP_ADD))
-            {
+            if (t.isOp(KeyWords.OP_ADD)) {
                 result = new Expression(KeyWords.OP_ADD, result, term(lt));
-            }
-            else if (t.isOp(KeyWords.OP_SUB))
-            {
+            } else if (t.isOp(KeyWords.OP_SUB)) {
                 result = new Expression(KeyWords.OP_SUB, result, term(lt));
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -190,34 +150,24 @@ public class ParseExpression extends Expression
         return result;
     }
 
-    private static Expression logic (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression logic(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = sum(lt);
-        if (result.isString())
-        {
+        if (result.isString()) {
             return result;
         }
 
-        while (true)
-        {
+        while (true) {
             t = lt.nextToken();
-            if (t.isOp(KeyWords.OP_AND))
-            {
+            if (t.isOp(KeyWords.OP_AND)) {
                 result = new Expression(KeyWords.OP_AND, result, sum(lt));
-            }
-            else if (t.isOp(KeyWords.OP_XOR))
-            {
+            } else if (t.isOp(KeyWords.OP_XOR)) {
                 result = new Expression(KeyWords.OP_XOR, result, sum(lt));
-            }
-            else if (t.isOp(KeyWords.OP_IOR))
-            {
+            } else if (t.isOp(KeyWords.OP_IOR)) {
                 result = new Expression(KeyWords.OP_IOR, result, sum(lt));
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -225,48 +175,40 @@ public class ParseExpression extends Expression
         return result;
     }
 
-    private static Expression string (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression string(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = logic(lt);
-        if (!result.isString())
-        {
+        if (!result.isString()) {
             return result;
         }
-        while (true)
-        {
+        while (true) {
             Expression arg2;
             t = lt.nextToken();
-            if (!t.isOp(KeyWords.OP_ADD))
-            {
+            if (!t.isOp(KeyWords.OP_ADD)) {
                 lt.unGetToken();
                 return result;
             }
             arg2 = logic(lt);
-            if (!arg2.isString())
-            {
+            if (!arg2.isString()) {
                 throw new BASICSyntaxError("Only add is allowed in string expressions.");
             }
             result = new StringExpression(KeyWords.OP_ADD, result, arg2);
         }
     }
 
-    private static Expression relation (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    private static Expression relation(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = string(lt);
         t = lt.nextToken();
-        if (t.typeNum() != KeyWords.OPERATOR)
-        {
+        if (t.typeNum() != KeyWords.OPERATOR) {
             lt.unGetToken();
             return result;
         }
-        switch (KeyWords.values()[(int)t.numValue()])
-        {
+        switch (KeyWords.values()[(int) t.numValue()]) {
             case OP_EQ:
                 result = new BooleanExpression(KeyWords.OP_EQ, result, string(lt));
                 break;
@@ -290,29 +232,20 @@ public class ParseExpression extends Expression
         return result;
     }
 
-    public static Expression expression (LexicalTokenizer lt) throws BASICSyntaxError
-    {
+    public static Expression expression(LexicalTokenizer lt) throws BASICSyntaxError {
         Expression result;
         Token t;
 
         result = relation(lt);
-        while (true)
-        {
+        while (true) {
             t = lt.nextToken();
-            if (t.isOp(KeyWords.OP_BAND))
-            {
+            if (t.isOp(KeyWords.OP_BAND)) {
                 result = new BooleanExpression(KeyWords.OP_BAND, result, relation(lt));
-            }
-            else if (t.isOp(KeyWords.OP_BIOR))
-            {
+            } else if (t.isOp(KeyWords.OP_BIOR)) {
                 result = new BooleanExpression(KeyWords.OP_BIOR, result, relation(lt));
-            }
-            else if (t.isOp(KeyWords.OP_BXOR))
-            {
+            } else if (t.isOp(KeyWords.OP_BXOR)) {
                 result = new BooleanExpression(KeyWords.OP_BXOR, result, relation(lt));
-            }
-            else
-            {
+            } else {
                 break;
             }
         }

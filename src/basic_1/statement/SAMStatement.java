@@ -59,7 +59,7 @@ public class SAMStatement extends Statement
         }
         catch (Exception e)
         {
-            System.out.println ("Init failed: "+e);
+            System.out.println ("SAM Init failed: "+e);
         }
     }
 
@@ -97,7 +97,7 @@ public class SAMStatement extends Statement
         try
         {
             byte[] result = doSam (sss);
-            Misc.playWave (result);
+            Misc.playWaveAndWait (result, 20);
         }
         catch (Exception e)
         {

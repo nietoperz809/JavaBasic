@@ -130,7 +130,7 @@ public class CommandInterpreter {
                 File f = new File(t.stringValue());
                 InputStream in = Files.newInputStream(f.toPath());
                 Transmitter tr = new Transmitter(in, outStream);
-                tr.doTransmission(null);
+                tr.doTransmission();
                 return pgm;
 
             case CMD_DEL:
@@ -225,7 +225,7 @@ public class CommandInterpreter {
     }
 
     /**
-     * Read 2 values sparated by comma
+     * Read 2 values separated by comma
      *
      * @param lt used tokenizer
      * @param pt default values

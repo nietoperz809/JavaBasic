@@ -6,6 +6,7 @@
 package misc;
 
 //import applications.WebServerGUI;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,20 +14,12 @@ import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- *
  * @author Administrator
  */
-public class Transmitter
-{
+public class Transmitter {
     private final InputStream _in;
     private final OutputStream _out;
     private int _blocksize = 0x20000; // 0x10000;
-    private final static AtomicLong counter = new AtomicLong();
-
-    public static String getCounter()
-    {
-        return "  " + Misc.humanReadableByteCount(counter.longValue());
-    }
 
     /**
      * Constructor
@@ -34,14 +27,12 @@ public class Transmitter
      * @param i Source
      * @param o Sink
      */
-    public Transmitter(InputStream i, OutputStream o)
-    {
+    public Transmitter(InputStream i, OutputStream o) {
         _in = i;
         _out = o;
     }
 
-    public Transmitter(byte[] ba, OutputStream o)
-    {
+    public Transmitter(byte[] ba, OutputStream o) {
         _in = new ByteArrayInputStream(ba);
         _out = o;
     }
@@ -49,12 +40,11 @@ public class Transmitter
     /**
      * Constructor with Block Size
      *
-     * @param i Source
-     * @param o Sink
+     * @param i  Source
+     * @param o  Sink
      * @param bl Block Size
      */
-    public Transmitter(InputStream i, OutputStream o, int bl)
-    {
+    public Transmitter(InputStream i, OutputStream o, int bl) {
         _blocksize = bl;
         _in = i;
         _out = o;
@@ -65,8 +55,7 @@ public class Transmitter
      *
      * @param o Sink
      */
-    public Transmitter(OutputStream o)
-    {
+    public Transmitter(OutputStream o) {
         _in = System.in;
         _out = o;
     }
@@ -76,8 +65,7 @@ public class Transmitter
      *
      * @param i Source
      */
-    public Transmitter(InputStream i)
-    {
+    public Transmitter(InputStream i) {
         _in = i;
         _out = System.out;
     }
@@ -85,32 +73,18 @@ public class Transmitter
     /**
      * Does the transmission
      *
-     * @param gui
      * @throws IOException
      */
-    public void doTransmission(Object gui) throws IOException
-    {
-        byte b[] = new byte[_blocksize];
-        long txTime = System.currentTimeMillis();
-        for (;;)
-        {
+    public void doTransmission() throws IOException {
+        byte[] b = new byte[_blocksize];
+        while (true) {
             int r = _in.read(b);
-            if (r == -1)
-            {
+            if (r == -1) {
                 _out.flush();
                 break;
             }
             _out.write(b, 0, r);
-            counter.getAndAdd(r);
-            if (gui != null)
-            {
-                //gui.showBytesTransmitted(counter.get(), 0);
-            }
-        }
-        txTime = System.currentTimeMillis() - txTime;
-        if (gui != null)
-        {
-            //gui.showBytesTransmitted(counter.get(), txTime);
+            Thread.yield();
         }
     }
 }

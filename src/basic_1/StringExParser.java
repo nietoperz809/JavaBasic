@@ -6,9 +6,9 @@ import java.util.Vector;
 /**
  * Created by Administrator on 4/23/2016.
  */
-public interface StringExParser
+public class StringExParser
 {
-    static Vector<PrintItem> parseStringExpression(LexicalTokenizer lt) throws BASICSyntaxError
+    public static Vector<PrintItem> parseStringExpression(LexicalTokenizer lt) throws BASICSyntaxError
     {
         Vector<PrintItem> result = new Vector<>();
         Token t;
@@ -53,7 +53,7 @@ public interface StringExParser
         }
     }
 
-    static String printItemsToString (Program pgm, Vector<PrintItem> args) throws BASICRuntimeError
+    public static String printItemsToString (Program pgm, Vector<PrintItem> args) throws BASICRuntimeError
     {
         StringBuilder buff = new StringBuilder();
         PrintItem pi = null;
