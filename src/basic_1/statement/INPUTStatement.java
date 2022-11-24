@@ -81,7 +81,7 @@ public class INPUTStatement extends Statement {
     String sbuff = "";
 
     private void getMoreData(DataInputStream inx, PrintStream out, String prompt) throws BASICRuntimeError {
-        BufferedReader brx = new BufferedReader(new InputStreamReader(inx));
+        //BufferedReader brx = new BufferedReader(new InputStreamReader(inx));
         if (prompt != null) {
             out.print(prompt);
         } else {
@@ -109,7 +109,7 @@ public class INPUTStatement extends Statement {
     /*
      * Read a floating point number from the character buffer array.
      */
-    private double getNumber() throws BASICSyntaxError {
+    private double getNumber() {
         currentPos = sbuff.length();
         //return Double.parseDouble(sbuff);
         FunctionParser fp = new FunctionParser("x+"+sbuff);
@@ -161,12 +161,12 @@ public class INPUTStatement extends Statement {
             }
             currentPos++;
             if (currentPos >= buffer.length) {
-                sb.toString();
+                return sb.toString();
             }
         }
     }
 
-    private void fillArgs(InputStream in, PrintStream out, String prompt, Program pgm, Vector v) throws BASICRuntimeError, BASICSyntaxError {
+    private void fillArgs(InputStream in, PrintStream out, String prompt, Program pgm, Vector<Token> v) throws BASICRuntimeError, BASICSyntaxError {
         DataInputStream d;
 
         if (in instanceof DataInputStream) {

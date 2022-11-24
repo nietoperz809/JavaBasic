@@ -56,7 +56,7 @@ public class RETURNStatement extends Statement
                     break;
                 }
             }
-            while (s != null);
+            while (true); //(s != null);
         }
         catch (Exception ex)
         {

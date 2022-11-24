@@ -46,7 +46,7 @@ public class LOOPStatement extends Statement
         Statement xs;
         DOStatement s;
 
-        while (true) {
+        //while (true) {
             boolean v;
             if (nExp == null)
                 v = true;
@@ -68,6 +68,6 @@ public class LOOPStatement extends Statement
 
             pgm.push(s);
             return pgm.nextStatement(s);
-        }
+        //}
     }
 }

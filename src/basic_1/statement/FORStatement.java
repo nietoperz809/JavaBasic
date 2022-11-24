@@ -69,9 +69,9 @@ public class FORStatement extends Statement
      * Collect the variables associated with the execution of this statement.
      */
 
-    private static void noBool(Expression e)
-    {
-    }
+//    private static void noBool(Expression e)
+//    {
+//    }
 
     /**
      * Parse FOR Statement.
@@ -97,14 +97,14 @@ public class FORStatement extends Statement
             throw new BASICSyntaxError("Missing = in FOR statement");
         }
         s.nExp = ParseExpression.expression(lt);
-        noBool(s.nExp);
+        //noBool(s.nExp);
         t = lt.nextToken();
         if ((t.typeNum() != KeyWords.KEYWORD) || (t.kwValue != KeyWords.TO))
         {
             throw new BASICSyntaxError("Missing TO in FOR statement.");
         }
         s.eExp = ParseExpression.expression(lt);
-        noBool(s.eExp);
+        //noBool(s.eExp);
         t = lt.nextToken();
         if ((t.typeNum() != KeyWords.KEYWORD) || (t.kwValue != KeyWords.STEP))
         {
@@ -113,7 +113,7 @@ public class FORStatement extends Statement
             return;
         }
         s.sExp = ParseExpression.expression(lt);
-        noBool(s.sExp);
+        //noBool(s.sExp);
     }
 
 }

@@ -44,15 +44,15 @@ public class PLINEStatement extends Statement
     public Statement doit (Program pgm, InputStream in, PrintStream out) throws BASICRuntimeError
     {
         DrawingGUI pw = PLOTStatement.makePlotWindow();
-        if (pw != null)
-        {
+//        if (pw != null)
+//        {
             int x1 = (int) _x1.value(pgm);
             int y1 = (int) _y1.value(pgm);
             int x2 = (int) _x2.value(pgm);
             int y2 = (int) _y2.value(pgm);
 
             pw.canvas.line(x1, y1, x2, y2);
-        }
+//        }
         return pgm.nextStatement(this);
     }
 }

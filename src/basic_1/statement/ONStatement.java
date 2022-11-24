@@ -65,7 +65,7 @@ public class ONStatement extends Statement
         {
             return pgm.nextStatement(this);
         }
-        Token z = (Token) args.elementAt(select);
+        Token z = args.elementAt(select);
         s = pgm.getStatement((int) z.numValue());
         if (s == null)
         {

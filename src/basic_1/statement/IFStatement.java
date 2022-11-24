@@ -85,13 +85,13 @@ public class IFStatement extends Statement
      * This method verifies that the expression *isn't* boolean. This is perhaps
      * an arbitrary restriction, but part of the spec none-the-less.
      */
-    private static void noBool(Expression a) throws BASICSyntaxError
-    {
-        if (a instanceof BooleanExpression)
-        {
-            throw new BASICSyntaxError("Boolean expression not allowed here.");
-        }
-    }
+//    private static void noBool(Expression a) throws BASICSyntaxError
+//    {
+//        if (a instanceof BooleanExpression)
+//        {
+//            throw new BASICSyntaxError("Boolean expression not allowed here.");
+//        }
+//    }
 
     /**
      * Parse IF Statement.
