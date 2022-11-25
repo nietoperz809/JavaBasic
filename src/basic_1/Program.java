@@ -59,9 +59,9 @@ public class Program //implements Runnable, Serializable
     public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
 
     public static class ExtendedSocket {
-        public final Socket sock;
+        public final Closeable sock;
         public boolean textMode = false;
-        public ExtendedSocket(Socket s) {
+        public ExtendedSocket(Closeable s) {
             this.sock = s;
 
         }
@@ -128,7 +128,7 @@ public class Program //implements Runnable, Serializable
         }
     }
 
-    void RemoveAllSockets() throws IOException {
+    public void RemoveAllSockets() throws IOException {
         for (ExtendedSocket s : sockMap.values()) {
             s.sock.close();
         }

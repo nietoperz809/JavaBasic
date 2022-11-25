@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.event.InternalFrameListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.concurrent.*;
 
 /**
@@ -196,6 +197,11 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
     {//GEN-HEADEREND:event_jButton2ActionPerformed
         // end possible wait state
+        try {
+            commandInterpreter.basicProgram.RemoveAllSockets();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         basicTask.cancel(true);
         commandInterpreter.basicProgram.basic_prg_running = false;
     }//GEN-LAST:event_jButton2ActionPerformed

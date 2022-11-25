@@ -3,8 +3,10 @@ package basic_1.statement;
 import basic_1.*;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 public class TransmitStatement extends Statement
 {
@@ -37,12 +39,13 @@ public class TransmitStatement extends Statement
         Program.ExtendedSocket ext = pgm.sockMap.get (socketVariable.stringValue(pgm));
         String txt = textVariable.stringValue(pgm);
         try {
+            OutputStream os = ((Socket)ext.sock).getOutputStream();
             if (ext.textMode) {
-                PrintWriter pw = new PrintWriter(ext.sock.getOutputStream(), true);
+                PrintWriter pw = new PrintWriter(os, true);
                 pw.println(txt);
             } else {
                 byte[] dat = txt.getBytes();
-                ext.sock.getOutputStream().write(dat);
+                os.write(dat);
             }
         } catch (Exception e) {
             System.out.println("socket tx fail: "+ e);

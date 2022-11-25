@@ -216,6 +216,7 @@ public class FunctionExpression extends Expression {
                 int port = (int) arg2.value(pgm);
                 try {
                     ServerSocket zsock = new ServerSocket(port);
+                    pgm.sockMap.put("listenSock", new Program.ExtendedSocket(zsock));
                     Socket sock = zsock.accept();
                     zsock.close();
                     pgm.sockMap.put(sock.toString(), new Program.ExtendedSocket(sock));
@@ -234,11 +235,12 @@ public class FunctionExpression extends Expression {
             case RECV: {
                 Program.ExtendedSocket ext = pgm.sockMap.get(ss);
                 try {
+                    InputStream is = ((Socket)(ext.sock)).getInputStream();
                     if (ext.textMode) {
-                        BufferedReader br = new BufferedReader(new InputStreamReader(ext.sock.getInputStream()));
+                        BufferedReader br = new BufferedReader(new InputStreamReader(is));
                         return br.readLine();
                     }
-                    InputStream is = ext.sock.getInputStream();
+                    //InputStream is = ext.sock.getInputStream();
                     byte[] b = new byte[is.available()];
                     is.read(b);
                     return new String(b);
@@ -248,7 +250,7 @@ public class FunctionExpression extends Expression {
             }
 
             case CLOSE: {
-                Socket sock = pgm.sockMap.get(ss).sock;
+                Closeable sock = pgm.sockMap.get(ss).sock;
                 if (sock == null)
                     return "no socket";
                 try {
