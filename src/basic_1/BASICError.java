@@ -24,7 +24,7 @@ package basic_1;
  * @see BASICSyntaxError
  * @see BASICRuntimeError
  */
-class BASICError extends Exception
+class BASICError extends RuntimeException
 {
     private final String msg;
     private Statement s = null;

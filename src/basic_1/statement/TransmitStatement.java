@@ -39,7 +39,7 @@ public class TransmitStatement extends Statement
         Program.ExtendedSocket ext = pgm.sockMap.get (socketVariable.stringValue(pgm));
         String txt = textVariable.stringValue(pgm);
         try {
-            OutputStream os = ((Socket)ext.sock).getOutputStream();
+            OutputStream os = ext.getSocket().getOutputStream();
             if (ext.textMode) {
                 PrintWriter pw = new PrintWriter(os, true);
                 pw.println(txt);

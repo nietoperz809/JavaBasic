@@ -235,7 +235,7 @@ public class FunctionExpression extends Expression {
             case RECV: {
                 Program.ExtendedSocket ext = pgm.sockMap.get(ss);
                 try {
-                    InputStream is = ((Socket)(ext.sock)).getInputStream();
+                    InputStream is = ext.getSocket().getInputStream();
                     if (ext.textMode) {
                         BufferedReader br = new BufferedReader(new InputStreamReader(is));
                         return br.readLine();
@@ -250,7 +250,7 @@ public class FunctionExpression extends Expression {
             }
 
             case CLOSE: {
-                Closeable sock = pgm.sockMap.get(ss).sock;
+                Closeable sock = pgm.sockMap.get(ss).getSocket();
                 if (sock == null)
                     return "no socket";
                 try {

@@ -59,13 +59,20 @@ public class Program //implements Runnable, Serializable
     public final HashMap<String, FunctionParser> defFuncs = new HashMap<>();
 
     public static class ExtendedSocket {
-        public final Closeable sock;
+        private final Closeable sock;
         public boolean textMode = false;
         public ExtendedSocket(Closeable s) {
             this.sock = s;
-
+        }
+        public Socket getSocket() {
+            try {
+                return (Socket)sock;
+            } catch (ClassCastException e) {
+                throw new BASICRuntimeError("not a Socket");
+            }
         }
     }
+
     public final HashMap<String, ExtendedSocket> sockMap = new HashMap<>();
     private AudioPlayer audioPlayer;
     // this tree holds all of the variables.
