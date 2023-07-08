@@ -1,4 +1,4 @@
-package tinycat;
+package basic_2_tinycat;
 
 import basic_1.streameditor.StreamingTextArea;
 

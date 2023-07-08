@@ -6,6 +6,8 @@
 package applications;
 
 import basic_1.streameditor.StreamingTextArea;
+import basic_3_c64.BasicRunner;
+import basic_3_c64.CommandLineDispatcher;
 import misc.MDIChild;
 import misc.Misc;
 import basic_2_tinycat.TinyCatBasic;
@@ -20,8 +22,12 @@ import java.util.concurrent.*;
  *
  * @author Administrator
  */
-public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, InternalFrameListener
+public class CBMGui extends MDIChild implements Runnable, ActionListener, InternalFrameListener
 {
+    public StreamingTextArea area = new StreamingTextArea(); //javax.swing.JTextArea area;
+
+    private final CommandLineDispatcher dispatcher = new CommandLineDispatcher(this);
+
     public FutureTask<?> basicTask;
     public long threadID;
 
@@ -42,7 +48,7 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
     /**
      * Creates new form NewJInternalFrame
      */
-    public TinyCatGUI (CompletableFuture<Long> fut)
+    public CBMGui (CompletableFuture<Long> fut)
     {
         super();
         _fut = fut;
@@ -62,7 +68,6 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
         jButton2 = new javax.swing.JButton();
         comboBox = new JComboBox<>();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        area = new StreamingTextArea();
 
         setClosable(true);
         setIconifiable(true);
@@ -121,11 +126,11 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
     {
         if (evt.getSource() == jButton1)
         {
-            TinyCatGUI.this.jButton1ActionPerformed(evt);
+            CBMGui.this.jButton1ActionPerformed(evt);
         }
         else if (evt.getSource() == jButton2)
         {
-            TinyCatGUI.this.jButton2ActionPerformed(evt);
+            CBMGui.this.jButton2ActionPerformed(evt);
         }
         else if (evt.getSource () == comboBox)
         {
@@ -147,9 +152,9 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
 
     public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt)
     {
-        if (evt.getSource() == TinyCatGUI.this)
+        if (evt.getSource() == CBMGui.this)
         {
-            TinyCatGUI.this.formInternalFrameClosed(evt);
+            CBMGui.this.formInternalFrameClosed(evt);
         }
     }
 
@@ -180,8 +185,8 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
      */
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt)//GEN-FIRST:event_formInternalFrameClosed
     {//GEN-HEADEREND:event_formInternalFrameClosed
-        basic.breakCommandLoop();
-        area.fakeIn("bye\n");  // Force basicThread to end if no pg runs
+        dispatcher.basicRunner.getOlsenBasic().runStop();
+        //area.fakeIn("bye\n");  // Force basicThread to end if no pg runs
     }//GEN-LAST:event_formInternalFrameClosed
 
     // cls
@@ -196,13 +201,10 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
         // end possible wait state
         //basicTask.cancel(true);
         area.interrupt();
-        basic.stopProgram();
+        dispatcher.basicRunner.getOlsenBasic().runStop();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    TinyCatBasic basic;
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public StreamingTextArea area; //javax.swing.JTextArea area;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private JComboBox <java.lang.String> comboBox;
@@ -217,10 +219,6 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
     {
         System.err.println("run BASIC system ...");
         area.requestFocus();
-
-        basic = new TinyCatBasic (area);
-        basic.command_loop("Tinycat BASIC v1.1.1 READY\nType BYE to quit.");
-        System.out.println("commmd loop exited");
     }
 
     @Override
@@ -231,12 +229,13 @@ public class TinyCatGUI extends MDIChild implements Runnable, ActionListener, In
         threadID = Thread.currentThread().getId();
         SwingUtilities.invokeLater(() -> setTitle("BASIC Thread:" + threadID));
 
+        area.requestFocus();
         runBasicSystem();
 
-        basic.breakCommandLoop();
-        latchMap.remove(threadID);
-        streamMap.remove(threadID);
-        SwingUtilities.invokeLater (this::dispose);
-        System.out.println("BasicThread end");
+//        //basic.getOlsenBasic().runStop();
+//        latchMap.remove(threadID);
+//        streamMap.remove(threadID);
+//        SwingUtilities.invokeLater (this::dispose);
+//        System.out.println("BasicThread end");
     }
 }

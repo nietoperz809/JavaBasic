@@ -144,6 +144,11 @@ public class MainWindow extends javax.swing.JFrame
         jMenuItemTC.addActionListener(evt -> createMDIChild(applications.TinyCatGUI.class, null));
         fileMenu.add(jMenuItemTC);
 
+        JMenuItem jMenuItemCBM = new JMenuItem();
+        jMenuItemCBM.setText("New CBM BASIC");
+        jMenuItemCBM.addActionListener(evt -> createMDIChild(applications.CBMGui.class, null));
+        fileMenu.add(jMenuItemCBM);
+
         JMenuItem jMenuItemMon = new JMenuItem();
         jMenuItemMon.setText("Mem Monitor");
         jMenuItemMon.addActionListener(evt -> createMDIChild(applications.MemoryMonitorGUI.class, null));
