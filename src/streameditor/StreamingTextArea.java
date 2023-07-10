@@ -1,4 +1,4 @@
-package basic_1.streameditor;
+package streameditor;
 
 import misc.Misc;
 

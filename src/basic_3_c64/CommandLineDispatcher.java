@@ -9,47 +9,47 @@ import java.io.File;
  */
 public class CommandLineDispatcher {
     public final ProgramStore progStore = new ProgramStore();
-    private final CBMGui m_screen;
+    private final CBMGui cbmGui;
     public BasicRunner basicRunner;
 
     private int speed = 990;
 
     public CommandLineDispatcher(CBMGui screen) {
-        m_screen = screen;
+        cbmGui = screen;
         new Thread(() ->
         {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
             while (!Thread.interrupted()) {
                 try {
-                    char[] in = m_screen.area.getBufferedLine().toCharArray();
+                    char[] in = cbmGui.area.getBufferedLine().toCharArray();
                     handleInput(in);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }).start();
         // Dummy runner
-        basicRunner = new BasicRunner(new String[0], speed, m_screen);
+        basicRunner = new BasicRunner(new String[0], speed, cbmGui);
     }
 
-    private void dir (String filter) {
+    private void dir(String filter) {
         File[] filesInFolder = new File(".").listFiles();
         for (final File fileEntry : filesInFolder) {
             if (fileEntry.isFile()) {
                 String formatted = String.format("\n%-15s = %d",
                         fileEntry.getName(), fileEntry.length());
                 if (filter == null || formatted.contains(filter))
-                    m_screen.area.getPrintStream().print(formatted);
+                    cbmGui.area.getPrintStream().print(formatted);
             }
         }
     }
 
     private void run(boolean sync) {
-        basicRunner = new BasicRunner(progStore.toArray(), speed, m_screen);
+        basicRunner = new BasicRunner(progStore.toArray(), speed, cbmGui);
         basicRunner.start(sync);
     }
 
@@ -82,10 +82,10 @@ public class CommandLineDispatcher {
                 int i1 = Integer.parseInt(split[1]);  // single number
                 if (i1 >= 0) // positive
                 {
-                    m_screen.area.getPrintStream().println(progStore.list(i1, i1));
+                    cbmGui.area.getPrintStream().println(progStore.list(i1, i1));
                 } else // negative
                 {
-                    m_screen.area.getPrintStream().println(progStore.list(0, -i1));
+                    cbmGui.area.getPrintStream().println(progStore.list(0, -i1));
                 }
             } catch (NumberFormatException ex) {
                 String[] args = split[1].split("-");
@@ -96,13 +96,13 @@ public class CommandLineDispatcher {
                 } catch (NumberFormatException ex2) {
                     i2 = Integer.MAX_VALUE;
                 }
-                m_screen.area.getPrintStream().println(progStore.list(i1, i2));
+                cbmGui.area.getPrintStream().println(progStore.list(i1, i2));
             }
         } else  // no args
         {
-            m_screen.area.getPrintStream().println(progStore.toString());
+            cbmGui.area.getPrintStream().println(progStore);
         }
-        m_screen.area.getPrintStream().println(ProgramStore.OK);
+        cbmGui.area.getPrintStream().println(ProgramStore.OK);
     }
 
     /**
@@ -117,36 +117,34 @@ public class CommandLineDispatcher {
         s = s.toLowerCase();
         if (split[0].equalsIgnoreCase("list")) {
             list(split);
-        }  else if (s.equals("new")) {
+        } else if (s.equals("new")) {
             progStore.clear();
-            m_screen.area.getPrintStream().println(ProgramStore.OK);
-
+            cbmGui.area.getPrintStream().println(ProgramStore.OK);
         } else if (s.equals("cls")) {
-            //m_screen.matrix.clearScreen();
+            cbmGui.area.setText("");
         } else if (s.equals("run")) {
             run(true);
         } else if (split[0].equalsIgnoreCase("dir")) {
             dir(split.length == 2 ? split[1] : null);
-            m_screen.area.getPrintStream().println(ProgramStore.OK);
+            cbmGui.area.getPrintStream().println(ProgramStore.OK);
         } else if (split[0].equalsIgnoreCase("speed")) {
             try {
                 speed = Integer.parseInt(split[1]);
-                m_screen.area.getPrintStream().println(ProgramStore.OK);
+                cbmGui.area.getPrintStream().println(ProgramStore.OK);
             } catch (NumberFormatException ex) {
-                m_screen.area.getPrintStream().println(ProgramStore.ERROR);
+                cbmGui.area.getPrintStream().println(ProgramStore.ERROR);
             }
         } else if (split[0].equalsIgnoreCase("save")) {
             String msg = progStore.save(split[1]);
-            m_screen.area.getPrintStream().println(msg);
+            cbmGui.area.getPrintStream().println(msg);
         } else if (split[0].equalsIgnoreCase("load")) {
             String msg = progStore.load(split[1]);
-            m_screen.area.getPrintStream().println(msg);
-        }
-        else {
+            cbmGui.area.getPrintStream().println(msg);
+        } else {
             try {
                 progStore.insert(s);
             } catch (Exception unused) {
-                m_screen.area.getPrintStream().println(BasicRunner.runSingleLine(s, m_screen));
+                cbmGui.area.getPrintStream().println(BasicRunner.runSingleLine(s, cbmGui));
             }
         }
     }

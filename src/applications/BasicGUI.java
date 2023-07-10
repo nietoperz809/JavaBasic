@@ -6,7 +6,7 @@
 package applications;
 
 import basic_1.CommandInterpreter;
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 import misc.MDIChild;
 import misc.Misc;
 

@@ -88,9 +88,10 @@ public class BasicRunner implements Runnable {
         try {
             olsenBasic.run(config);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         } finally {
             running = false;
+            System.out.println("basic thread finished");
         }
     }
 }

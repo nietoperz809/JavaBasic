@@ -18,7 +18,7 @@
 package basic_1;
 
 import applications.BasicGUI;
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 import midisystem.MidiSynthSystem;
 import misc.Transmitter;
 

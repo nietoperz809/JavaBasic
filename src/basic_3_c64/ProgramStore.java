@@ -10,8 +10,8 @@ import java.util.TreeSet;
  * Created by Administrator on 1/4/2017.
  */
 public class ProgramStore {
-    public static final String ERROR = "ERROR.\n";
-    public static final String OK = "READY.\n";
+    public static final String ERROR = "\nERROR.\n";
+    public static final String OK = "\nREADY.\n";
     private final TreeSet<String> store = new TreeSet<>(new LineComparator());
 
     public String[] toArray() {

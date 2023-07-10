@@ -1,6 +1,6 @@
 package basic_2_tinycat;
 
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 
 import java.io.*;
 import java.util.*;

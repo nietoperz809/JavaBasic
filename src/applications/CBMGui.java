@@ -5,12 +5,11 @@
  */
 package applications;
 
-import basic_1.streameditor.StreamingTextArea;
-import basic_3_c64.BasicRunner;
+import streameditor.StreamingTextArea;
 import basic_3_c64.CommandLineDispatcher;
+import buildnum.BuildInfo;
 import misc.MDIChild;
 import misc.Misc;
-import basic_2_tinycat.TinyCatBasic;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameListener;
@@ -215,11 +214,11 @@ public class CBMGui extends MDIChild implements Runnable, ActionListener, Intern
      * runs the command line interpreter
      * @return 1 if GUI closed. otherwise 0
      */
-    private void runBasicSystem ()
-    {
-        System.err.println("run BASIC system ...");
-        area.requestFocus();
-    }
+//    private void runBasicSystem ()
+//    {
+//        System.err.println("run BASIC system ...");
+//        area.requestFocus();
+//    }
 
     @Override
     public void run()
@@ -230,7 +229,9 @@ public class CBMGui extends MDIChild implements Runnable, ActionListener, Intern
         SwingUtilities.invokeLater(() -> setTitle("BASIC Thread:" + threadID));
 
         area.requestFocus();
-        runBasicSystem();
+        System.err.println("run BASIC system ...");
+        area.getPrintStream().println (BuildInfo.buildInfo);
+        //runBasicSystem();
 
 //        //basic.getOlsenBasic().runStop();
 //        latchMap.remove(threadID);

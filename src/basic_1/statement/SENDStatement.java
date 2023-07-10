@@ -2,7 +2,7 @@ package basic_1.statement;
 
 import applications.BasicGUI;
 import basic_1.*;
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 
 import java.io.InputStream;
 import java.io.PrintStream;

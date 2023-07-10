@@ -5,7 +5,7 @@
  */
 package applications;
 
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 import misc.MDIChild;
 import misc.Misc;
 import basic_2_tinycat.TinyCatBasic;

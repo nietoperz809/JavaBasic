@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package basic_1.streameditor;
+package streameditor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 

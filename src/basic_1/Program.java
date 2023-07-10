@@ -17,7 +17,7 @@
  */
 package basic_1;
 
-import basic_1.streameditor.StreamingTextArea;
+import streameditor.StreamingTextArea;
 import basic_1.util.RedBlackTree;
 import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.audio.AudioPlayer;
