@@ -138,12 +138,11 @@ Expression arg1;
             case OP_GE:
                 return (arg1.value(pgm) >= arg2.value(pgm)) ? 1.0 : 0.0;
             case OP_BAND:
-                //return ((arg1.value(pgm) == 1.0) && (arg2.value(pgm) == 1.0)) ? 1.0 : 0.0;
-                return (long)arg1.value(pgm) & (long)arg2.value(pgm);
+                return ((arg1.value(pgm) == 1.0) && (arg2.value(pgm) == 1.0)) ? 1.0 : 0.0;
             case OP_BIOR:
-                return (long)arg1.value(pgm) | (long)arg2.value(pgm);
+                return ((arg1.value(pgm) == 1.0) || (arg2.value(pgm) == 1.0)) ? 1.0 : 0.0;
             case OP_BXOR:
-                return (long)arg1.value(pgm) ^ (long)arg2.value(pgm);
+                return ((arg1.value(pgm) == 1.0) ^ (arg2.value(pgm) == 1.0)) ? 1.0 : 0.0;
             case OP_BNOT:
                 return (arg2.value(pgm) == 1.0) ? 0.0 : 1.0;
             case OP_NOT:
