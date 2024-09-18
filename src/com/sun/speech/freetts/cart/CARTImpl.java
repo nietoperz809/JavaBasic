@@ -511,8 +511,7 @@ public class CARTImpl implements CART {
 
 	/** The final Node of a CART. This just a marker class. */
 	static class LeafNode extends Node {
-		/** Create a new LeafNode with the given value.
-		 * @param the value of this LeafNode */
+		/** Create a new LeafNode with the given value.  */
 		public LeafNode(Object value) {
 			super(value);
 		}

@@ -72,7 +72,7 @@ public class BasicRunner implements Runnable {
         try {
             thread.join();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         //screen.matrix.setCursorOnOff(true);
     }

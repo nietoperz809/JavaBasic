@@ -209,7 +209,6 @@ public class TokenToWords implements UtteranceProcessor {
 	}
 
 	/** Returns true if the given token matches part of a phone number
-	 * @param tokenItem the token
 	 * @param tokenVal the string value of the token
 	 * @return true or false */
 	private boolean matchesPartPhoneNumber(String tokenVal) {

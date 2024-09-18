@@ -340,8 +340,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 		}
 
 		/** Try to add paths to the given point.
-		 * @param point the point to add the paths to
-		 * @param paths the path */
+		 * @param point the point to add the paths to */
 		void addPaths(ViterbiPoint point, ViterbiPath path) {
 			ViterbiPath nextPath;
 			for (ViterbiPath p = path; p != null; p = nextPath) {
@@ -514,7 +513,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 		 * account optimal coupling if the database has OPTIMAL_COUPLING set to 1. The join position is saved in the new
 		 * path, as the features "unit_prev_move" and "unit_this_move".
 		 * @param path the previous path, or null if this candidate starts a new path
-		 * @param candiate the candidate to add to the path
 		 * @return a new path, consisting of this candidate appended to the previous path, and with the cumulative (penalty)
 		 * score calculated. */
 		private ViterbiPath getPath(ViterbiPath path, ViterbiCandidate candidate) {

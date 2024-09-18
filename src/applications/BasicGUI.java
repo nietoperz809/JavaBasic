@@ -217,7 +217,6 @@ public class BasicGUI extends MDIChild implements Runnable, ActionListener, Inte
 
     /**
      * runs the command line interpreter
-     * @return 1 if GUI closed. otherwise 0
      */
     private void runBasicSystem ()
     {
