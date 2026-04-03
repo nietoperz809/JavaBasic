@@ -21,7 +21,7 @@ import java.util.concurrent.*;
  *
  * @author Administrator
  */
-public class CBMGui extends MDIChild implements Runnable, ActionListener, InternalFrameListener
+public class CommodoreGui extends MDIChild implements Runnable, ActionListener, InternalFrameListener
 {
     public StreamingTextArea area = new StreamingTextArea(); //javax.swing.JTextArea area;
 
@@ -47,7 +47,7 @@ public class CBMGui extends MDIChild implements Runnable, ActionListener, Intern
     /**
      * Creates new form NewJInternalFrame
      */
-    public CBMGui (CompletableFuture<Long> fut)
+    public CommodoreGui(CompletableFuture<Long> fut)
     {
         super();
         _fut = fut;
@@ -125,11 +125,11 @@ public class CBMGui extends MDIChild implements Runnable, ActionListener, Intern
     {
         if (evt.getSource() == jButton1)
         {
-            CBMGui.this.jButton1ActionPerformed(evt);
+            CommodoreGui.this.jButton1ActionPerformed(evt);
         }
         else if (evt.getSource() == jButton2)
         {
-            CBMGui.this.jButton2ActionPerformed(evt);
+            CommodoreGui.this.jButton2ActionPerformed(evt);
         }
         else if (evt.getSource () == comboBox)
         {
@@ -151,9 +151,9 @@ public class CBMGui extends MDIChild implements Runnable, ActionListener, Intern
 
     public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt)
     {
-        if (evt.getSource() == CBMGui.this)
+        if (evt.getSource() == CommodoreGui.this)
         {
-            CBMGui.this.formInternalFrameClosed(evt);
+            CommodoreGui.this.formInternalFrameClosed(evt);
         }
     }
 

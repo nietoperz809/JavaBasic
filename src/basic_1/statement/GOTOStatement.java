@@ -58,11 +58,11 @@ public class GOTOStatement extends Statement
         throw new BASICRuntimeError("GOTO non-existent line " + lineTarget + ".");
     }
 
-    @Override
-    public String unparse()
-    {
-        return keyword.toString()+" " + lineTarget;
-    }
+//    @Override
+//    public String unparse()
+//    {
+//        return keyword.toString()+" " + lineTarget;
+//    }
 
     /**
      * Parse GOTO Statement.

@@ -7,15 +7,13 @@ package misc;
 
 
 import applications.BasicGUI;
+import applications.CommodoreGui;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -146,7 +144,7 @@ public class MainWindow extends javax.swing.JFrame
 
         JMenuItem jMenuItemCBM = new JMenuItem();
         jMenuItemCBM.setText("New CBM BASIC");
-        jMenuItemCBM.addActionListener(evt -> createMDIChild(applications.CBMGui.class, null));
+        jMenuItemCBM.addActionListener(evt -> createMDIChild(CommodoreGui.class, null));
         fileMenu.add(jMenuItemCBM);
 
         JMenuItem jMenuItemMon = new JMenuItem();

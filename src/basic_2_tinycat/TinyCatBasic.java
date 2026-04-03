@@ -1,5 +1,6 @@
 package basic_2_tinycat;
 
+import misc.Misc;
 import streameditor.StreamingTextArea;
 
 import java.io.*;
@@ -846,7 +847,8 @@ public class TinyCatBasic {
             output.print(">");
 
             line = area.getBufferedLine().substring(1);
-            if (line.length() == 0) continue;
+            if (line.isEmpty())
+                continue;
 
             cursor = 0;
 
@@ -856,7 +858,12 @@ public class TinyCatBasic {
                 error.println("Command expected");
             } else if (token.equals("bye")) {
                 done = true;
-            } else if (token.equals("list")) {
+            } else if (token.equals("dir")) {
+                String arg = Misc.getTextBetweenQuotes(line);
+                ByteArrayOutputStream ps = Misc.dir(arg);
+                output.println(ps.toString());
+            }
+            else if (token.equals("list")) {
                 list_program();
             } else if (token.equals("run")) {
                 run_program();
@@ -895,6 +902,7 @@ public class TinyCatBasic {
                 try {
                     dispatch_statement();
                 } catch (RuntimeException e) {
+                    output.println("???");
                     error.print(e);
                     error.print(" in column ");
                     error.println(cursor);

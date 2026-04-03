@@ -89,13 +89,13 @@ public abstract class Statement {
         return line;
     }
 
-    /**
-     * reconstruct the statement from the parse tree, this is most useful for
-     * diagnosing parsing problems.
-     */
-    public String unparse() {
-        return keyword.name();
-    }
+//    /**
+//     * reconstruct the statement from the parse tree, this is most useful for
+//     * diagnosing parsing problems.
+//     */
+//    public String unparse() {
+//        return keyword.name();
+//    }
 
 
     /**

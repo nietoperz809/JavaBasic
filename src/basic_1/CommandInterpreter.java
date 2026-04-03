@@ -18,6 +18,7 @@
 package basic_1;
 
 import applications.BasicGUI;
+import misc.Misc;
 import streameditor.StreamingTextArea;
 import midisystem.MidiSynthSystem;
 import misc.Transmitter;
@@ -184,20 +185,12 @@ public class CommandInterpreter {
                 t = lt.nextToken();
                 String path;
                 if (t.typeNum() != KeyWords.STRING) {
-                    path = ".";
+                    path = null;
                 } else {
                     path = t.stringValue();
                 }
-                File dir = new File(path);
-                outStream.println("List of Dir: " + dir.getAbsolutePath());
-                File[] filesInFolder = dir.listFiles();
-                if (filesInFolder != null) {
-                    for (final File fileEntry : filesInFolder) {
-                        if (fileEntry.isFile()) {
-                            outStream.println(fileEntry.getName() + " -- " + fileEntry.length());
-                        }
-                    }
-                }
+                ByteArrayOutputStream bout = Misc.dir(path);
+                outStream.println(bout.toString());
                 return pgm;
 
             case CMD_RENUMBER:

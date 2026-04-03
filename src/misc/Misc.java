@@ -13,20 +13,25 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.datatransfer.DataFlavor.stringFlavor;
-import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author Administrator
  */
 public final class Misc {
-    private static final String BUILD_NUMBER = "351";
-    private static final String BUILD_DATE = "06/22/2025 07:16:59 PM";
+    private static final String BUILD_NUMBER = "357";
+    private static final String BUILD_DATE = "06/23/2025 12:02:16 AM";
 
     public static final String buildInfo = "JavaBasic, Build: " + BUILD_NUMBER + ", " + BUILD_DATE
             + " -- " + System.getProperty("java.version");
@@ -41,6 +46,43 @@ public final class Misc {
 //            System.out.println("Thread pool exhausted");
 //        }
         return (FutureTask<?>) globalExecutor.submit(r);
+    }
+
+    public static String getTextBetweenQuotes(String input) {
+        if (input == null) {
+            return null; // Handle null input
+        }
+
+        // Regex: \"(.*?)\" matches text between double quotes (non-greedy)
+        Pattern pattern = Pattern.compile("\"(.*?)\"");
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            return matcher.group(1); // Group 1 contains the text inside quotes
+        }
+        return null; // No match found
+    }
+
+    public static ByteArrayOutputStream dir(String path) {
+        if (path == null) {
+            path = System.getProperty("user.dir");
+        }
+        File[] filesInFolder = new File(path).listFiles();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (PrintStream ps = new PrintStream(baos, true, StandardCharsets.UTF_8)) {
+            ps.println("List of Dir: " + path);
+            if (filesInFolder != null) {
+                for (final File fileEntry : filesInFolder) {
+                    if (fileEntry.isFile()) {
+                        ps.println(fileEntry.getName() + " -- " + fileEntry.length());
+                    }
+                }
+                return baos;
+            }
+        } catch (Exception e) {
+            System.err.println("Error writing to PrintStream: " + e.getMessage());
+        }
+        return null;
     }
 
 //    private static int getExecutorFreeSlots ()

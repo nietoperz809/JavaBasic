@@ -1,9 +1,8 @@
 package basic_3_c64;
 
-import applications.CBMGui;
+import applications.CommodoreGui;
 import com.sixtyfour.plugins.impl.ConsoleOutputChannel;
 
-import java.awt.*;
 import java.util.HashMap;
 
 
@@ -11,13 +10,13 @@ import java.util.HashMap;
  * Created by Administrator on 1/4/2017.
  */
 class ShellOutputChannel extends ConsoleOutputChannel {
-    private final CBMGui shellFrame;
+    private final CommodoreGui shellFrame;
     /**
      * control char to color mapping
      */
     private final HashMap<Character, Integer> colorMap = new HashMap<>();
 
-    public ShellOutputChannel(CBMGui sf) {
+    public ShellOutputChannel(CommodoreGui sf) {
         this.shellFrame = sf;
         char[] codes = {144, 5, 28, 159, 156, 30, 31, 158, 129, 149,
                 150, 151, 152, 153, 154, 155};

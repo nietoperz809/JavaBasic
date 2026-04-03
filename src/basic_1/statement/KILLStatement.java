@@ -36,11 +36,11 @@ public class KILLStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    @Override
-    public String unparse()
-    {
-        return keyword.toString()+" " + killTarget;
-    }
+//    @Override
+//    public String unparse()
+//    {
+//        return keyword.toString()+" " + killTarget;
+//    }
 
     /**
      * Parse GOTO Statement.

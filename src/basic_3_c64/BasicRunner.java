@@ -1,6 +1,6 @@
 package basic_3_c64;
 
-import applications.CBMGui;
+import applications.CommodoreGui;
 import com.sixtyfour.Basic;
 import com.sixtyfour.DelayTracer;
 import com.sixtyfour.config.CompilerConfig;
@@ -12,7 +12,7 @@ import com.sixtyfour.plugins.MemoryListener;
 public class BasicRunner implements Runnable {
     private static volatile boolean running = false;
     private final Basic olsenBasic;
-    private final CBMGui screen;
+    private final CommodoreGui screen;
     private static final CompilerConfig config = new CompilerConfig();
     private MemoryListener memListener;
 
@@ -20,7 +20,7 @@ public class BasicRunner implements Runnable {
         olsenBasic.setPause(b);
     }
 
-    public BasicRunner(String[] program, int speed, CBMGui shellFrame) {
+    public BasicRunner(String[] program, int speed, CommodoreGui shellFrame) {
         screen = shellFrame;
         olsenBasic = new Basic(program);
         if (speed > 0) {
@@ -39,7 +39,7 @@ public class BasicRunner implements Runnable {
      * @param sf reference to shell main window
      * @return textual representation of success/error
      */
-    public static String runSingleLine(String in, CBMGui sf) {
+    public static String runSingleLine(String in, CommodoreGui sf) {
         try {
             Basic b = new Basic("0 let pi=3.14159265:" + in.toUpperCase());
             //b.getMachine().setMemoryListener(new PeekPokeHandler(sf));

@@ -41,11 +41,11 @@ public class SEQStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    @Override
-    public String unparse()
-    {
-        return "SEQ "+arg;
-    }
+//    @Override
+//    public String unparse()
+//    {
+//        return "SEQ "+arg;
+//    }
 
     /**
      * Parse SEQ Statement.

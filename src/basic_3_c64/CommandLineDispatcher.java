@@ -1,6 +1,6 @@
 package basic_3_c64;
 
-import applications.CBMGui;
+import applications.CommodoreGui;
 
 import java.io.File;
 
@@ -9,12 +9,12 @@ import java.io.File;
  */
 public class CommandLineDispatcher {
     public final ProgramStore progStore = new ProgramStore();
-    private final CBMGui cbmGui;
+    private final CommodoreGui cbmGui;
     public BasicRunner basicRunner;
 
     private int speed = 990;
 
-    public CommandLineDispatcher(CBMGui screen) {
+    public CommandLineDispatcher(CommodoreGui screen) {
         cbmGui = screen;
         new Thread(() ->
         {
@@ -48,9 +48,9 @@ public class CommandLineDispatcher {
         }
     }
 
-    private void run(boolean sync) {
+    private void run() {
         basicRunner = new BasicRunner(progStore.toArray(), speed, cbmGui);
-        basicRunner.start(sync);
+        basicRunner.start(true);
     }
 
 //    private void renumber(String[] split) {
@@ -110,7 +110,7 @@ public class CommandLineDispatcher {
      */
     private void handleInput(char[] in) {
         System.gc();
-        System.runFinalization();
+        //System.runFinalization();
 
         String s = new String(in).trim();
         String[] split = s.split(" ");
@@ -123,7 +123,7 @@ public class CommandLineDispatcher {
         } else if (s.equals("cls")) {
             cbmGui.area.setText("");
         } else if (s.equals("run")) {
-            run(true);
+            run();
         } else if (split[0].equalsIgnoreCase("dir")) {
             dir(split.length == 2 ? split[1] : null);
             cbmGui.area.getPrintStream().println(ProgramStore.OK);

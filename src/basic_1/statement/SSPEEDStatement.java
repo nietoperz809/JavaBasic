@@ -40,11 +40,11 @@ public class SSPEEDStatement extends Statement
         return pgm.nextStatement(this);
     }
 
-    @Override
-    public String unparse ()
-    {
-        return keyword.name() + " " + speed;
-    }
+//    @Override
+//    public String unparse ()
+//    {
+//        return keyword.name() + " " + speed;
+//    }
 
     /**
      * Parse GOTO Statement.

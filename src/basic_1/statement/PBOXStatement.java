@@ -42,11 +42,11 @@ public class PBOXStatement extends Statement
         s._height = s.getNumericArg(lt);
     }
 
-    @Override
-    public String unparse ()
-    {
-        return keyword.name() + " " + _x + "," + _y + "," + _width + "," + _height;
-    }
+//    @Override
+//    public String unparse ()
+//    {
+//        return keyword.name() + " " + _x + "," + _y + "," + _width + "," + _height;
+//    }
 
     void doIt2 (int x, int y, int rad1, int rad2)
     {

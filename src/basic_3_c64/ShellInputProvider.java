@@ -1,15 +1,15 @@
 package basic_3_c64;
 
-import applications.CBMGui;
+import applications.CommodoreGui;
 import com.sixtyfour.plugins.InputProvider;
 
 /**
  * Created by Administrator on 1/4/2017.
  */
 class ShellInputProvider implements InputProvider {
-    private final CBMGui shellFrame;
+    private final CommodoreGui shellFrame;
 
-    public ShellInputProvider(CBMGui shellFrame) {
+    public ShellInputProvider(CommodoreGui shellFrame) {
         this.shellFrame = shellFrame;
     }
 
