@@ -1,7 +1,9 @@
 package basic_3_c64;
 
 import applications.CommodoreGui;
+import misc.Misc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 /**
@@ -37,14 +39,13 @@ public class CommandLineDispatcher {
     }
 
     private void dir(String filter) {
-        File[] filesInFolder = new File(".").listFiles();
-        for (final File fileEntry : filesInFolder) {
-            if (fileEntry.isFile()) {
-                String formatted = String.format("\n%-15s = %d",
-                        fileEntry.getName(), fileEntry.length());
-                if (filter == null || formatted.contains(filter))
-                    cbmGui.area.getPrintStream().print(formatted);
-            }
+        if (filter != null) {
+            if (filter.endsWith("\"") && filter.startsWith("\""))
+                filter = filter.substring(1, filter.length()-1);
+        }
+        ByteArrayOutputStream res = Misc.dir(filter);
+        if (res != null) {
+            cbmGui.area.getPrintStream().print(res);
         }
     }
 

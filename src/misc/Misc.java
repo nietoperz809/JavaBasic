@@ -197,36 +197,4 @@ public final class Misc {
         }
         c.close();
     }
-
-
-//    /**
-//     * Convert standard FN syntax int functional representation
-//     * @param in BASIC line
-//     * @return Transformed line
-//     */
-//    public static String convertFN(String in) {
-//        if (in.contains("DEF FN"))
-//            return in;
-//        String fname = substringBetween (in, "FN ", "(");
-//        if (fname == null)
-//            return in;
-//        String args = substringBetween (in, fname+"(", ")");
-////        System.out.println("---------------");
-////        System.out.println(in);
-////        System.out.println(fname);
-////        System.out.println(args);
-//
-//        String out = "FN "+"("+"\""+fname+"\","+args+")";
-////        System.out.println(out);
-//
-//        String before = substringBefore(in, "FN");
-//        String after = substringAfter(in, ":");
-//        String combined;
-//        if (after.isEmpty())
-//            combined = before+out;
-//        else
-//            combined = before+out+":"+after;
-////        System.out.println(combined);
-//        return combined;
-//    }
 }

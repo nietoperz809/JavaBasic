@@ -214,12 +214,6 @@ public class CommodoreGui extends MDIChild implements Runnable, ActionListener, 
      * runs the command line interpreter
      * @return 1 if GUI closed. otherwise 0
      */
-//    private void runBasicSystem ()
-//    {
-//        System.err.println("run BASIC system ...");
-//        area.requestFocus();
-//    }
-
     @Override
     public void run()
     {
